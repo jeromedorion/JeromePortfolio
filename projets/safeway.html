@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Safeway — Jérôme Dorion</title>
+  <meta name="description" content="Une évacuation repensée — application mobile conçue comme une seconde couche de sécurité lors d'une évacuation d'incendie.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+  <!-- ===== Navigation ===== -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="nav-logo" href="../index.html">JD</a>
+      <span class="nav-role">Designer d'interaction</span>
+      <nav class="nav-liens">
+        <a href="../index.html#projets">Mes projets</a>
+        <a href="../index.html#a-propos">À propos</a>
+        <a class="masquer-mobile" href="https://www.linkedin.com/in/jérôme-dorion-040149350" target="_blank" rel="noopener">LinkedIn</a>
+        <a class="masquer-mobile" href="https://drive.google.com/file/d/1WQyurHoxNqCceoQxutv7T_P1aVuBk8ul/view?usp=sharing" target="_blank" rel="noopener">CV</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ===== Barre latérale fixe (Contact + EN) ===== -->
+  <aside class="barre-laterale">
+    <a class="contact" href="mailto:jerome.dorion.pro@gmail.com">Contact</a>
+    <a class="langue" href="#" title="English version — à venir">EN</a>
+  </aside>
+
+  <!-- ===== En-tête : photo pleine largeur, titre sur l'image ===== -->
+  <section class="projet-hero">
+    <img src="../assets/safeway/hero.png" alt="Projet Safeway">
+    <div class="conteneur">
+      <h1 class="projet-titre">Une évacuation repensée</h1>
+    </div>
+  </section>
+
+  <main class="conteneur">
+
+      <div class="meta-grille">
+        <div>
+          <h4>Rôle</h4>
+          <p>Product designer<br>Design researcher</p>
+        </div>
+        <div>
+          <h4>Collaborateur</h4>
+          <p>Maxime Gagnon</p>
+        </div>
+        <div>
+          <h4>Durée</h4>
+          <p>2 semaines</p>
+        </div>
+        <div>
+          <h4>Année</h4>
+          <p>2026</p>
+        </div>
+        <div>
+          <h4>Client</h4>
+          <p>Projet réalisé dans le cadre d'un cours à la maîtrise en design d'interaction de l'Université Laval.</p>
+        </div>
+      </div>
+
+      <!-- Sommaire collant à gauche (rempli automatiquement par js/main.js)
+           + contenu du projet à droite -->
+      <div class="corps-projet">
+        <nav class="sommaire" aria-label="Sections de la page"></nav>
+        <div class="contenu-projet">
+
+    <!-- ===== Mise en contexte ===== -->
+    <section class="bloc reveler">
+      <h2>Mise en contexte</h2>
+      <p>Ce projet, réalisé dans le cadre d'un cours de maîtrise, avait pour but de définir une problématique précise et de concevoir une solution sous forme d'application collaborative et <span class="accent-serif">multiplateforme</span>. La problématique n'étant pas définie, nous avions le champ libre pour explorer et expérimenter quelque chose sans nous mettre de limite.</p>
+    </section>
+
+    <section class="bloc reveler">
+      <h2>Problématique</h2>
+      <p>L'évacuation d'incendie dans les immeubles résidentiels et de bureaux a peu évolué avec le temps. Ce projet est né d'une situation concrète : une personne avec qui je discutais n'avait pas entendu l'alarme de son immeuble parce qu'elle portait des écouteurs antibruit et que l'alarme est uniquement dans le corridor, pas dans son appartement directement.</p>
+      <p>Alors la question suivante a émergé : <span class="accent-serif">Est-ce qu'il serait possible de créer une solution pour ajouter une couche de sécurité et de prévention à ce processus crucial pour les résidents d'un immeuble ?</span></p>
+    </section>
+
+    <!-- ===== Méthode de recherche ===== -->
+    <section class="bloc reveler">
+      <h2>Méthode de recherche</h2>
+      <div class="grille-cartes">
+        <div class="mini-carte">
+          <h3>Recherche secondaire</h3>
+          <p>La recherche secondaire consiste à analyser des données existantes telles que des études, des rapports, des articles scientifiques ou des statistiques plutôt que de les collecter soi-même. En raison de la nature et du temps limité de ce mandat, elle a constitué la principale source de données et de statistiques.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Constats ===== -->
+    <section class="bloc reveler">
+      <h2>Constats</h2>
+      <div class="grille-cartes">
+        <div class="mini-carte">
+          <div class="numero">1</div>
+          <p>75-79 % des gens considèrent l'audio comme un moyen d'alerte fiable.</p>
+        </div>
+        <div class="mini-carte">
+          <div class="numero">2</div>
+          <p>Les occupants ne partent pas automatiquement au son de l'alarme — ce délai de « pré-mouvement » est réel et doit être pris en compte.</p>
+        </div>
+        <div class="mini-carte">
+          <div class="numero">3</div>
+          <p>Les écouteurs antibruit (ANC) ralentissent la réaction d'environ 40 à 50 secondes.</p>
+        </div>
+        <div class="mini-carte">
+          <div class="numero">4</div>
+          <p>Même avec une alarme fonctionnelle, des décès surviennent par non-réponse ou alarme non perçue.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Opportunité de design ===== -->
+    <section class="bloc reveler">
+      <h2>Opportunité de design</h2>
+      <ul>
+        <li>Réduire le temps de pré-mouvement pour une réaction plus rapide dès le déclenchement de l'alarme.</li>
+        <li>Offrir un second canal d'alerte pour garantir une perception immédiate, peu importe le contexte de l'occupant.</li>
+        <li>Simplifier et guider l'évacuation pour réduire le stress et limiter les erreurs en situation d'urgence.</li>
+      </ul>
+    </section>
+
+    <!-- ===== Solution finale ===== -->
+    <section class="bloc reveler">
+      <h2>Solution finale</h2>
+      <p>Safeway est une application mobile conçue comme une seconde couche de sécurité lors d'une évacuation d'incendie en immeuble résidentiel. Dès le déclenchement d'une alarme, elle avertit instantanément les résidents sur leur téléphone, peu importe leur situation, et les accompagne jusqu'à ce qu'ils soient en lieu sûr.</p>
+      <p>En cas de besoin, l'application permet à un résident de signaler rapidement qu'il nécessite de l'aide ou de rapporter une situation problématique, assurant ainsi une meilleure communication entre les occupants durant l'évacuation.</p>
+      <p>Au-delà des situations d'urgence, Safeway joue également un rôle préventif. Elle permet aux résidents de gérer et planifier des tâches d'entretien essentielles à la sécurité de leur logement, comme changer les batteries de l'alarme incendie, nettoyer le filtre de la sécheuse, vérifier l'extincteur ou inspecter l'état des fils électriques.</p>
+
+      <img src="../assets/safeway/mockup.png" alt="Safeway — vue d'ensemble" style="margin-top:1.5rem;">
+      <img src="../assets/safeway/ecran-1.png" alt="Safeway — écran 1">
+      <img src="../assets/safeway/ecran-2.png" alt="Safeway — écran 2">
+      <img src="../assets/safeway/ecran-3.png" alt="Safeway — écran 3">
+      <img src="../assets/safeway/ecran-4.png" alt="Safeway — écran 4">
+    </section>
+
+        </div>
+      </div>
+
+  </main>
+
+  <!-- ===== Autres projets ===== -->
+  <section class="autres-projets">
+    <div class="conteneur">
+      <h3 class="titre-section">Voir un autre projet</h3>
+      <div class="liens">
+        <a class="projet-precedent" href="remi.html"><span class="fleche">←</span>Rémi</a>
+        <a class="projet-suivant" href="radio-canada.html">Radio-Canada<span class="fleche">→</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Pied de page ===== -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <h5>Pour me contacter</h5>
+        <a href="mailto:jerome.dorion.pro@gmail.com">jerome.dorion.pro@gmail.com</a>
+      </div>
+      <div>
+        <h5>Tous droits réservés</h5>
+        <p>© <span data-annee></span> Jérôme Dorion</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../js/main.js"></script>
+</body>
+</html>

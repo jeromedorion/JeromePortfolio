@@ -1,0 +1,1542 @@
+/* ==========================================================
+   PORTFOLIO — JÉRÔME DORION
+   Feuille de style principale
+   Structure :
+   1. Variables & reset
+   2. Typographie
+   3. Navigation
+   4. Hero (accueil)
+   5. Section projets
+   6. Section à propos
+   7. Pied de page
+   8. Pages projets
+   9. Animations & responsive
+   ========================================================== */
+
+/* ----- 1. Variables & reset ----- */
+:root {
+  --papier: #fafafa;        /* fond principal, blanc très légèrement cassé */
+  --encre: #111111;         /* texte principal, noir */
+  --encre-douce: #666666;   /* texte secondaire, gris neutre */
+  --accent: #111111;        /* accent : noir (palette noir et blanc) */
+  --ligne: #e6e6e6;         /* bordures fines, gris pâle */
+  --carte: #fafafa;         /* fond des cartes, même ton que le fond */
+
+  --police-titre: "Manrope", sans-serif;
+  --police-texte: "Manrope", sans-serif;
+  --police-accent: "IBM Plex Mono", monospace;
+
+  --largeur-max: 1480px; /* contenu plus large, marges réduites */
+  --rayon: 0; /* coins carrés partout, style droit et neutre */
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--papier);
+  color: var(--encre);
+  font-family: var(--police-texte);
+  font-size: 1.05rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  /* espace réservé pour la barre latérale fixe à droite */
+  padding-right: 96px;
+}
+
+img, video {
+  max-width: 100%;
+  display: block;
+  border-radius: var(--rayon);
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.conteneur {
+  max-width: var(--largeur-max);
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ----- 2. Typographie ----- */
+h1, h2, h3 {
+  font-family: var(--police-titre);
+  line-height: 1.1;
+}
+
+h1, h2 {
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+/* Sous-titres (h3) : casse normale et crénage légèrement ouvert
+   pour une meilleure lisibilité */
+h3 {
+  letter-spacing: 0.01em;
+}
+
+.titre-section {
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  margin-bottom: 2.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  /* reste en majuscules même en h3 (ex. : « Voir un autre projet ») */
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
+
+.titre-section::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--ligne);
+}
+
+/* Classe neutralisée : les mots marqués suivent maintenant
+   le texte courant (aucune mise en évidence typographique). */
+.accent-serif {
+  font: inherit;
+  color: inherit;
+}
+
+/* ----- 3. Navigation ----- */
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: color-mix(in srgb, var(--papier) 85%, transparent);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--ligne);
+}
+
+.nav-inner {
+  max-width: var(--largeur-max);
+  margin: 0 auto;
+  padding: 28px 24px; /* navigation plus aérée verticalement */
+  display: flex;
+  align-items: center;
+  gap: 0.75rem; /* JD et le rôle rapprochés */
+}
+
+.nav-logo {
+  font-family: var(--police-titre);
+  font-weight: 800;
+  font-size: 1.2rem;
+}
+
+.nav-role {
+  color: var(--encre-douce);
+  font-size: 0.9rem;
+  border-left: 1px solid var(--ligne);
+  padding-left: 0.75rem;
+}
+
+.nav-liens {
+  margin-left: auto;
+  display: flex;
+  gap: 2.75rem; /* liens de navigation plus aérés */
+  font-size: 0.95rem;
+}
+
+.nav-liens a {
+  position: relative;
+}
+
+.nav-liens a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: width 0.25s ease;
+}
+
+.nav-liens a:hover::after {
+  width: 100%;
+}
+
+/* ----- Barre latérale fixe (Contact + EN) ----- */
+/* Toujours visible à droite, elle suit le défilement. */
+.barre-laterale {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 96px;
+  z-index: 100;
+  background: var(--encre);
+  color: var(--papier);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  /* Contact et EN proches des extrémités, avec un léger retrait */
+  padding: 3.5rem 0;
+}
+
+.barre-laterale .contact {
+  /* texte vertical, se lit de haut en bas */
+  writing-mode: vertical-rl;
+  /* même typo que la navigation du haut, en minuscules */
+  font-family: var(--police-texte);
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+
+.barre-laterale .langue {
+  /* même orientation verticale et même typo que Contact, en minuscules */
+  writing-mode: vertical-rl;
+  font-family: var(--police-texte);
+  font-size: 0.95rem;
+  text-transform: lowercase;
+  transition: color 0.2s ease;
+}
+
+.barre-laterale .contact:hover {
+  color: #999999; /* gris au survol, sur fond noir */
+}
+
+.barre-laterale .langue:hover {
+  color: #999999; /* gris au survol, comme Contact */
+}
+
+/* ----- 4. Hero ----- */
+.hero {
+  padding: clamp(5rem, 12vw, 9rem) 0 clamp(4rem, 8vw, 7rem);
+  text-align: center; /* nom et phrase centrés */
+}
+
+.hero h1 {
+  font-size: clamp(2.5rem, 8vw, 6rem);
+  font-weight: 800;
+  white-space: nowrap; /* le nom reste sur une seule ligne */
+}
+
+.hero-phrase {
+  max-width: 620px;
+  margin: 1.75rem auto 0; /* centrée sous le nom */
+  font-size: 1.2rem;
+  color: var(--encre-douce);
+}
+
+/* ----- 5. Section projets ----- */
+.section {
+  padding: clamp(3.5rem, 8vw, 6rem) 0;
+}
+
+.grille-projets {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.carte-projet {
+  background: var(--carte);
+  border: 1px solid var(--ligne);
+  border-radius: var(--rayon);
+  overflow: hidden; /* la photo épouse les coins arrondis */
+  display: grid;
+  grid-template-columns: minmax(260px, 42%) 1fr; /* photo à gauche, texte à droite */
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.carte-projet:hover {
+  transform: translateY(-4px);
+  border-color: var(--accent);
+  box-shadow: 0 12px 30px rgba(17, 17, 17, 0.08);
+}
+
+.carte-projet .vignette {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0;
+  transition: transform 0.4s ease;
+}
+
+.carte-projet:hover .vignette {
+  transform: scale(1.03);
+}
+
+.carte-contenu {
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+/* Nom du projet : l'élément le plus gros de la carte */
+.carte-projet .client {
+  font-family: var(--police-titre);
+  font-weight: 800;
+  text-transform: uppercase;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  letter-spacing: 0.02em;
+  line-height: 1.1;
+}
+
+/* Question : plus petite, en gris */
+.carte-projet .question {
+  font-size: 1.05rem;
+  color: var(--encre-douce);
+}
+
+.carte-projet .tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.tag {
+  font-family: var(--police-accent);
+  font-size: 0.78rem;
+  border: 1px solid var(--ligne);
+  padding: 4px 12px;
+  color: var(--encre-douce);
+}
+
+.carte-projet .duree-lecture {
+  margin-top: auto; /* poussée au bas de la carte */
+  padding-top: 1rem;
+  font-family: var(--police-accent);
+  font-size: 0.9rem;
+  color: var(--encre-douce);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem; /* espace entre l'icône de livre et le texte */
+}
+
+.carte-projet .duree-lecture svg {
+  flex-shrink: 0;
+}
+
+/* ----- 6. À propos ----- */
+.a-propos p {
+  max-width: 720px;
+  font-size: 1.15rem;
+}
+
+/* ----- 7. Pied de page ----- */
+.footer {
+  border-top: 1px solid var(--ligne);
+  padding: 3rem 0;
+  display: grid;
+  gap: 2rem;
+}
+
+.footer h5 {
+  font-family: var(--police-accent);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  color: var(--encre-douce);
+  margin-bottom: 0.4rem;
+}
+
+.footer a:hover {
+  color: var(--accent);
+}
+
+.footer-inner {
+  max-width: var(--largeur-max);
+  margin: 0 auto;
+  padding: 0 24px;
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3rem;
+  justify-content: space-between; /* premier bloc collé à gauche, dernier à droite */
+  align-items: flex-start;
+}
+
+/* Le bloc de droite s'aligne sur la marge droite */
+.footer-inner > div:last-child {
+  text-align: right;
+}
+
+/* ----- 8. Pages projets ----- */
+/* En-tête plein écran : la photo commence sous la navigation,
+   prend toute la largeur (la barre noire reste à droite),
+   et le titre blanc est posé sur l'image. */
+.projet-hero {
+  position: relative;
+}
+
+.projet-hero img {
+  width: 100%;
+  height: clamp(420px, 72vh, 800px);
+  object-fit: cover;
+}
+
+/* Voile sombre dégradé : garantit le contraste du titre blanc,
+   plus prononcé à gauche où se trouve le texte */
+.projet-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right,
+    rgba(0, 0, 0, 0.6),
+    rgba(0, 0, 0, 0.25) 50%,
+    rgba(0, 0, 0, 0.05));
+}
+
+/* Titre centré verticalement dans la photo */
+.projet-hero .conteneur {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1; /* au-dessus du voile */
+}
+
+.projet-titre {
+  font-size: clamp(2.2rem, 6vw, 4rem);
+  color: #ffffff;
+  margin: 0;
+  max-width: 16ch; /* condensé à gauche, sur environ 3 lignes */
+  line-height: 1.15;
+}
+
+.meta-grille {
+  margin-top: 3rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 1.5rem;
+  padding: 2rem 0;
+  border-top: 1px solid var(--ligne);
+  border-bottom: 1px solid var(--ligne);
+  margin-bottom: 3rem;
+}
+
+.meta-grille h4 {
+  font-family: var(--police-accent);
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+  margin-bottom: 0.4rem;
+}
+
+.meta-grille p {
+  font-size: 0.95rem;
+  color: var(--encre-douce);
+}
+
+.bloc {
+  margin-bottom: 3.5rem;
+  /* l'ancre s'arrête sous la navigation collante */
+  scroll-margin-top: 110px;
+}
+
+/* ----- Sommaire collant des pages projets ----- */
+/* Colonne de raccourcis à gauche, contenu à droite */
+.corps-projet {
+  display: grid;
+  grid-template-columns: 210px minmax(0, 1fr);
+  gap: 3.5rem;
+  align-items: start;
+}
+
+.sommaire {
+  position: sticky;
+  top: 110px; /* reste visible sous la navigation pendant le défilement */
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  font-family: var(--police-accent);
+  font-size: 0.8rem;
+}
+
+.sommaire a {
+  color: var(--encre-douce);
+  transition: color 0.2s ease;
+}
+
+.sommaire a:hover {
+  color: var(--encre);
+}
+
+/* Section actuellement visible */
+.sommaire a.actif {
+  color: var(--encre);
+  font-weight: 600;
+}
+
+@media (max-width: 1000px) {
+  /* Pas de place pour le sommaire sur petit écran */
+  .corps-projet {
+    grid-template-columns: 1fr;
+  }
+
+  .sommaire {
+    display: none;
+  }
+}
+
+.bloc h2 {
+  font-size: clamp(1.4rem, 3vw, 2rem);
+  margin-bottom: 1.25rem;
+  display: flex;
+  align-items: center; /* numéro centré verticalement avec le titre */
+  gap: 1.5rem;
+}
+
+/* Numérotation automatique des grandes étapes : (01), (02)…
+   Le compteur repart à zéro sur chaque page (reset sur <main>). */
+main {
+  counter-reset: etape;
+}
+
+.bloc h2::before {
+  counter-increment: etape;
+  content: "(" counter(etape, decimal-leading-zero) ")";
+  font-family: var(--police-accent);
+  font-size: 0.95rem;
+  font-weight: 600; /* légèrement plus gras */
+  color: var(--encre-douce);
+  flex: 0 0 2.4rem; /* largeur fixe : le titre commence toujours au même endroit */
+}
+
+/* Le contenu des sections s'aligne avec le titre (après le numéro) :
+   2.4rem de numéro + 1.5rem d'espacement = 3.9rem.
+   Le retrait est porté par la section elle-même (padding), donc
+   images et grilles partagent exactement les mêmes limites gauche
+   et droite, à toutes les tailles d'écran. Seul le titre ressort
+   à gauche pour que son numéro reste dans la marge. */
+.bloc {
+  padding-left: 3.9rem;
+}
+
+.bloc > h2 {
+  margin-left: -3.9rem;
+}
+
+.bloc h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.bloc p + p {
+  margin-top: 1rem;
+}
+
+/* Confort de lecture : le texte courant ne s'étire jamais sur toute
+   la largeur (~60 % de la page au maximum, et s'adapte aux petits écrans) */
+.bloc p,
+.bloc ul {
+  max-width: 70ch;
+}
+
+.bloc ul {
+  padding-left: 1.25rem;
+}
+
+.bloc li + li {
+  margin-top: 0.5rem;
+}
+
+.grille-cartes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1.25rem;
+}
+
+/* Variante : exactement 3 colonnes (ex. : 6 cartes = 2 rangées de 3) */
+.grille-cartes.trois-colonnes {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 900px) {
+  .grille-cartes.trois-colonnes {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
+}
+
+.mini-carte {
+  background: var(--carte);
+  border: 1px solid var(--ligne);
+  border-radius: var(--rayon);
+  padding: 1.5rem;
+  /* ombre très discrète, juste assez pour décoller du fond */
+  box-shadow: 0 1px 3px rgba(17, 17, 17, 0.04), 0 4px 14px rgba(17, 17, 17, 0.05);
+}
+
+.mini-carte .numero {
+  font-family: var(--police-accent);
+  font-size: 2rem;
+  color: var(--accent);
+  line-height: 1;
+  margin-bottom: 0.75rem;
+}
+
+/* Statistiques : même style que les mini-cartes,
+   fond blanc et contour gris très pâle */
+.stat {
+  background: var(--carte);
+  border: 1px solid var(--ligne);
+  border-radius: var(--rayon);
+  padding: 1.5rem;
+  /* même ombre discrète que les mini-cartes */
+  box-shadow: 0 1px 3px rgba(17, 17, 17, 0.04), 0 4px 14px rgba(17, 17, 17, 0.05);
+}
+
+.stat .chiffre {
+  font-family: var(--police-accent);
+  font-weight: 600;
+  font-size: 2.4rem;
+}
+
+.stat p {
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  color: var(--encre-douce);
+}
+
+.grille-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.25rem;
+}
+
+/* Vidéos empilées : pleine largeur, l'une au-dessus de l'autre */
+.videos-empilees {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.25rem;
+}
+
+.videos-empilees video {
+  width: 100%;
+}
+
+.bloc img + img,
+.bloc figure + figure {
+  margin-top: 1.25rem;
+}
+
+/* …mais pas dans les grilles d'images, où l'espacement
+   est déjà géré par la grille (sinon la 2e image se décale) */
+.grille-images img + img,
+.mosaique img + img,
+.grille-telephones img + img {
+  margin-top: 0;
+}
+
+/* Mosaïque de 5 photos sans espaces vides :
+   la 1re photo (portrait) occupe 2 rangées à gauche,
+   les 4 autres remplissent une grille 2×2 à droite.
+   object-fit: cover recadre chaque photo pour remplir sa case. */
+.mosaique {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(2, clamp(220px, 24vw, 330px));
+  gap: 1.25rem;
+}
+
+.mosaique img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.mosaique img:first-child {
+  grid-row: span 2; /* la grande photo verticale à gauche */
+}
+
+@media (max-width: 720px) {
+  /* Sur mobile : 2 colonnes, la grande photo reste sur 2 rangées */
+  .mosaique {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 180px);
+  }
+}
+
+.note {
+  font-size: 0.9rem;
+  color: var(--encre-douce);
+}
+
+/* ----- Comparaison Avant / Après (recommandations) -----
+   Deux maquettes côte à côte, annotation en vrai texte à droite,
+   reliée par une ligne à l'élément pointé sur la maquette.
+   Le bloc est aligné sur la marge droite du contenu. */
+.comparaison {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.3fr;
+  gap: 2rem;
+  align-items: start;
+  max-width: 920px;   /* maquettes de taille intermédiaire */
+  margin-left: auto;   /* bloc centré dans la page */
+  margin-right: auto;
+  margin-top: 2.5rem;
+}
+
+.comparaison figure {
+  margin: 0;
+}
+
+/* annule l'espacement des figures empilées : ici elles sont côte à côte */
+.comparaison figure + figure {
+  margin-top: 0;
+}
+
+.comparaison figcaption {
+  font-family: var(--police-accent);
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.comparaison img {
+  width: 100%;
+}
+
+.comparaison .annotation {
+  position: relative;
+}
+
+/* La ligne de liaison : point côté téléphone, flèche côté texte.
+   Sa position verticale est calculée en % de la largeur de colonne,
+   donc elle reste calée sur la bulle blanche quand l'écran change.
+   Le texte qui suit occupe sa vraie place : pas de chevauchement
+   avec la section suivante. */
+.comparaison .annotation .ligne {
+  display: block;
+  position: relative;
+  margin-top: calc(96.9% + 33px); /* hauteur de la bulle blanche */
+  margin-left: -2rem;             /* part du bord du téléphone */
+  width: clamp(3rem, 9vw, 7rem);  /* la ligne raccourcit avec l'écran */
+  height: 1px;
+  background: var(--encre);
+}
+
+/* Le point, côté téléphone */
+.comparaison .annotation .ligne::before {
+  content: "";
+  position: absolute;
+  left: -3px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--encre);
+}
+
+/* La flèche, vers le titre */
+.comparaison .annotation .ligne::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  border-top: 1px solid var(--encre);
+  border-right: 1px solid var(--encre);
+  transform: translateY(-50%) rotate(45deg);
+  transform-origin: center;
+}
+
+/* Le texte commence après la flèche, première ligne du titre
+   centrée sur la ligne de liaison */
+.comparaison .annotation .texte {
+  margin-left: calc(clamp(3rem, 9vw, 7rem) - 1rem);
+  transform: translateY(-0.7em);
+}
+
+.comparaison .annotation h4 {
+  font-family: var(--police-titre);
+  font-size: 1.05rem;
+  margin-bottom: 0.5rem;
+}
+
+.comparaison .annotation p {
+  font-size: 0.95rem;
+  color: var(--encre-douce);
+}
+
+@media (max-width: 720px) {
+  /* Sur mobile : les deux téléphones côte à côte, l'annotation dessous */
+  .comparaison {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .comparaison .annotation {
+    grid-column: 1 / -1;
+    height: auto;
+  }
+
+  .comparaison .annotation .ligne {
+    display: none;
+  }
+
+  .comparaison .annotation .texte {
+    margin-left: 0;
+    transform: none;
+  }
+}
+
+/* ----- Parcours utilisateurs : texte codé à gauche, schéma à droite ----- */
+.parcours {
+  display: grid;
+  /* schéma limité à 500px : toute la section tient à l'écran */
+  grid-template-columns: minmax(300px, 1fr) minmax(0, 500px);
+  gap: 3rem;
+  /* les deux colonnes ont la même hauteur : les constats,
+     poussés en bas, s'alignent avec le bas du schéma */
+  align-items: stretch;
+}
+
+/* Bon espace entre les parcours successifs */
+.parcours + .parcours {
+  margin-top: 11rem;
+}
+
+/* Variante pour les schémas horizontaux (parcours 2 et 3) :
+   le schéma prend environ la moitié de l'écran */
+.parcours-large {
+  grid-template-columns: minmax(260px, 1fr) minmax(0, 800px);
+}
+
+.parcours-texte {
+  display: flex;
+  flex-direction: column;
+  height: 100%; /* permet de pousser les constats vers le bas */
+}
+
+.parcours-texte .surtitre {
+  font-family: var(--police-accent);
+  font-size: 0.85rem;
+  color: var(--encre-douce);
+  margin-bottom: 0.5rem;
+}
+
+.parcours-texte h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.parcours-constats {
+  margin-top: auto; /* collé au bas de la colonne, comme sur la maquette */
+  padding-top: 2rem;
+}
+
+.parcours-constats h4 {
+  font-family: var(--police-titre);
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+/* Liste numérotée : pastilles noires, chiffres blancs */
+.parcours-constats ol {
+  list-style: none;
+  padding: 0;
+  counter-reset: constat;
+}
+
+.parcours-constats li {
+  counter-increment: constat;
+  display: flex;
+  gap: 0.85rem;
+  align-items: flex-start;
+  font-size: 0.95rem;
+  max-width: 60ch;
+}
+
+.parcours-constats li + li {
+  margin-top: 0.85rem;
+}
+
+.parcours-constats li::before {
+  content: counter(constat);
+  flex: 0 0 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #e45a4b; /* même rouge que les points du schéma */
+  color: #ffffff;
+  font-family: var(--police-accent);
+  font-size: 0.75rem;
+  display: grid;
+  place-items: center;
+  margin-top: 0.1em;
+}
+
+.parcours img {
+  width: 100%;
+  align-self: start; /* l'image garde ses proportions, alignée en haut */
+}
+
+@media (max-width: 900px) {
+  /* Sur écran étroit : texte au-dessus, schéma dessous */
+  .parcours {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .parcours-texte {
+    height: auto;
+  }
+
+  .parcours-constats {
+    margin-top: 1.5rem;
+  }
+}
+
+/* Sous-sections de recommandations : espacement identique
+   entre chacune, peu importe le contenu qui précède */
+.titre-reco {
+  margin-top: 5.5rem;
+}
+
+/* ----- Comparaisons annotées (Connexion, Indicateurs, Mode audio) -----
+   Maquettes en colonnes + annotations ancrées en hauteur (--pos, en %
+   de la hauteur des téléphones). La ligne touche la maquette d'un côté
+   et pointe le texte de l'autre ; elle raccourcit avec l'écran. */
+.comparaison-annotee {
+  display: grid;
+  gap: 2rem;
+  align-items: start;
+  margin-top: 2rem;
+}
+
+.trois-col {
+  grid-template-columns: 1fr 1fr 1.25fr;
+  max-width: 980px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Variante avec textes annotés des deux côtés de la maquette Après */
+.quatre-col {
+  grid-template-columns: 1fr 1.05fr 1fr 1.2fr;
+  max-width: 1150px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Flèche en coude : part du titre, descend le long de la maquette
+   et pointe sa cible plus bas. Sa hauteur suit les proportions de
+   la maquette grâce à aspect-ratio (--ar = largeur / descente). */
+.annotation-point .coude {
+  position: relative;
+  flex: 0 0 22%; /* segment horizontal plus court */
+  aspect-ratio: var(--ar, 1);
+  margin-top: 0.8em;
+  border-top: 1px solid var(--encre);
+}
+
+.annotation-point.miroir .coude {
+  border-right: 1px solid var(--encre);
+  /* la descente reste décollée du téléphone, dans l'espacement,
+     pour qu'on voie bien qu'elle longe la maquette */
+  margin-right: -0.75rem;
+}
+
+/* Flèches droites plus courtes du côté gauche */
+.quatre-col .miroir .ligne {
+  flex-basis: clamp(1.2rem, 2vw, 2rem);
+}
+
+/* Bas de la descente : second angle droit, segment horizontal continu
+   qui rejoint le téléphone */
+.annotation-point.miroir .coude::before {
+  content: "";
+  position: absolute;
+  right: -1.25rem;
+  bottom: -1px;
+  width: 1.25rem;
+  height: 1px;
+  background: var(--encre);
+}
+
+/* Le point, collé à la maquette comme ceux des autres annotations */
+.annotation-point.miroir .coude .pied {
+  position: absolute;
+  right: calc(-1.25rem - 3px);
+  bottom: -4px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--encre);
+}
+
+/* Flèche vers le titre, à l'extrémité du segment horizontal */
+.annotation-point.miroir .coude::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: -4px;
+  width: 7px;
+  height: 7px;
+  border-top: 1px solid var(--encre);
+  border-right: 1px solid var(--encre);
+  transform: rotate(-135deg);
+}
+
+/* Points d'annotation : un simple rond collé à la maquette,
+   sans ligne ni flèche */
+.annotation-point.numerote {
+  align-items: center;
+}
+
+.annotation-point.numerote .point-survol {
+  margin-left: -1rem; /* rapproché de la maquette (colonne de droite) */
+}
+
+.annotation-point.numerote.miroir .point-survol {
+  margin-left: 0;
+  margin-right: -1rem; /* rapproché de la maquette (colonne de gauche) */
+}
+
+.pastille {
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--encre);
+  color: var(--papier);
+  font-family: var(--police-accent);
+  font-size: 0.75rem;
+  display: grid;
+  place-items: center;
+}
+
+/* Point survolable sur la maquette : un simple indicateur rond
+   qui, au survol, met en évidence sa description dans la légende */
+.point-survol {
+  flex: 0 0 22px;
+  width: 22px;
+  height: 22px;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  position: relative;
+}
+
+.point-survol::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 9px;
+  height: 9px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: var(--encre);
+  transition: transform 0.2s ease;
+}
+
+.point-survol:hover::before,
+.point-survol:focus-visible::before,
+.point-survol.surligne::before {
+  transform: translate(-50%, -50%) scale(1.7);
+}
+
+/* Pendant un survol, la légende estompe tout sauf l'élément visé */
+.legende-annotations .item {
+  transition: opacity 0.2s ease;
+}
+
+.legende-annotations.survol-actif .item {
+  opacity: 0.25;
+}
+
+.legende-annotations.survol-actif .item.surligne {
+  opacity: 1;
+}
+
+.legende-annotations .item.surligne p {
+  color: var(--encre);
+}
+
+/* Légende sous la comparaison : textes des pastilles */
+.legende-annotations {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.75rem 2.5rem;
+  margin: 2.5rem auto 0;
+  max-width: 980px;
+}
+
+.legende-annotations .item {
+  display: flex;
+  gap: 0.85rem;
+  align-items: flex-start;
+}
+
+/* Indique que les items de légende sont survolables */
+.legende-annotations .item {
+  cursor: pointer;
+}
+
+.legende-annotations .item .pastille {
+  margin-top: 0.1em;
+}
+
+.legende-annotations h4 {
+  font-family: var(--police-titre);
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+}
+
+.legende-annotations p {
+  font-size: 0.9rem;
+  color: var(--encre-douce);
+}
+
+.comparaison-annotee figure,
+.comparaison-annotee figure + figure {
+  margin: 0;
+}
+
+.comparaison-annotee figcaption {
+  font-family: var(--police-accent);
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.comparaison-annotee img {
+  width: 100%;
+}
+
+/* Colonne d'annotations : même hauteur que la rangée,
+   pour que les % d'ancrage suivent la hauteur des téléphones */
+.col-annotations {
+  position: relative;
+  align-self: stretch;
+}
+
+/* Les annotations restent dans le flux normal (pas d'absolu) :
+   elles occupent leur vraie hauteur, donc le contenu suivant ne
+   peut jamais être recouvert. L'ancrage vertical se fait par une
+   marge en % de la largeur de colonne (--marge), qui suit la
+   taille des maquettes à toutes les largeurs d'écran. */
+.annotation-point {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  margin-top: var(--marge, 0);
+}
+
+.annotation-point .ligne {
+  position: relative;
+  flex: 0 0 clamp(1.8rem, 4vw, 4rem); /* raccourcit avec l'écran */
+  height: 1px;
+  background: var(--encre);
+  margin-top: 0.8em; /* centrée sur la première ligne du titre */
+  margin-left: -2rem; /* touche la maquette */
+}
+
+/* Point côté maquette */
+.annotation-point .ligne::before {
+  content: "";
+  position: absolute;
+  left: -3px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--encre);
+}
+
+/* Flèche côté texte */
+.annotation-point .ligne::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  border-top: 1px solid var(--encre);
+  border-right: 1px solid var(--encre);
+  transform: translateY(-50%) rotate(45deg);
+}
+
+/* Version miroir : texte à gauche de la maquette,
+   le point est à droite (sur la maquette) et la flèche à gauche */
+.annotation-point.miroir {
+  flex-direction: row-reverse;
+}
+
+.annotation-point.miroir .ligne {
+  margin-left: 0;
+  margin-right: -2rem;
+}
+
+.annotation-point.miroir .ligne::before {
+  left: auto;
+  right: -3px;
+}
+
+.annotation-point.miroir .ligne::after {
+  right: auto;
+  left: 0;
+  transform: translateY(-50%) rotate(-135deg);
+}
+
+.annotation-point .texte {
+  transform: none; /* le titre reste à sa place naturelle,
+                      la ligne vient se centrer sur lui */
+}
+
+.annotation-point h4 {
+  font-family: var(--police-titre);
+  font-size: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+.annotation-point p {
+  font-size: clamp(0.78rem, 1vw, 0.9rem);
+  color: var(--encre-douce);
+}
+
+@media (max-width: 920px) {
+  /* Maquettes côte à côte, annotations empilées dessous */
+  .trois-col,
+  .quatre-col {
+    grid-template-columns: 1fr 1fr;
+    max-width: none;
+  }
+
+  /* Les pastilles ancrées disparaissent : la légende suffit */
+  .annotation-point.numerote {
+    display: none;
+  }
+
+  .legende-annotations {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .col-annotations {
+    position: static;
+    align-self: auto;
+    grid-column: 1 / -1;
+  }
+
+  .annotation-point {
+    position: static;
+    margin-top: 1.5rem;
+  }
+
+  .annotation-point .ligne,
+  .annotation-point .coude {
+    display: none;
+  }
+
+  .annotation-point .texte {
+    transform: none;
+  }
+
+  .annotation-point p {
+    font-size: 0.9rem;
+  }
+}
+
+/* ----- Linktrees : exemples actuels + template annoté ----- */
+.linktree-exemples {
+  margin: 2rem 0 0;
+}
+
+.linktree-exemples figcaption {
+  font-family: var(--police-accent);
+  font-size: 0.85rem;
+  margin-bottom: 1rem;
+}
+
+.grille-telephones {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+}
+
+.grille-telephones img {
+  width: 100%;
+}
+
+/* Template annoté : téléphone à gauche, annotations à droite,
+   chacune calée en hauteur (--pos) sur la section qu'elle décrit.
+   Les positions sont en % de la hauteur du téléphone : elles
+   restent alignées à toutes les tailles d'écran. */
+.schema-annote {
+  display: grid;
+  /* le téléphone peut rétrécir jusqu'à 180px, la colonne de texte
+     peut se compresser (minmax(0, 1fr)) sans déborder */
+  grid-template-columns: minmax(180px, 320px) minmax(0, 1fr);
+  gap: 2.5rem;
+  margin-top: 3rem;
+  /* bloc centré dans la page */
+  max-width: 860px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.schema-annote .schema-image {
+  width: 100%;
+  align-self: start;
+}
+
+.schema-annotations {
+  position: relative;
+}
+
+/* L'annotation occupe exactement la hauteur de sa zone (--debut à --fin) */
+.annotation-flottante {
+  position: absolute;
+  top: var(--debut);
+  height: calc(var(--fin) - var(--debut));
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center; /* texte centré sur la hauteur du bracket */
+  gap: 2rem;
+}
+
+/* Le bracket : embrasse verticalement la zone décrite,
+   ouvert vers le téléphone */
+.annotation-flottante .bracket {
+  flex: 0 0 10px;
+  align-self: stretch;
+  border: 1px solid var(--encre);
+  border-left: none;
+}
+
+/* La flèche part du bracket et pointe vers le titre */
+.annotation-flottante h4 {
+  font-family: var(--police-titre);
+  font-size: 1rem;
+  margin-bottom: 0.4rem;
+  display: flex;
+  align-items: center;
+}
+
+.annotation-flottante h4 {
+  position: relative;
+}
+
+.annotation-flottante h4 .ligne {
+  /* la flèche part exactement du bracket et rejoint le titre :
+     sa largeur = l'espacement (2rem) moins le retrait avant le titre */
+  position: absolute;
+  right: calc(100% + 0.4rem);
+  top: 50%;
+  width: 1.6rem;
+  height: 1px;
+  background: var(--encre);
+}
+
+.annotation-flottante h4 .ligne::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  border-top: 1px solid var(--encre);
+  border-right: 1px solid var(--encre);
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.annotation-flottante p,
+.annotation-flottante li {
+  /* le texte se resserre légèrement quand l'écran rétrécit,
+     pour rester dans sa zone */
+  font-size: clamp(0.78rem, 1vw, 0.9rem);
+  color: var(--encre-douce);
+}
+
+.annotation-flottante ul {
+  list-style: none;
+  padding: 0;
+}
+
+.annotation-flottante li + li {
+  margin-top: 0.3rem;
+}
+
+@media (max-width: 920px) {
+  /* Dès que l'espace manque pour les brackets, les annotations
+     s'empilent sous le template : lisible et sans chevauchement */
+  .schema-annote {
+    grid-template-columns: 1fr;
+  }
+
+  .schema-annote .schema-image {
+    max-width: 320px;
+  }
+
+  .schema-annotations {
+    position: static;
+  }
+
+  .annotation-flottante {
+    position: static;
+    height: auto;
+    margin-top: 1.5rem;
+  }
+
+  .annotation-flottante .ligne,
+  .annotation-flottante .bracket {
+    display: none;
+  }
+
+  .annotation-flottante p,
+  .annotation-flottante li {
+    font-size: 0.9rem; /* taille de lecture normale une fois empilé */
+  }
+}
+
+@media (max-width: 720px) {
+  /* Exemples de linktrees sur 2 colonnes */
+  .grille-telephones {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* ----- Personas (Radio-Canada) : un par rangée, sans contour ----- */
+.personas {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3.5rem; /* bon espace entre chaque persona */
+}
+
+.persona {
+  display: grid;
+  grid-template-columns: 180px 1fr; /* illustration à gauche, texte à droite */
+  gap: 2rem;
+  align-items: center;
+}
+
+.persona img {
+  width: 100%;
+}
+
+.persona h3 {
+  font-size: 1.35rem;
+  margin-bottom: 0.4rem;
+}
+
+.persona .trait {
+  font-family: var(--police-accent);
+  font-size: 0.82rem;
+  color: var(--encre-douce);
+  margin-bottom: 1rem;
+}
+
+@media (max-width: 900px) {
+  /* Sur petit écran : un persona par rangée */
+  .personas {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Navigation entre projets */
+.autres-projets {
+  border-top: 1px solid var(--ligne);
+  padding: 3rem 0;
+}
+
+/* Un projet à gauche (précédent), un à droite (suivant),
+   chacun avec sa flèche qui glisse au survol */
+.autres-projets .liens {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.autres-projets .liens a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  font-family: var(--police-titre);
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+  transition: color 0.2s ease;
+}
+
+.autres-projets .fleche {
+  font-family: var(--police-accent);
+  transition: transform 0.25s ease;
+}
+
+/* Au survol : la flèche glisse dans sa direction */
+.autres-projets .projet-precedent:hover .fleche {
+  transform: translateX(-10px);
+}
+
+.autres-projets .projet-suivant:hover .fleche {
+  transform: translateX(10px);
+}
+
+.autres-projets .liens a:hover {
+  color: var(--encre-douce);
+}
+
+/* ----- 9. Animations & responsive ----- */
+/* L'animation ne s'active que si le JS a pu marquer <html> avec .js :
+   sans JavaScript, tout le contenu reste visible (sécurité). */
+html.js .reveler {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+html.js .reveler.visible {
+  opacity: 1;
+  transform: none;
+}
+
+@media (max-width: 720px) {
+  /* Sur mobile, la barre latérale devient une barre fixe en bas */
+  body {
+    padding-right: 0;
+    padding-bottom: 64px;
+  }
+
+  .barre-laterale {
+    top: auto;
+    left: 0;
+    width: auto;
+    height: 64px;
+    flex-direction: row;
+    padding: 0 1.5rem;
+  }
+
+  .barre-laterale .contact,
+  .barre-laterale .langue {
+    writing-mode: horizontal-tb;
+  }
+
+  .nav-role,
+  .nav-liens .masquer-mobile {
+    display: none;
+  }
+
+  /* Sur mobile : photo au-dessus, texte en dessous */
+  .carte-projet {
+    grid-template-columns: 1fr;
+  }
+
+  .carte-projet .vignette {
+    aspect-ratio: 16 / 10;
+  }
+}
