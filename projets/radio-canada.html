@@ -13,6 +13,8 @@
   <link rel="stylesheet" href="../css/style.css">
 </head>
 <body>
+  <!-- Rideau de transition entre les pages (piloté par js/main.js) -->
+  <div class="rideau" aria-hidden="true"><span class="rideau-nom">Radio-Canada</span></div>
 
   <!-- ===== Navigation ===== -->
   <header class="nav">
@@ -362,11 +364,11 @@
           <img src="../assets/radio-canada/natives-avant.png" alt="Story Instagram de Radio-Canada, version actuelle">
         </figure>
         <figure>
-          <figcaption>Après</figcaption>
+          <figcaption>Recommandation</figcaption>
           <img src="../assets/radio-canada/natives-apres.png" alt="Story Instagram avec lien direct pour télécharger l'application">
         </figure>
         <div class="col-annotations">
-          <div class="annotation-point" style="--marge: calc(135% + 20px);">
+          <div class="annotation-point" style="--pos: 0.84; --ajust: 20px;">
             <span class="ligne" aria-hidden="true"></span>
             <div class="texte">
               <h4>Accès rapide</h4>
@@ -432,11 +434,11 @@
           <img src="../assets/radio-canada/connexion-avant.png" alt="Création de compte actuelle, avec courriel et mot de passe">
         </figure>
         <figure>
-          <figcaption>Après</figcaption>
+          <figcaption>Recommandation</figcaption>
           <img src="../assets/radio-canada/connexion-apres.png" alt="Création de compte avec connexion Google, Facebook ou Apple">
         </figure>
         <div class="col-annotations">
-          <div class="annotation-point" style="--marge: calc(101% + 20px);">
+          <div class="annotation-point" style="--pos: 0.63; --ajust: 20px;">
             <span class="ligne" aria-hidden="true"></span>
             <div class="texte">
               <h4>Connexion rapide</h4>
@@ -450,7 +452,7 @@
       <p>Les jeunes adultes sont conscients du temps limité qu'ils vont passer sur une application d'actualité. Certains indicateurs proposés peuvent permettre à l'utilisateur de s'ajuster selon le temps qu'il est prêt à investir dans la lecture d'articles, selon le niveau de profondeur qu'il souhaite atteindre et ses préférences de consultation.</p>
       <!-- Plus d'annotations que de place : des pastilles numérotées
            ancrées sur la maquette renvoient aux textes en dessous -->
-      <!-- Textes annotés directement autour de la maquette Après.
+      <!-- Textes annotés directement autour de la maquette Recommandation.
            Les flèches droites visent leur cible ; celle de « Résumé
            enrichi » fait un coude pour laisser la place au texte. -->
       <div class="comparaison-annotee quatre-col">
@@ -458,16 +460,16 @@
           <figcaption>Avant</figcaption>
           <img src="../assets/radio-canada/indicateurs-avant.png" alt="Fil d'actualité actuel, sans indicateurs">
         </figure>
-        <!-- annotations à gauche de la maquette Après -->
+        <!-- annotations à gauche de la maquette Recommandation -->
         <div class="col-annotations">
-          <div class="annotation-point miroir" style="--marge: calc(75% + 20px); --ar: 0.31;">
+          <div class="annotation-point miroir" style="--pos: 0.305; --ajust: 20px; --ar: 0.31;">
             <span class="coude" aria-hidden="true"><span class="pied"></span></span>
             <div class="texte">
               <h4>Résumé enrichi</h4>
               <p>Un résumé plus complet est accessible directement depuis la carte, permettant à l'utilisateur de saisir l'essentiel d'un article sans avoir à l'ouvrir.</p>
             </div>
           </div>
-          <div class="annotation-point miroir" style="--marge: max(1.5rem, calc(76% - 10em));">
+          <div class="annotation-point miroir" style="--pos: 0.385; --ajust: -10em; --marge-min: 1.5rem;">
             <span class="ligne" aria-hidden="true"></span>
             <div class="texte">
               <h4>Temps de lecture</h4>
@@ -476,19 +478,19 @@
           </div>
         </div>
         <figure>
-          <figcaption>Après</figcaption>
+          <figcaption>Recommandation</figcaption>
           <img src="../assets/radio-canada/indicateurs-apres.png" alt="Fil d'actualité avec résumé enrichi, temps de lecture, indicateur de lecture et audio intégré">
         </figure>
-        <!-- annotations à droite de la maquette Après -->
+        <!-- annotations à droite de la maquette Recommandation -->
         <div class="col-annotations">
-          <div class="annotation-point" style="--marge: calc(33% + 40px);">
+          <div class="annotation-point" style="--pos: 0.18; --ajust: 40px;">
             <span class="ligne" aria-hidden="true"></span>
             <div class="texte">
               <h4>Indicateur de lecture</h4>
               <p>Un marqueur visuel indique si un article a déjà été lu, permettant à l'utilisateur de s'y retrouver facilement dans son fil d'actualité.</p>
             </div>
           </div>
-          <div class="annotation-point" style="--marge: max(1.5rem, calc(110% - 10em));">
+          <div class="annotation-point" style="--pos: 0.66; --ajust: -10em; --marge-min: 1.5rem;">
             <span class="ligne" aria-hidden="true"></span>
             <div class="texte">
               <h4>Audio intégré</h4>
@@ -507,18 +509,18 @@
           <img src="../assets/radio-canada/audio-avant.png" alt="Lecture audio actuelle, limitée à la lecture d'articles">
         </figure>
         <figure>
-          <figcaption>Après</figcaption>
+          <figcaption>Recommandation</figcaption>
           <img src="../assets/radio-canada/audio-apres.png" alt="Mode audio augmenté avec contrôles avancés et liste d'écoute">
         </figure>
         <div class="col-annotations">
-          <div class="annotation-point" style="--marge: calc(84% + 33px);">
+          <div class="annotation-point" style="--pos: 0.60; --ajust: 33px;">
             <span class="ligne" aria-hidden="true"></span>
             <div class="texte">
               <h4>Contrôle avancé</h4>
               <p>Des contrôles avancés offrent une expérience d'écoute plus complète et familière.</p>
             </div>
           </div>
-          <div class="annotation-point" style="--marge: max(1.5rem, calc(35% - 9em));">
+          <div class="annotation-point" style="--pos: 0.211; --ajust: -9em; --marge-min: 1.5rem;">
             <span class="ligne" aria-hidden="true"></span>
             <div class="texte">
               <h4>Liste d'écoute personnalisée</h4>
@@ -534,7 +536,36 @@
         <li>Premièrement, le menu du haut, présentement défilant horizontalement, n'était pas automatiquement compris par les nouveaux utilisateurs. Ces derniers trouvaient le défilement long et la fonction pour réarranger les sections peu intuitive.</li>
         <li>Deuxièmement, la barre de navigation du bas manquait certaines options appréciées et utiles pour les utilisateurs, comme le mode jeu, qui était auparavant mélangé avec les modes de consultation de l'actualité en haut, et la fonction d'enregistrement des nouvelles, qui se trouvait à un niveau de navigation trop profond.</li>
       </ul>
-      <img src="../assets/radio-canada/navigation.png" alt="Ajustement des barres de navigation" style="margin-top:1.25rem;">
+      <div class="comparaison-annotee trois-maquettes">
+        <figure>
+          <figcaption>Avant</figcaption>
+          <img src="../assets/radio-canada/navigation-avant.png" alt="Barres de navigation actuelles : menu du haut défilant et barre du bas limitée">
+        </figure>
+        <figure>
+          <figcaption>Recommandation</figcaption>
+          <img src="../assets/radio-canada/navigation-apres-1.png" alt="Recommandation : barre du bas enrichie avec le mode Jeux et la fonction Ma liste">
+        </figure>
+        <figure>
+          <figcaption>&nbsp;</figcaption>
+          <img src="../assets/radio-canada/navigation-apres-2.png" alt="Recommandation : nouvelle navigation par sujet avec sections à mettre en favoris">
+        </figure>
+        <div class="col-annotations">
+          <div class="annotation-point" style="--pos: 0.22;">
+            <span class="ligne" aria-hidden="true"></span>
+            <div class="texte">
+              <h4>Regroupement des sujets</h4>
+              <p>Tous les sujets ont été regroupés à un seul endroit avec une fonction de favoris conservée, rendant l'ensemble accessible simplement sans avoir à retourner dans les réglages du compte.</p>
+            </div>
+          </div>
+          <div class="annotation-point ancre-bas" style="--pos: 0.48;">
+            <span class="ligne" aria-hidden="true"></span>
+            <div class="texte">
+              <h4>Barre de navigation modifiée</h4>
+              <p>L'option Mon info a été déplacée en haut en tant que réglage de compte, tandis que l'ajout des options Jeux et Ma liste découle directement des observations énoncées précédemment.</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
         </div>

@@ -217,3 +217,108 @@ if (videos.length > 0 && "IntersectionObserver" in window) {
 
   videos.forEach((v) => observateurVideos.observe(v));
 }
+
+
+// ==========================================================
+// Rideau de transition entre les pages
+// Au clic sur un lien interne, un panneau noir monte pour couvrir
+// l'écran (avec le nom de la destination) avant la navigation. À
+// l'arrivée, le CSS le fait monter pour révéler la nouvelle page.
+// ==========================================================
+const rideau = document.querySelector(".rideau");
+const mouvementReduitRideau = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+if (rideau && !mouvementReduitRideau) {
+  const nomRideau = rideau.querySelector(".rideau-nom");
+  const noms = {
+    "index.html": "Accueil",
+    "": "Accueil",
+    "radio-canada.html": "Radio-Canada",
+    "remi.html": "R\u00e9mi",
+    "safeway.html": "Safeway",
+  };
+  const nomPour = (url) => {
+    const fichier = url.pathname.split("/").pop() || "index.html";
+    return noms[fichier] || "";
+  };
+
+  document.addEventListener("click", (e) => {
+    // uniquement un clic gauche simple, sans touche de modification
+    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+
+    const lien = e.target.closest("a");
+    if (!lien) return;
+
+    const href = lien.getAttribute("href");
+    if (!href) return;
+    // on laisse passer : ancres internes, courriel, téléphone, nouvel onglet
+    if (href.startsWith("#") || href.startsWith("mailto:") || href.startsWith("tel:")) return;
+    if (lien.target === "_blank") return;
+
+    let dest;
+    try {
+      dest = new URL(lien.href, window.location.href);
+    } catch (err) {
+      return;
+    }
+    // uniquement les liens du même site
+    if (dest.origin !== window.location.origin) return;
+    // on ignore les liens qui pointent vers la page actuelle
+    if (dest.pathname === window.location.pathname && dest.search === window.location.search) return;
+
+    // vraie navigation interne : on joue le rideau puis on change de page
+    e.preventDefault();
+    if (nomRideau) nomRideau.textContent = nomPour(dest);
+
+    rideau.style.animation = "none";              // stoppe l'animation d'arrivée
+    rideau.style.transition = "none";
+    rideau.style.transform = "translateY(100%)";  // panneau placé sous l'écran
+    rideau.getBoundingClientRect();               // force la prise en compte immédiate
+    rideau.style.transition = "transform 0.6s cubic-bezier(0.76, 0, 0.24, 1)";
+    rideau.style.transform = "translateY(0)";     // monte pour couvrir l'écran
+
+    setTimeout(() => {
+      window.location.href = lien.href;
+    }, 620);
+  });
+}
+
+
+// ==========================================================
+// Espace sous la section « barres de navigation »
+// La 2e annotation y est détachée du flux (position absolue), donc son
+// texte déborde sous les maquettes sans pousser le contenu. On mesure
+// ce débordement et on l'ajoute en marge basse de la comparaison : le
+// footer descend ainsi exactement sous le texte, et suit s'il s'allonge.
+// Recalculé au chargement et au redimensionnement.
+// ==========================================================
+function ajusterEspaceBarresNav() {
+  document.querySelectorAll(".trois-maquettes").forEach((comp) => {
+    const ancre = comp.querySelector(".annotation-point.ancre-bas");
+    if (!ancre) return;
+
+    // en format empilé l'annotation revient dans le flux : aucune réserve
+    if (getComputedStyle(ancre).position !== "absolute") {
+      comp.style.marginBottom = "";
+      return;
+    }
+
+    const bas = comp.getBoundingClientRect().bottom;
+    const basTexte = ancre.getBoundingClientRect().bottom;
+    const debordement = basTexte - bas;
+    comp.style.marginBottom = debordement > 0 ? Math.ceil(debordement + 32) + "px" : "";
+  });
+}
+
+if (document.querySelector(".trois-maquettes .annotation-point.ancre-bas")) {
+  window.addEventListener("load", ajusterEspaceBarresNav);
+  // mise à jour synchronisée avec l'affichage (une fois par image) :
+  // le footer suit le texte de façon fluide, sans délai
+  let rafEspaceNav = null;
+  window.addEventListener("resize", () => {
+    if (rafEspaceNav) cancelAnimationFrame(rafEspaceNav);
+    rafEspaceNav = requestAnimationFrame(ajusterEspaceBarresNav);
+  });
+  ajusterEspaceBarresNav();
+  setTimeout(ajusterEspaceBarresNav, 300); // après chargement des polices/images
+}

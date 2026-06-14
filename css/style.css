@@ -215,26 +215,46 @@ h3 {
 
 /* ----- 4. Hero ----- */
 .hero {
-  padding: clamp(5rem, 12vw, 9rem) 0 clamp(4rem, 8vw, 7rem);
-  text-align: center; /* nom et phrase centrés */
+  /* Remplit presque tout l'écran sous la navigation : le hero domine,
+     mais on retranche assez de hauteur (16rem) pour qu'un morceau de
+     la première carte projet dépasse en bas du viewport et invite à
+     défiler. La valeur retranchée = nav (~84px) + l'aperçu de carte. */
+  min-height: calc(100svh - 16rem);
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* nom et phrase centrés verticalement */
+  padding: 2rem 0;
+  text-align: center; /* nom et phrase centrés horizontalement */
 }
 
 .hero h1 {
-  font-size: clamp(2.5rem, 8vw, 6rem);
+  font-size: clamp(2.8rem, 9vw, 7rem);
   font-weight: 800;
   white-space: nowrap; /* le nom reste sur une seule ligne */
 }
 
 .hero-phrase {
-  max-width: 620px;
-  margin: 1.75rem auto 0; /* centrée sous le nom */
-  font-size: 1.2rem;
+  max-width: 680px;
+  margin: 2rem auto 0; /* centrée sous le nom */
+  font-size: 1.3rem;
   color: var(--encre-douce);
 }
 
 /* ----- 5. Section projets ----- */
 .section {
   padding: clamp(3.5rem, 8vw, 6rem) 0;
+}
+
+/* La section projets remonte sous le hero : son haut est réduit pour
+   que la première carte (Radio-Canada) apparaisse dès le chargement,
+   juste en bas de l'écran. Limité à #projets pour ne pas toucher les
+   pages d'études de cas. */
+#projets {
+  padding-top: clamp(1.5rem, 4vw, 2.5rem);
+}
+
+#projets .titre-section {
+  margin-bottom: 1.75rem;
 }
 
 .grille-projets {
@@ -275,6 +295,23 @@ h3 {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
+  position: relative; /* ancre la flèche en haut à droite */
+}
+
+/* Flèche en haut à droite de chaque carte : pointe vers la droite,
+   36px, trait de 1.5. Au survol de la carte, elle pivote de 45°
+   pour filer en diagonale vers le haut à droite. */
+.fleche-carte {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  color: var(--encre);
+  line-height: 0;
+  transition: transform 0.3s ease;
+}
+
+.carte-projet:hover .fleche-carte {
+  transform: rotate(-45deg); /* vers le haut à droite */
 }
 
 /* Nom du projet : l'élément le plus gros de la carte */
@@ -350,6 +387,21 @@ h3 {
   color: var(--accent);
 }
 
+/* Adresse courriel du pied de page : en bleu et soulignée pour
+   signaler clairement qu'il s'agit d'un lien cliquable (ouvre un
+   courriel). Seule touche de couleur du site, assumée, au service
+   de l'affordance du lien. Cible uniquement le lien mailto du footer
+   (pas le « Contact » de la barre latérale). */
+.footer a[href^="mailto:"] {
+  color: #1a5fd0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.footer a[href^="mailto:"]:hover {
+  color: #14409a; /* bleu plus foncé au survol */
+}
+
 .footer-inner {
   max-width: var(--largeur-max);
   margin: 0 auto;
@@ -377,7 +429,13 @@ h3 {
 
 .projet-hero img {
   width: 100%;
-  height: clamp(420px, 72vh, 800px);
+  /* Hauteur calée sur l'écran : l'image reste grande et immersive, mais
+     on réserve ~22rem dessous (navigation + bloc métadonnées + début de
+     « Mise en contexte ») pour que ce contenu apparaisse déjà en bas du
+     viewport et invite à défiler. Le compromis se règle avec « 18rem » :
+     l'augmenter montre plus de contenu (image plus courte), la diminuer
+     agrandit l'image. Les bornes clamp évitent les extrêmes. */
+  height: clamp(380px, calc(100svh - 18rem), 820px);
   object-fit: cover;
 }
 
@@ -911,21 +969,48 @@ main {
   gap: 2rem;
   align-items: start;
   margin-top: 2rem;
+  /* Largeur unique des maquettes, partagée par .trois-col et .quatre-col
+     pour que chaque section affiche la même grandeur de téléphone.
+     S'adapte à l'écran via clamp. */
+  --maquette: clamp(140px, 16vw, 210px);
+  /* Hauteur du téléphone, déduite de sa largeur (ratio des maquettes
+     = largeur / hauteur = 0.483). Sert à ancrer les annotations sur la
+     hauteur réelle du téléphone : elles le suivent quoi qu'il arrive. */
+  --maquette-h: calc(var(--maquette) / 0.483);
 }
 
 .trois-col {
-  grid-template-columns: 1fr 1fr 1.25fr;
+  grid-template-columns: var(--maquette) var(--maquette) 1.25fr;
   max-width: 980px;
-  margin-left: auto;
+  margin-left: 0; /* aligné à gauche, au même bord que le titre et le texte */
   margin-right: auto;
 }
 
 /* Variante avec textes annotés des deux côtés de la maquette Après */
 .quatre-col {
-  grid-template-columns: 1fr 1.05fr 1fr 1.2fr;
+  grid-template-columns: var(--maquette) 1.05fr var(--maquette) 1.2fr;
   max-width: 1150px;
-  margin-left: auto;
+  margin-left: 0; /* aligné à gauche, au même bord que le titre et le texte */
   margin-right: auto;
+}
+
+/* Variante à trois maquettes (barres de navigation) : « Avant » + deux
+   « Recommandation » côte à côte, annotations à droite de la 3e maquette. */
+.trois-maquettes {
+  grid-template-columns: repeat(3, var(--maquette)) 1fr;
+  margin-left: 0; /* aligné à gauche, comme le titre et le texte */
+  margin-right: auto;
+}
+
+/* Annotation détachée du flux (.ancre-bas) : son point se fixe à une
+   hauteur donnée de la maquette (--pos × hauteur du téléphone) au lieu
+   d'être empilée. Résultat : elle ne bouge plus, même si le texte d'une
+   autre annotation au-dessus s'allonge sur plusieurs lignes. */
+.annotation-point.ancre-bas {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(var(--pos, 0) * var(--maquette-h));
 }
 
 /* Flèche en coude : part du titre, descend le long de la maquette
@@ -1123,14 +1208,16 @@ main {
 
 /* Les annotations restent dans le flux normal (pas d'absolu) :
    elles occupent leur vraie hauteur, donc le contenu suivant ne
-   peut jamais être recouvert. L'ancrage vertical se fait par une
-   marge en % de la largeur de colonne (--marge), qui suit la
-   taille des maquettes à toutes les largeurs d'écran. */
+   peut jamais être recouvert. L'ancrage vertical suit la HAUTEUR du
+   téléphone : --pos est une fraction (0 = haut du téléphone, 1 = bas),
+   multipliée par --maquette-h. Ainsi l'annotation suit la maquette,
+   qu'elle rapetisse ou grossisse. --ajust = petit décalage fin en px
+   ou em ; --marge-min = marge minimale (pour les annotations empilées). */
 .annotation-point {
   display: flex;
   align-items: flex-start;
   gap: 1rem;
-  margin-top: var(--marge, 0);
+  margin-top: max(var(--marge-min, 0px), calc(var(--pos, 0) * var(--maquette-h) + var(--ajust, 0px)));
 }
 
 .annotation-point .ligne {
@@ -1245,6 +1332,114 @@ main {
   }
 
   .annotation-point p {
+    font-size: 0.9rem;
+  }
+}
+
+/* La section « Ajout d'indicateurs » (.quatre-col) a du texte des DEUX
+   côtés de la maquette : il se condense beaucoup plus vite que les
+   sections à un seul côté. Elle bascule donc plus tôt (dès 1200px) en
+   format empilé : les deux maquettes côte à côte sur une rangée, puis
+   tout le texte en dessous, pleine largeur, pour qu'il reste lisible. */
+@media (max-width: 1400px) {
+  .quatre-col {
+    /* maquettes à la MÊME taille que dans les autres sections (--maquette),
+       côte à côte ; la 3e colonne (1fr) absorbe l'espace restant pour que
+       le texte en dessous prenne quand même toute la largeur. */
+    grid-template-columns: var(--maquette) var(--maquette) 1fr;
+    max-width: none;
+    /* on annule l'écart vertical de la grille : tout l'espacement entre
+       les textes vient alors de la seule marge des annotations (1,5rem),
+       donc les quatre paragraphes sont espacés exactement pareil. */
+    row-gap: 0;
+  }
+
+  /* les deux maquettes occupent la première rangée, côte à côte */
+  .quatre-col > figure:nth-of-type(1) { grid-column: 1; grid-row: 1; }
+  .quatre-col > figure:nth-of-type(2) { grid-column: 2; grid-row: 1; }
+
+  /* les colonnes de texte passent pleine largeur, empilées sous les maquettes */
+  .quatre-col .col-annotations {
+    position: static;
+    align-self: auto;
+    grid-column: 1 / -1;
+  }
+
+  .quatre-col .annotation-point {
+    position: static;
+    margin-top: 1.5rem;
+  }
+
+  /* En empilé, les annotations « miroir » (texte à gauche de la maquette
+     en grand écran, donc en sens inversé) repassent en sens normal pour
+     être alignées à gauche, au même bord que les maquettes et les autres
+     textes. */
+  .quatre-col .annotation-point.miroir {
+    flex-direction: row;
+  }
+
+  /* plus de flèches ni de coudes en format empilé : le texte se suffit */
+  .quatre-col .annotation-point .ligne,
+  .quatre-col .annotation-point .coude {
+    display: none;
+  }
+
+  .quatre-col .annotation-point .texte {
+    transform: none;
+  }
+
+  .quatre-col .annotation-point p {
+    font-size: 0.9rem;
+  }
+}
+
+/* En dessous de 920px (tablette/téléphone), la section indicateurs rejoint
+   le comportement des autres sections : maquettes en demi-largeur. */
+@media (max-width: 920px) {
+  .quatre-col {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* La section « Ajustement des barres de navigation » (.trois-maquettes)
+   bascule en empilé sous 1280px : les trois maquettes restent côte à côte
+   (et rétrécissent pour tenir grâce à minmax), le texte passe pleine
+   largeur en dessous. */
+@media (max-width: 1280px) {
+  .trois-maquettes {
+    grid-template-columns: repeat(3, minmax(0, var(--maquette)));
+  }
+  .trois-maquettes > figure:nth-of-type(1) { grid-column: 1; grid-row: 1; }
+  .trois-maquettes > figure:nth-of-type(2) { grid-column: 2; grid-row: 1; }
+  .trois-maquettes > figure:nth-of-type(3) { grid-column: 3; grid-row: 1; }
+
+  .trois-maquettes .col-annotations {
+    position: static;
+    align-self: auto;
+    grid-column: 1 / -1;
+  }
+
+  .trois-maquettes .annotation-point {
+    position: static;
+    margin-top: 1.5rem;
+  }
+
+  /* en empilé, l'annotation détachée revient dans le flux normal */
+  .trois-maquettes .annotation-point.ancre-bas {
+    position: static;
+    top: auto;
+  }
+
+  .trois-maquettes .annotation-point .ligne,
+  .trois-maquettes .annotation-point .coude {
+    display: none;
+  }
+
+  .trois-maquettes .annotation-point .texte {
+    transform: none;
+  }
+
+  .trois-maquettes .annotation-point p {
     font-size: 0.9rem;
   }
 }
@@ -1491,6 +1686,49 @@ main {
   color: var(--encre-douce);
 }
 
+/* ----- Rideau de transition entre les pages ----- */
+/* Au clic sur un lien interne, un panneau noir monte depuis le bas pour
+   couvrir l'écran (avec le nom de la destination), puis la navigation a
+   lieu. À l'arrivée sur la nouvelle page, le panneau continue de monter
+   et se retire pour révéler le contenu. Tout est piloté par js/main.js. */
+.rideau {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--encre);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-100%); /* au repos : hors écran, vers le haut */
+  pointer-events: none;
+  /* Animation jouée dès le 1er rendu de la page (CSS pur, sans attendre
+     le chargement du JS) : le panneau couvre l'écran puis monte pour
+     révéler le contenu. C'est ce qui évite le flash de la page d'arrivée
+     avant que le panneau ne soit en place. */
+  animation: rideau-revele 0.8s cubic-bezier(0.76, 0, 0.24, 1) both;
+}
+
+.rideau-nom {
+  font-family: var(--police-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: clamp(1.5rem, 5vw, 3rem);
+  color: var(--papier);
+}
+
+@keyframes rideau-revele {
+  from { transform: translateY(0); }     /* couvre au chargement */
+  to   { transform: translateY(-100%); } /* monte et révèle la page */
+}
+
+/* Respect des préférences système : aucun rideau si l'utilisateur a
+   demandé de réduire les animations. */
+@media (prefers-reduced-motion: reduce) {
+  .rideau {
+    animation: none;
+  }
+}
+
 /* ----- 9. Animations & responsive ----- */
 /* L'animation ne s'active que si le JS a pu marquer <html> avec .js :
    sans JavaScript, tout le contenu reste visible (sécurité). */
@@ -1503,6 +1741,48 @@ html.js .reveler {
 html.js .reveler.visible {
   opacity: 1;
   transform: none;
+}
+
+/* ----- Entrée très douce du hero (nom + phrase) ----- */
+/* À l'arrivée sur le site, le nom et la phrase apparaissent plus
+   lentement et plus subtilement que le .reveler standard : montée
+   minime (8px), léger flou qui se dissipe, et petit décalage entre
+   les deux pour un effet « en cascade » à peine perceptible. */
+html.js .hero h1.reveler,
+html.js .hero .hero-phrase.reveler {
+  opacity: 0;
+  transform: translateY(8px);
+  filter: blur(2px);
+  transition: opacity 1.2s cubic-bezier(0.22, 0.61, 0.36, 1),
+              transform 1.2s cubic-bezier(0.22, 0.61, 0.36, 1),
+              filter 1.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* Le nom arrive en premier, la phrase suit en douceur */
+html.js .hero h1.reveler {
+  transition-delay: 0.15s;
+}
+html.js .hero .hero-phrase.reveler {
+  transition-delay: 0.4s;
+}
+
+html.js .hero h1.reveler.visible,
+html.js .hero .hero-phrase.reveler.visible {
+  opacity: 1;
+  transform: none;
+  filter: none;
+}
+
+/* Respect des préférences système : aucune animation si l'utilisateur
+   a demandé de réduire les mouvements. */
+@media (prefers-reduced-motion: reduce) {
+  html.js .hero h1.reveler,
+  html.js .hero .hero-phrase.reveler {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
 }
 
 @media (max-width: 720px) {
