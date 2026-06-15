@@ -263,23 +263,20 @@ if (rideau && !mouvementReduitRideau) {
     }
     // uniquement les liens du même site
     if (dest.origin !== window.location.origin) return;
-    // on ignore les liens qui pointent vers la page actuelle
-    if (dest.pathname === window.location.pathname && dest.search === window.location.search) return;
+    // on ne saute que les ancres internes (même page AVEC un #, ex. #projets) :
+    // elles font défiler la page. Un lien vers la même page SANS ancre (ex. le
+    // logo « JD » quand on est déjà sur l'accueil) joue la transition complète.
+    if (dest.pathname === window.location.pathname && dest.search === window.location.search && dest.hash) return;
 
     // vraie navigation interne : on joue le rideau puis on change de page
     e.preventDefault();
     if (nomRideau) nomRideau.textContent = nomPour(dest);
 
-    rideau.style.animation = "none";              // stoppe l'animation d'arrivée
-    rideau.style.transition = "none";
-    rideau.style.transform = "translateY(100%)";  // panneau placé sous l'écran
-    rideau.getBoundingClientRect();               // force la prise en compte immédiate
-    rideau.style.transition = "transform 0.6s cubic-bezier(0.76, 0, 0.24, 1)";
-    rideau.style.transform = "translateY(0)";     // monte pour couvrir l'écran
+    rideau.classList.add("rideau--sortie"); // joue l'animation de sortie (montée + étirement + rebond)
 
     setTimeout(() => {
       window.location.href = lien.href;
-    }, 620);
+    }, 680);
   });
 }
 

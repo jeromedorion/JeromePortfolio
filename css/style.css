@@ -1699,26 +1699,82 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  transform: translateY(-100%); /* au repos : hors écran, vers le haut */
+  transform: translateY(calc(-100% - 100px)); /* au repos : hors écran (avec marge pour que la coiffe du bas ne dépasse pas) */
   pointer-events: none;
   /* Animation jouée dès le 1er rendu de la page (CSS pur, sans attendre
      le chargement du JS) : le panneau couvre l'écran puis monte pour
      révéler le contenu. C'est ce qui évite le flash de la page d'arrivée
      avant que le panneau ne soit en place. */
-  animation: rideau-revele 0.8s cubic-bezier(0.76, 0, 0.24, 1) both;
+  animation: rideau-revele 0.8s cubic-bezier(0.5, 0, 0.85, 0.15) both; /* lent au début, rapide en quittant l'écran */
 }
 
 .rideau-nom {
-  font-family: var(--police-accent);
+  font-family: var(--police-titre); /* même typo que les h1 (Manrope) */
+  font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: -0.01em; /* crénage serré comme les h1 */
   font-size: clamp(1.5rem, 5vw, 3rem);
   color: var(--papier);
 }
 
+/* Coiffes arrondies en débord, du même noir, au-dessus et en dessous du
+   panneau. Hors écran quand le panneau couvre tout ; pendant le mouvement,
+   c'est ce bord courbe qui traverse l'écran : un dôme arrondi en haut quand
+   le panneau monte pour couvrir (sortie), et une courbe en bas quand il se
+   retire pour révéler la page (arrivée). Rend le balayage plus fluide
+   qu'un bord droit. La hauteur (--coiffe) règle la profondeur de la courbe. */
+/* La profondeur de la coiffe (--coiffe-h) est animée pour l'effet de rebond :
+   le bord arrondi s'étire en pleine course puis se résorbe. Enregistrée via
+   @property pour qu'elle s'interpole en douceur (sinon elle sauterait). */
+@property --coiffe-h {
+  syntax: "<length>";
+  inherits: true;
+  initial-value: 0px;
+}
+
+.rideau {
+  --coiffe-h: 70px; /* profondeur de la courbe au repos */
+}
+
+.rideau::before,
+.rideau::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: var(--coiffe-h);
+  background: var(--encre);
+}
+
+.rideau::before {            /* coiffe du haut — bord d'attaque à la sortie */
+  bottom: 100%;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+}
+
+.rideau::after {             /* coiffe du bas — bord d'attaque à l'arrivée */
+  top: 100%;
+  border-radius: 0 0 50% 50% / 0 0 100% 100%;
+}
+
 @keyframes rideau-revele {
-  from { transform: translateY(0); }     /* couvre au chargement */
-  to   { transform: translateY(-100%); } /* monte et révèle la page */
+  0%   { transform: translateY(0); --coiffe-h: 40px; }       /* couvre */
+  45%  { --coiffe-h: 150px; }                                /* le bord du bas s'étire */
+  70%  { --coiffe-h: 40px; }                                 /* rebond */
+  100% { transform: translateY(calc(-100% - 100px)); --coiffe-h: 70px; } /* part, courbe cachée */
+}
+
+/* Sortie : le panneau monte depuis le bas pour couvrir, avec le même
+   étirement de coiffe (du haut cette fois) puis rebond. Déclenchée par la
+   classe .rideau--sortie ajoutée au clic (voir js/main.js). */
+@keyframes rideau-sortie {
+  0%   { transform: translateY(calc(100% + 100px)); --coiffe-h: 70px; }
+  40%  { --coiffe-h: 150px; }                                /* le bord du haut s'étire */
+  65%  { --coiffe-h: 40px; }                                 /* rebond */
+  100% { transform: translateY(0); --coiffe-h: 40px; }       /* couvre */
+}
+
+.rideau.rideau--sortie {
+  animation: rideau-sortie 0.65s cubic-bezier(0.5, 0, 0.2, 1) forwards;
 }
 
 /* Respect des préférences système : aucun rideau si l'utilisateur a
@@ -1773,50 +1829,4 @@ html.js .hero .hero-phrase.reveler.visible {
   filter: none;
 }
 
-/* Respect des préférences système : aucune animation si l'utilisateur
-   a demandé de réduire les mouvements. */
-@media (prefers-reduced-motion: reduce) {
-  html.js .hero h1.reveler,
-  html.js .hero .hero-phrase.reveler {
-    opacity: 1;
-    transform: none;
-    filter: none;
-    transition: none;
-  }
-}
-
-@media (max-width: 720px) {
-  /* Sur mobile, la barre latérale devient une barre fixe en bas */
-  body {
-    padding-right: 0;
-    padding-bottom: 64px;
-  }
-
-  .barre-laterale {
-    top: auto;
-    left: 0;
-    width: auto;
-    height: 64px;
-    flex-direction: row;
-    padding: 0 1.5rem;
-  }
-
-  .barre-laterale .contact,
-  .barre-laterale .langue {
-    writing-mode: horizontal-tb;
-  }
-
-  .nav-role,
-  .nav-liens .masquer-mobile {
-    display: none;
-  }
-
-  /* Sur mobile : photo au-dessus, texte en dessous */
-  .carte-projet {
-    grid-template-columns: 1fr;
-  }
-
-  .carte-projet .vignette {
-    aspect-ratio: 16 / 10;
-  }
-}
+/* Resp
