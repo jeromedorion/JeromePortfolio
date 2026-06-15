@@ -257,6 +257,13 @@ h3 {
   margin-bottom: 1.75rem;
 }
 
+/* Pas de trait à droite des titres « Mes projets » et « À propos » de
+   l'accueil (le trait reste sur les autres .titre-section, ex. pages projet). */
+#projets .titre-section::after,
+#a-propos .titre-section::after {
+  display: none;
+}
+
 .grille-projets {
   display: grid;
   gap: 1.5rem;
@@ -439,34 +446,31 @@ h3 {
   object-fit: cover;
 }
 
-/* Voile sombre dégradé : garantit le contraste du titre blanc,
-   plus prononcé à gauche où se trouve le texte */
-.projet-hero::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to right,
-    rgba(0, 0, 0, 0.6),
-    rgba(0, 0, 0, 0.25) 50%,
-    rgba(0, 0, 0, 0.05));
+/* Le nom du projet et sa phrase de résumé sont placés SOUS l'image
+   (plus aucun texte ni voile sur la photo), juste avant le bloc
+   métadonnées, alignés avec le contenu de la page. */
+.projet-intro {
+  margin: clamp(2.5rem, 6vw, 4rem) 0 0;
 }
 
-/* Titre centré verticalement dans la photo */
-.projet-hero .conteneur {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 1; /* au-dessus du voile */
-}
-
+/* Nom du projet en casse normale (« Rémi », « Radio-Canada »…), avec la
+   phrase de résumé en sous-titre dessous. */
 .projet-titre {
   font-size: clamp(2.2rem, 6vw, 4rem);
-  color: #ffffff;
+  color: var(--encre);
   margin: 0;
-  max-width: 16ch; /* condensé à gauche, sur environ 3 lignes */
+  max-width: 20ch;
   line-height: 1.15;
+  text-transform: uppercase; /* titre du projet tout en majuscules (le sous-titre, lui, reste tel quel) */
+}
+
+.projet-sous-titre {
+  margin: 0.75rem 0 0;
+  max-width: 40ch;
+  color: var(--encre-douce);
+  font-size: clamp(1.1rem, 2.4vw, 1.6rem);
+  font-weight: 500;
+  line-height: 1.35;
 }
 
 .meta-grille {
@@ -1002,6 +1006,30 @@ main {
   margin-right: auto;
 }
 
+/* Une maquette centrée avec des annotations des DEUX côtés (Safeway,
+   solution finale) : colonne texte à gauche, maquette au centre, colonne
+   texte à droite. */
+.solo-deux-cotes {
+  grid-template-columns: 1fr var(--maquette) 1fr;
+  align-items: start;
+  margin-block: clamp(3.5rem, 8vw, 6rem); /* bon espace entre chaque bloc maquette + texte */
+}
+
+/* Sous-titres de groupe dans « Solution finale » (Navigation, Prévention) :
+   bien détachés du contenu précédent, mais proches de leur 1re maquette. */
+.titre-groupe {
+  margin: clamp(3rem, 7vw, 5rem) 0 0.75rem;
+  font-size: 1.1rem; /* même grosseur que les titres de recommandation (Radio-Canada) */
+}
+.intro-groupe {
+  max-width: 65ch;
+  margin: 0 0 clamp(1.75rem, 3.5vw, 2.75rem);
+  color: var(--encre-douce);
+}
+.intro-groupe + .solo-deux-cotes {
+  margin-top: 0; /* la 1re maquette reste proche de son texte d'intro */
+}
+
 /* Annotation détachée du flux (.ancre-bas) : son point se fixe à une
    hauteur donnée de la maquette (--pos × hauteur du téléphone) au lieu
    d'être empilée. Résultat : elle ne bouge plus, même si le texte d'une
@@ -1070,6 +1098,50 @@ main {
   border-top: 1px solid var(--encre);
   border-right: 1px solid var(--encre);
   transform: rotate(-135deg);
+}
+
+/* Coude côté DROIT (texte à droite, maquette à gauche) : la descente est
+   sur le bord gauche du coude, le point en bas à gauche contre la maquette,
+   la flèche pointe le titre à droite. Permet de remonter le texte tout en
+   gardant le point collé à la maquette plus bas (--ar = largeur / descente). */
+.annotation-point:not(.miroir) .coude {
+  flex: 0 0 clamp(1.8rem, 4vw, 4rem); /* même largeur que .ligne → texte aligné à gauche */
+  aspect-ratio: auto;
+  height: var(--descente, 7rem);      /* longueur de la descente jusqu'au point */
+  border-left: 1px solid var(--encre);
+  margin-left: -0.75rem;
+}
+
+.annotation-point:not(.miroir) .coude::before {
+  content: "";
+  position: absolute;
+  left: -1.25rem;
+  bottom: -1px;
+  width: 1.25rem;
+  height: 1px;
+  background: var(--encre);
+}
+
+.annotation-point:not(.miroir) .coude .pied {
+  position: absolute;
+  left: calc(-1.25rem - 3px);
+  bottom: -4px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--encre);
+}
+
+.annotation-point:not(.miroir) .coude::after {
+  content: "";
+  position: absolute;
+  right: 0;
+  top: -4px;
+  width: 7px;
+  height: 7px;
+  border-top: 1px solid var(--encre);
+  border-right: 1px solid var(--encre);
+  transform: rotate(45deg);
 }
 
 /* Points d'annotation : un simple rond collé à la maquette,
@@ -1444,6 +1516,56 @@ main {
   }
 }
 
+/* La maquette-explication (.solo-deux-cotes) bascule en empilé dès 1400px :
+   la maquette en haut, puis les textes pleine largeur dessous. Ça évite que
+   les annotations latérales se décalent entre elles quand l'écran rétrécit. */
+@media (max-width: 1400px) {
+  .solo-deux-cotes {
+    grid-template-columns: 1fr;
+    row-gap: 0; /* espacement uniforme : il ne vient que des marges des textes */
+    counter-reset: point-annot; /* numérotation des annotations, par maquette */
+  }
+
+  /* En empilé, chaque annotation est numérotée (1, 2, 3…) pour distinguer
+     la hiérarchie maintenant que les flèches ont disparu. */
+  .solo-deux-cotes .annotation-point {
+    counter-increment: point-annot;
+  }
+  .solo-deux-cotes .annotation-point h4::before {
+    content: counter(point-annot) ". ";
+    font-family: var(--police-accent);
+    color: var(--encre-douce);
+  }
+
+  .solo-deux-cotes > figure {
+    order: -1; /* la maquette passe en premier */
+    width: var(--maquette);
+    max-width: 100%;
+    justify-self: start; /* maquette alignée à gauche */
+  }
+  .solo-deux-cotes .col-annotations {
+    position: static;
+    align-self: auto;
+  }
+  .solo-deux-cotes .annotation-point {
+    position: static;
+    margin-top: 1.5rem;
+  }
+  .solo-deux-cotes .annotation-point.miroir {
+    flex-direction: row; /* aligné à gauche comme les autres en empilé */
+  }
+  .solo-deux-cotes .annotation-point .ligne,
+  .solo-deux-cotes .annotation-point .coude {
+    display: none;
+  }
+  .solo-deux-cotes .annotation-point .texte {
+    transform: none;
+  }
+  .solo-deux-cotes .annotation-point p {
+    font-size: 0.9rem;
+  }
+}
+
 /* ----- Linktrees : exemples actuels + template annoté ----- */
 .linktree-exemples {
   margin: 2rem 0 0;
@@ -1747,12 +1869,12 @@ main {
 }
 
 .rideau::before {            /* coiffe du haut — bord d'attaque à la sortie */
-  bottom: 100%;
+  bottom: calc(100% - 2px); /* chevauche le panneau de 2px pour éviter une couture grise */
   border-radius: 50% 50% 0 0 / 100% 100% 0 0;
 }
 
 .rideau::after {             /* coiffe du bas — bord d'attaque à l'arrivée */
-  top: 100%;
+  top: calc(100% - 2px); /* chevauche le panneau de 2px pour éviter une couture grise */
   border-radius: 0 0 50% 50% / 0 0 100% 100%;
 }
 
@@ -1829,4 +1951,50 @@ html.js .hero .hero-phrase.reveler.visible {
   filter: none;
 }
 
-/* Resp
+/* Respect des préférences système : aucune animation si l'utilisateur
+   a demandé de réduire les mouvements. */
+@media (prefers-reduced-motion: reduce) {
+  html.js .hero h1.reveler,
+  html.js .hero .hero-phrase.reveler {
+    opacity: 1;
+    transform: none;
+    filter: none;
+    transition: none;
+  }
+}
+
+@media (max-width: 720px) {
+  /* Sur mobile, la barre latérale devient une barre fixe en bas */
+  body {
+    padding-right: 0;
+    padding-bottom: 64px;
+  }
+
+  .barre-laterale {
+    top: auto;
+    left: 0;
+    width: auto;
+    height: 64px;
+    flex-direction: row;
+    padding: 0 1.5rem;
+  }
+
+  .barre-laterale .contact,
+  .barre-laterale .langue {
+    writing-mode: horizontal-tb;
+  }
+
+  .nav-role,
+  .nav-liens .masquer-mobile {
+    display: none;
+  }
+
+  /* Sur mobile : photo au-dessus, texte en dessous */
+  .carte-projet {
+    grid-template-columns: 1fr;
+  }
+
+  .carte-projet .vignette {
+    aspect-ratio: 16 / 10;
+  }
+}
