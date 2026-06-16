@@ -277,6 +277,7 @@ h3 {
   display: grid;
   grid-template-columns: minmax(260px, 42%) 1fr; /* photo à gauche, texte à droite */
   transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  cursor: none; /* remplacé par le curseur personnalisé « Voir » au survol */
 }
 
 .carte-projet:hover {
@@ -375,7 +376,6 @@ h3 {
 
 /* ----- 7. Pied de page ----- */
 .footer {
-  border-top: 1px solid var(--ligne);
   padding: 3rem 0;
   display: grid;
   gap: 2rem;
@@ -432,18 +432,21 @@ h3 {
    et le titre blanc est posé sur l'image. */
 .projet-hero {
   position: relative;
+  overflow: hidden; /* l'image qui zoome au défilement reste clippée au cadre */
 }
 
 .projet-hero img {
   width: 100%;
   /* Hauteur calée sur l'écran : l'image reste grande et immersive, mais
-     on réserve ~22rem dessous (navigation + bloc métadonnées + début de
-     « Mise en contexte ») pour que ce contenu apparaisse déjà en bas du
-     viewport et invite à défiler. Le compromis se règle avec « 18rem » :
+     on réserve ~14rem dessous (navigation + début du titre de la section
+     suivante) pour que le titre apparaisse déjà en bas du viewport et
+     invite à défiler. Le compromis se règle avec « 14rem » :
      l'augmenter montre plus de contenu (image plus courte), la diminuer
      agrandit l'image. Les bornes clamp évitent les extrêmes. */
-  height: clamp(380px, calc(100svh - 18rem), 820px);
+  height: clamp(380px, calc(100svh - 14rem), 880px);
   object-fit: cover;
+  transform-origin: center; /* zoom centré, piloté au défilement par js/main.js */
+  will-change: transform;
 }
 
 /* Le nom du projet et sa phrase de résumé sont placés SOUS l'image
@@ -471,6 +474,67 @@ h3 {
   font-size: clamp(1.1rem, 2.4vw, 1.6rem);
   font-weight: 500;
   line-height: 1.35;
+}
+
+/* Apparition du contenu d'arrivée : il monte et apparaît en fondu, dans la
+   continuité du rideau qui se lève. Joué une fois au chargement, avec un
+   léger décalage pour émerger pendant que le rideau quitte l'écran. */
+@keyframes apparition-montee {
+  from { opacity: 0; transform: translateY(64px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* L'image d'en-tête mène le mouvement, puis le titre et les métadonnées
+   suivent en léger décalage, dans la continuité du rideau qui se lève. */
+.projet-hero {
+  animation: apparition-montee 0.9s cubic-bezier(0.33, 1, 0.68, 1) 0.5s both;
+}
+
+.projet-intro {
+  animation: apparition-montee 0.85s cubic-bezier(0.33, 1, 0.68, 1) 0.65s both;
+}
+
+.meta-grille {
+  animation: apparition-montee 0.85s cubic-bezier(0.33, 1, 0.68, 1) 0.78s both;
+}
+
+/* Page d'accueil : le nom et la phrase montent en fondu au chargement,
+   synchronisés avec le rideau (premier accès comme retour à l'accueil). */
+.hero h1 {
+  animation: apparition-montee 0.9s cubic-bezier(0.33, 1, 0.68, 1) 0.6s backwards;
+}
+
+.hero-phrase {
+  animation: apparition-montee 0.9s cubic-bezier(0.33, 1, 0.68, 1) 0.75s backwards;
+}
+
+/* Le titre « Mes projets » monte avec le hero (il depasse deja en bas
+   du viewport au chargement), juste apres la phrase de description. */
+#projets .titre-section {
+  animation: apparition-montee 0.9s cubic-bezier(0.33, 1, 0.68, 1) 0.9s both;
+}
+
+/* Les trois cartes montent en cascade juste apres le titre, dans le meme
+   mouvement que le rideau. Fill "backwards" : l'etat de depart (cache, decale)
+   s'applique pendant le delai, mais on revient aux styles normaux a la fin
+   pour ne pas bloquer le translateY du survol. */
+.grille-projets .carte-projet {
+  animation: apparition-montee 0.9s cubic-bezier(0.33, 1, 0.68, 1) backwards;
+}
+.grille-projets .carte-projet:nth-child(1) { animation-delay: 1s; }
+.grille-projets .carte-projet:nth-child(2) { animation-delay: 1.12s; }
+.grille-projets .carte-projet:nth-child(3) { animation-delay: 1.24s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .projet-hero,
+  .projet-intro,
+  .meta-grille,
+  .hero h1,
+  .hero-phrase,
+  #projets .titre-section,
+  .grille-projets .carte-projet {
+    animation: none;
+  }
 }
 
 .meta-grille {
@@ -1765,47 +1829,104 @@ main {
 
 /* Navigation entre projets */
 .autres-projets {
-  border-top: 1px solid var(--ligne);
-  padding: 3rem 0;
+  /* plus d'espace au-dessus pour bien détacher des projets du contenu */
+  padding: clamp(4rem, 10vw, 7rem) 0 3rem;
 }
 
-/* Un projet à gauche (précédent), un à droite (suivant),
-   chacun avec sa flèche qui glisse au survol */
+/* Titre « Autres projets » aligné à gauche, plus petit, sans trait. */
+.autres-projets .titre-section::after {
+  display: none;
+}
+.autres-projets .titre-section {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  margin-bottom: 1.5rem;
+}
+
+/* Nom + phrase de résumé du projet, empilés à gauche du lien */
+.autres-projets .lien-texte {
+  display: flex;
+  flex-direction: column;
+}
+.autres-projets .lien-sous-titre {
+  margin-top: 0.35rem;
+  font-family: var(--police-texte);
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: clamp(0.85rem, 1.5vw, 1rem);
+  color: var(--encre-douce);
+}
+
+/* Au survol d'une option, le texte et la flèche glissent vers la droite
+   pour bien montrer laquelle est sélectionnée. */
+.autres-projets .lien-texte,
+.autres-projets .fleche {
+  transition: transform 0.3s ease;
+}
+.autres-projets .liens a:hover .lien-texte,
+.autres-projets .liens a:hover .fleche {
+  transform: translateX(0.75rem);
+}
+
+/* Les deux projets empilés en pleine largeur : nom à gauche, flèche tout à
+   droite, séparés par un fin trait. */
 .autres-projets .liens {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1.5rem;
-  flex-wrap: wrap;
+  flex-direction: column;
 }
 
 .autres-projets .liens a {
-  display: inline-flex;
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  gap: 0.9rem;
+  gap: 1rem;
+  width: 100%;
   font-family: var(--police-titre);
   font-weight: 700;
   text-transform: uppercase;
-  font-size: clamp(1.3rem, 2.5vw, 1.8rem);
-  transition: color 0.2s ease;
+  font-size: clamp(1.5rem, 3.5vw, 2.6rem);
+  padding: clamp(1rem, 2.5vw, 1.75rem) 0;
+  border-top: 1px solid var(--ligne);
+  cursor: none; /* remplacé par le curseur personnalisé « Voir » */
+}
+
+.autres-projets .liens a:last-child {
+  border-bottom: 1px solid var(--ligne);
 }
 
 .autres-projets .fleche {
   font-family: var(--police-accent);
-  transition: transform 0.25s ease;
+  font-weight: 400;
 }
 
-/* Au survol : la flèche glisse dans sa direction */
-.autres-projets .projet-precedent:hover .fleche {
-  transform: translateX(-10px);
+/* ----- Curseur personnalisé « Voir » au survol des liens « autre projet » -----
+   Un rond noir avec « Voir », qui suit la souris (positionné par js/main.js). */
+.curseur-voir {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9998;
+  width: 4.75rem;
+  height: 4.75rem;
+  border-radius: 50%;
+  background: var(--encre);
+  color: var(--papier);
+  display: grid;
+  place-items: center;
+  font-family: var(--police-titre);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.01em;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.3);
+  transition: opacity 0.45s cubic-bezier(0.33, 1, 0.68, 1),
+              transform 0.45s cubic-bezier(0.33, 1, 0.68, 1);
 }
 
-.autres-projets .projet-suivant:hover .fleche {
-  transform: translateX(10px);
-}
-
-.autres-projets .liens a:hover {
-  color: var(--encre-douce);
+.curseur-voir.actif {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
 }
 
 /* ----- Rideau de transition entre les pages ----- */
@@ -1827,7 +1948,8 @@ main {
      le chargement du JS) : le panneau couvre l'écran puis monte pour
      révéler le contenu. C'est ce qui évite le flash de la page d'arrivée
      avant que le panneau ne soit en place. */
-  animation: rideau-revele 0.8s cubic-bezier(0.5, 0, 0.85, 0.15) both; /* lent au début, rapide en quittant l'écran */
+  will-change: transform;
+  animation: rideau-revele 0.9s cubic-bezier(0.5, 0, 0.75, 0) both; /* court arrêt sur le nom au début, puis révèle en accélérant */
 }
 
 .rideau-nom {
@@ -1848,14 +1970,15 @@ main {
 /* La profondeur de la coiffe (--coiffe-h) est animée pour l'effet de rebond :
    le bord arrondi s'étire en pleine course puis se résorbe. Enregistrée via
    @property pour qu'elle s'interpole en douceur (sinon elle sauterait). */
-@property --coiffe-h {
-  syntax: "<length>";
+@property --etire {
+  syntax: "<number>";
   inherits: true;
-  initial-value: 0px;
+  initial-value: 1;
 }
 
 .rideau {
   --coiffe-h: 70px; /* profondeur de la courbe au repos */
+  --etire: 1;       /* étirement vertical des coiffes (animé pour le rebond, via transform) */
 }
 
 .rideau::before,
@@ -1866,38 +1989,58 @@ main {
   right: 0;
   height: var(--coiffe-h);
   background: var(--encre);
+  /* étirement (rebond) par transform : composé sur le GPU, donc fluide,
+     sans recalcul de hauteur à chaque image */
+  transform: scaleY(var(--etire));
+  will-change: transform;
 }
 
 .rideau::before {            /* coiffe du haut — bord d'attaque à la sortie */
   bottom: calc(100% - 2px); /* chevauche le panneau de 2px pour éviter une couture grise */
   border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  transform-origin: bottom;  /* s'étire vers le haut, depuis le bord du panneau */
 }
 
 .rideau::after {             /* coiffe du bas — bord d'attaque à l'arrivée */
   top: calc(100% - 2px); /* chevauche le panneau de 2px pour éviter une couture grise */
   border-radius: 0 0 50% 50% / 0 0 100% 100%;
+  transform-origin: top;     /* s'étire vers le bas, depuis le bord du panneau */
 }
 
 @keyframes rideau-revele {
-  0%   { transform: translateY(0); --coiffe-h: 40px; }       /* couvre */
-  45%  { --coiffe-h: 150px; }                                /* le bord du bas s'étire */
-  70%  { --coiffe-h: 40px; }                                 /* rebond */
-  100% { transform: translateY(calc(-100% - 100px)); --coiffe-h: 70px; } /* part, courbe cachée */
+  0%   { transform: translateY(0); --etire: 1; }         /* couvre (nom visible) */
+  18%  { transform: translateY(0); --etire: 1; }         /* court arrêt : on lit le nom */
+  55%  { --etire: 1.9; }                                 /* le bord du bas s'étire */
+  78%  { --etire: 0.8; }                                 /* rebond */
+  100% { transform: translateY(calc(-100% - 100px)); --etire: 1; } /* part, courbe cachée */
 }
 
 /* Sortie : le panneau monte depuis le bas pour couvrir, avec le même
    étirement de coiffe (du haut cette fois) puis rebond. Déclenchée par la
    classe .rideau--sortie ajoutée au clic (voir js/main.js). */
 @keyframes rideau-sortie {
-  0%   { transform: translateY(calc(100% + 100px)); --coiffe-h: 70px; }
-  40%  { --coiffe-h: 150px; }                                /* le bord du haut s'étire */
-  65%  { --coiffe-h: 40px; }                                 /* rebond */
-  100% { transform: translateY(0); --coiffe-h: 40px; }       /* couvre */
+  0%   { transform: translateY(calc(100% + 100px)); --etire: 1; }
+  45%  { --etire: 1.9; }                                     /* le bord du haut s'étire */
+  70%  { --etire: 0.8; }                                     /* rebond */
+  100% { transform: translateY(0); --etire: 1; }             /* couvre, en douceur */
 }
 
 .rideau.rideau--sortie {
-  animation: rideau-sortie 0.65s cubic-bezier(0.5, 0, 0.2, 1) forwards;
+  /* monte puis ralentit en douceur jusqu'à couvrir (on lit le nom),
+     avant la navigation */
+  animation: rideau-sortie 0.75s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
+
+/* Première arrivée (« Bonjour ») : le rideau reste couvert un peu plus
+   longtemps pour qu'on lise le mot, puis tout le ballet (rideau + contenu)
+   est décalé du même délai pour garder exactement la même synchro. */
+html.bonjour .rideau { animation-delay: 0.4s; }
+html.bonjour .hero h1 { animation-delay: 1s; }
+html.bonjour .hero-phrase { animation-delay: 1.15s; }
+html.bonjour #projets .titre-section { animation-delay: 1.3s; }
+html.bonjour .grille-projets .carte-projet:nth-child(1) { animation-delay: 1.4s; }
+html.bonjour .grille-projets .carte-projet:nth-child(2) { animation-delay: 1.52s; }
+html.bonjour .grille-projets .carte-projet:nth-child(3) { animation-delay: 1.64s; }
 
 /* Respect des préférences système : aucun rideau si l'utilisateur a
    demandé de réduire les animations. */
@@ -1921,80 +2064,5 @@ html.js .reveler.visible {
   transform: none;
 }
 
-/* ----- Entrée très douce du hero (nom + phrase) ----- */
-/* À l'arrivée sur le site, le nom et la phrase apparaissent plus
-   lentement et plus subtilement que le .reveler standard : montée
-   minime (8px), léger flou qui se dissipe, et petit décalage entre
-   les deux pour un effet « en cascade » à peine perceptible. */
-html.js .hero h1.reveler,
-html.js .hero .hero-phrase.reveler {
-  opacity: 0;
-  transform: translateY(8px);
-  filter: blur(2px);
-  transition: opacity 1.2s cubic-bezier(0.22, 0.61, 0.36, 1),
-              transform 1.2s cubic-bezier(0.22, 0.61, 0.36, 1),
-              filter 1.2s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
-
-/* Le nom arrive en premier, la phrase suit en douceur */
-html.js .hero h1.reveler {
-  transition-delay: 0.15s;
-}
-html.js .hero .hero-phrase.reveler {
-  transition-delay: 0.4s;
-}
-
-html.js .hero h1.reveler.visible,
-html.js .hero .hero-phrase.reveler.visible {
-  opacity: 1;
-  transform: none;
-  filter: none;
-}
-
-/* Respect des préférences système : aucune animation si l'utilisateur
-   a demandé de réduire les mouvements. */
-@media (prefers-reduced-motion: reduce) {
-  html.js .hero h1.reveler,
-  html.js .hero .hero-phrase.reveler {
-    opacity: 1;
-    transform: none;
-    filter: none;
-    transition: none;
-  }
-}
-
-@media (max-width: 720px) {
-  /* Sur mobile, la barre latérale devient une barre fixe en bas */
-  body {
-    padding-right: 0;
-    padding-bottom: 64px;
-  }
-
-  .barre-laterale {
-    top: auto;
-    left: 0;
-    width: auto;
-    height: 64px;
-    flex-direction: row;
-    padding: 0 1.5rem;
-  }
-
-  .barre-laterale .contact,
-  .barre-laterale .langue {
-    writing-mode: horizontal-tb;
-  }
-
-  .nav-role,
-  .nav-liens .masquer-mobile {
-    display: none;
-  }
-
-  /* Sur mobile : photo au-dessus, texte en dessous */
-  .carte-projet {
-    grid-template-columns: 1fr;
-  }
-
-  .carte-projet .vignette {
-    aspect-ratio: 16 / 10;
-  }
-}
+/* L'entree du hero (nom + phrase) est desormais geree par l'animation
+   "apparition-montee" synchronisee avec le rideau (voir plus haut). */

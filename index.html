@@ -16,6 +16,21 @@
 <body>
   <!-- Rideau de transition entre les pages (piloté par js/main.js) -->
   <div class="rideau" aria-hidden="true"><span class="rideau-nom">Accueil</span></div>
+  <!-- Arrivée directe sur le site : le rideau dit « Bonjour ». Un retour à
+       l'accueil par navigation interne (drapeau posé par js/main.js) garde
+       « Accueil ». Script en ligne pour fixer le texte avant l'affichage,
+       sans clignotement. -->
+  <script>
+    try {
+      if (sessionStorage.getItem("transitionInterne")) {
+        sessionStorage.removeItem("transitionInterne");
+      } else {
+        document.currentScript.previousElementSibling
+          .querySelector(".rideau-nom").textContent = "Bonjour";
+        document.documentElement.classList.add("bonjour");
+      }
+    } catch (e) {}
+  </script>
 
   <!-- ===== Navigation ===== -->
   <header class="nav">
@@ -40,8 +55,8 @@
   <!-- ===== Hero ===== -->
   <section class="hero">
     <div class="conteneur">
-      <h1 class="reveler">Jérôme Dorion</h1>
-      <p class="hero-phrase reveler">J'observe, je questionne, je teste et je construis des expériences <span class="accent-serif">intuitives</span> pour vos utilisateurs.</p>
+      <h1>Jérôme Dorion</h1>
+      <p class="hero-phrase">J'observe, je questionne, je teste et je construis des expériences <span class="accent-serif">intuitives</span> pour vos utilisateurs.</p>
     </div>
   </section>
 
@@ -51,7 +66,7 @@
       <h2 class="titre-section">Mes projets</h2>
 
       <div class="grille-projets">
-        <a class="carte-projet reveler" href="projets/radio-canada.html">
+        <a class="carte-projet" href="projets/radio-canada.html">
           <img class="vignette" src="assets/radio-canada/hero.jpg" alt="Projet Radio-Canada">
           <span class="carte-contenu">
             <span class="fleche-carte" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
@@ -66,7 +81,7 @@
           </span>
         </a>
 
-        <a class="carte-projet reveler" href="projets/remi.html">
+        <a class="carte-projet" href="projets/remi.html">
           <img class="vignette" src="assets/remi/hero.png" alt="Projet Rémi">
           <span class="carte-contenu">
             <span class="fleche-carte" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
@@ -82,7 +97,7 @@
           </span>
         </a>
 
-        <a class="carte-projet reveler" href="projets/safeway.html">
+        <a class="carte-projet" href="projets/safeway.html">
           <img class="vignette" src="assets/safeway/hero.png" alt="Projet Safeway">
           <span class="carte-contenu">
             <span class="fleche-carte" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>

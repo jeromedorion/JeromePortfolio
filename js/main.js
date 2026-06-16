@@ -270,13 +270,17 @@ if (rideau && !mouvementReduitRideau) {
 
     // vraie navigation interne : on joue le rideau puis on change de page
     e.preventDefault();
+    // mémorise que la page suivante est atteinte par navigation interne :
+    // le rideau de l'accueil affichera « Accueil » (et non « Bonjour », qui
+    // est réservé à la première arrivée directe sur le site).
+    try { sessionStorage.setItem("transitionInterne", "1"); } catch (err) {}
     if (nomRideau) nomRideau.textContent = nomPour(dest);
 
     rideau.classList.add("rideau--sortie"); // joue l'animation de sortie (montée + étirement + rebond)
 
     setTimeout(() => {
       window.location.href = lien.href;
-    }, 680);
+    }, 950);
   });
 }
 
@@ -318,4 +322,108 @@ if (document.querySelector(".trois-maquettes .annotation-point.ancre-bas")) {
   });
   ajusterEspaceBarresNav();
   setTimeout(ajusterEspaceBarresNav, 300); // après chargement des polices/images
+}
+
+
+// ==========================================================
+// Zoom doux du header des pages projet au défilement
+// L'image grandit légèrement à mesure qu'on défile (jusqu'à +12 %),
+// clippée dans son cadre. Synchronisé à l'affichage (rAF) pour rester
+// fluide ; désactivé si l'utilisateur a demandé de réduire les animations.
+// ==========================================================
+const heroProjet = document.querySelector(".projet-hero");
+const heroProjetImg = heroProjet ? heroProjet.querySelector("img") : null;
+const mouvementReduitZoom = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+if (heroProjetImg && !mouvementReduitZoom) {
+  let enAttente = false;
+  const majZoom = () => {
+    enAttente = false;
+    const hauteur = heroProjet.offsetHeight || 1;
+    const progres = Math.min(Math.max(window.scrollY / hauteur, 0), 1);
+    const echelle = 1 + progres * 0.12; // zoom progressif jusqu'à 1.12
+    heroProjetImg.style.transform = "scale(" + echelle + ")";
+  };
+  window.addEventListener("scroll", () => {
+    if (!enAttente) {
+      enAttente = true;
+      requestAnimationFrame(majZoom);
+    }
+  }, { passive: true });
+  majZoom();
+}
+
+
+// ==========================================================
+// Effet de défilement du hero d'accueil (nom + phrase)
+// En descendant, le nom monte doucement et s'efface ; la phrase suit un
+// peu moins vite. Synchronisé à l'affichage (rAF). L'animation d'entrée
+// utilise le remplissage « backwards », donc une fois jouée ces styles
+// inline reprennent la main sans accroc.
+// ==========================================================
+const heroAccueil = document.querySelector(".hero");
+const heroNom = heroAccueil ? heroAccueil.querySelector("h1") : null;
+const heroPhrase = heroAccueil ? heroAccueil.querySelector(".hero-phrase") : null;
+const mouvementReduitHero = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+if (heroNom && !mouvementReduitHero) {
+  let enAttenteHero = false;
+  const majHero = () => {
+    enAttenteHero = false;
+    // progression sur ~65 % de la hauteur de l'écran
+    const progres = Math.min(Math.max(window.scrollY / (window.innerHeight * 0.65), 0), 1);
+    const opacite = 1 - progres;
+    heroNom.style.opacity = opacite;
+    heroNom.style.transform = "translateY(" + (-progres * 90) + "px)";
+    if (heroPhrase) {
+      heroPhrase.style.opacity = opacite;
+      heroPhrase.style.transform = "translateY(" + (-progres * 70) + "px)";
+    }
+  };
+  window.addEventListener("scroll", () => {
+    if (!enAttenteHero) {
+      enAttenteHero = true;
+      requestAnimationFrame(majHero);
+    }
+  }, { passive: true });
+  majHero();
+}
+
+
+// ==========================================================
+// Curseur personnalisé « Voir » sur les liens « Voir un autre projet »
+// Un rond noir avec « Voir » qui suit la souris et apparaît au survol des
+// liens. Uniquement sur les appareils à vrai pointeur (pas tactile).
+// ==========================================================
+const liensAutreProjet = document.querySelectorAll(".autres-projets .liens a, .carte-projet");
+if (liensAutreProjet.length > 0 && window.matchMedia("(hover: hover)").matches) {
+  const curseurVoir = document.createElement("div");
+  curseurVoir.className = "curseur-voir";
+  curseurVoir.textContent = "Voir";
+  curseurVoir.setAttribute("aria-hidden", "true");
+  document.body.appendChild(curseurVoir);
+
+  // cible = position de la souris ; pos = position lissée du rond, qui
+  // glisse vers la souris avec un très léger retard (0.22 : plus haut =
+  // colle davantage à la souris, plus bas = plus de traîne).
+  let cibleX = window.innerWidth / 2, cibleY = window.innerHeight / 2;
+  let posX = cibleX, posY = cibleY;
+  window.addEventListener("mousemove", (e) => {
+    cibleX = e.clientX;
+    cibleY = e.clientY;
+  }, { passive: true });
+
+  const suivreVoir = () => {
+    posX += (cibleX - posX) * 0.22;
+    posY += (cibleY - posY) * 0.22;
+    curseurVoir.style.left = posX + "px";
+    curseurVoir.style.top = posY + "px";
+    requestAnimationFrame(suivreVoir);
+  };
+  requestAnimationFrame(suivreVoir);
+
+  liensAutreProjet.forEach((lien) => {
+    lien.addEventListener("mouseenter", () => curseurVoir.classList.add("actif"));
+    lien.addEventListener("mouseleave", () => curseurVoir.classList.remove("actif"));
+  });
 }
