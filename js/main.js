@@ -427,3 +427,47 @@ if (liensAutreProjet.length > 0 && window.matchMedia("(hover: hover)").matches) 
     lien.addEventListener("mouseleave", () => curseurVoir.classList.remove("actif"));
   });
 }
+
+
+// ==========================================================
+// Menu déroulant (petit écran)
+// Le bouton hamburger ouvre/ferme la liste des liens. « EN » n'en fait
+// pas partie : il reste visible à part dans la barre.
+// ==========================================================
+const navBascule = document.querySelector(".nav-bascule");
+const navMenu = document.querySelector(".nav-liens");
+if (navBascule && navMenu) {
+  const fermer = () => {
+    navMenu.classList.remove("ouvert");
+    navBascule.classList.remove("ouvert");
+    navBascule.setAttribute("aria-expanded", "false");
+  };
+  navBascule.addEventListener("click", () => {
+    const ouvert = navMenu.classList.toggle("ouvert");
+    navBascule.classList.toggle("ouvert", ouvert);
+    navBascule.setAttribute("aria-expanded", ouvert ? "true" : "false");
+  });
+  // Un clic sur un lien referme le menu
+  navMenu.querySelectorAll("a").forEach((a) => a.addEventListener("click", fermer));
+}
+
+
+// ==========================================================
+// « Me contacter » dans le menu replié : tap pour déplier Courriel + LinkedIn.
+// (Sur grand écran, l'ouverture se fait au survol, gérée par le CSS.)
+// ==========================================================
+const contactBouton = document.querySelector(".nav-contact-bouton");
+const contactVolet = document.querySelector(".nav-contact-volet");
+if (contactBouton && contactVolet) {
+  const basculerContact = () => {
+    const ouvert = contactVolet.classList.toggle("ouvert");
+    contactBouton.setAttribute("aria-expanded", ouvert ? "true" : "false");
+  };
+  contactBouton.addEventListener("click", basculerContact);
+  contactBouton.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      basculerContact();
+    }
+  });
+}

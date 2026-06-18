@@ -47,8 +47,6 @@ body {
   font-size: 1.05rem;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
-  /* espace réservé pour la barre latérale fixe à droite */
-  padding-right: 96px;
 }
 
 img, video {
@@ -142,6 +140,48 @@ h3 {
   padding-left: 0.75rem;
 }
 
+/* Survol de « Designer d'interaction » : il glisse vers la droite et laisse
+   entrer « Jérôme Dorion » par la gauche ; tout revient au départ à la sortie. */
+.role-piste {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: bottom;
+  white-space: nowrap;
+}
+
+.role-txt {
+  display: inline-block;
+  white-space: nowrap;
+  /* Courbe symétrique (ease-in-out) : l'aller (Jérôme entre) et le retour
+     (Designer revient) glissent avec la même douceur aux deux extrémités. */
+  transition: transform 0.5s cubic-bezier(0.65, 0, 0.35, 1),
+              opacity 0.45s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+.role-nom {
+  position: absolute;
+  left: 0;
+  top: 0;
+  color: var(--encre);
+  transform: translateY(110%); /* caché juste en dessous */
+  opacity: 0;
+}
+
+.nav-role:hover .role-defaut {
+  transform: translateY(-110%); /* monte et sort par le haut */
+  opacity: 0;
+}
+
+.nav-role:hover .role-nom {
+  transform: translateY(0); /* monte depuis le bas jusqu'en place */
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .role-txt { transition: none; }
+}
+
 .nav-liens {
   margin-left: auto;
   display: flex;
@@ -168,49 +208,237 @@ h3 {
   width: 100%;
 }
 
-/* ----- Barre latérale fixe (Contact + EN) ----- */
-/* Toujours visible à droite, elle suit le défilement. */
-.barre-laterale {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 96px;
-  z-index: 100;
-  background: var(--encre);
-  color: var(--papier);
+/* ----- « Me contacter » : volet déroulant (Courriel + LinkedIn) ----- */
+.nav-contact {
+  position: relative;
+}
+
+/* Le bouton se fond avec les autres liens de la nav. */
+.nav-contact-bouton {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  position: relative;
+}
+
+/* Même soulignement au survol que les liens. */
+.nav-contact-bouton::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: width 0.25s ease;
+}
+
+/* Le soulignement reste tant qu'on survole l'ensemble (bouton + volet),
+   donc il ne disparaît pas quand on descend vers Courriel ou LinkedIn. */
+.nav-contact:hover .nav-contact-bouton::after,
+.nav-contact:focus-within .nav-contact-bouton::after {
+  width: 100%;
+}
+
+/* Chevron de « Me contacter » : caché sur grand écran (le survol suffit),
+   visible dans le menu replié pour indiquer qu'on peut déplier. */
+.nav-contact-chevron {
+  display: none;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-right: 1.6px solid currentColor;
+  border-bottom: 1.6px solid currentColor;
+  transform: translateY(-1px) rotate(45deg);
+  transition: transform 0.3s ease;
+}
+
+/* Le volet : petit panneau net, noir et blanc, coins carrés. */
+.nav-contact-volet {
+  position: absolute;
+  top: calc(100% + 0.85rem);
+  left: 0;
+  min-width: 11rem;
   display: flex;
   flex-direction: column;
+  background: var(--papier);
+  border: 1px solid var(--ligne);
+  box-shadow: 0 14px 30px rgba(17, 17, 17, 0.08);
+  padding: 0.4rem;
+  opacity: 0;
+  transform: translateY(-6px);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s cubic-bezier(0.33, 1, 0.68, 1);
+  z-index: 60;
+}
+
+/* Ouverture au survol (souris) ou au focus clavier — aucun clic requis. */
+.nav-contact:hover .nav-contact-volet,
+.nav-contact:focus-within .nav-contact-volet {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+/* Pont transparent : comble l'écart bouton↔volet pour ne pas perdre le survol. */
+.nav-contact-volet::before {
+  content: "";
+  position: absolute;
+  top: -0.85rem;
+  left: 0;
+  right: 0;
+  height: 0.85rem;
+}
+
+.nav-contact-volet a {
+  display: flex;
   align-items: center;
-  justify-content: space-between;
-  /* Contact et EN proches des extrémités, avec un léger retrait */
-  padding: 3.5rem 0;
-}
-
-.barre-laterale .contact {
-  /* texte vertical, se lit de haut en bas */
-  writing-mode: vertical-rl;
-  /* même typo que la navigation du haut, en minuscules */
-  font-family: var(--police-texte);
+  gap: 0.5rem;
+  padding: 0.55rem 0.75rem;
   font-size: 0.95rem;
-  transition: color 0.2s ease;
+  color: var(--encre);
+  transition: background 0.2s ease;
 }
 
-.barre-laterale .langue {
-  /* même orientation verticale et même typo que Contact, en minuscules */
-  writing-mode: vertical-rl;
-  font-family: var(--police-texte);
+/* Flèche à droite : pivote vers le haut-droite au survol, comme sur les cartes. */
+.fleche-volet {
+  line-height: 0;
+  color: var(--encre);
+  transition: transform 0.3s ease;
+}
+
+.nav-contact-volet a:hover .fleche-volet {
+  transform: rotate(-45deg);
+}
+
+.nav-contact-volet a::after { display: none; } /* pas de soulignement ici */
+
+.nav-contact-volet a:hover {
+  background: color-mix(in srgb, var(--encre) 8%, transparent);
+}
+
+/* Sur petit écran (dans le menu déroulant), le volet se déplie sur place. */
+@media (max-width: 900px) {
+  .nav-contact { width: 100%; }
+  .nav-contact-volet {
+    position: static;
+    min-width: 0;
+    border: none;
+    border-left: 1px solid var(--ligne);
+    box-shadow: none;
+    padding: 0.25rem 0 0.25rem 0.85rem;
+    margin: 0.5rem 0 0 0.25rem;
+    transform: none;
+    opacity: 1;
+    pointer-events: auto;
+    display: none; /* fermé par défaut, déplié au tap */
+  }
+  .nav-contact-volet.ouvert { display: flex; }
+  .nav-contact-volet::before { display: none; } /* pas de pont sur mobile */
+  .nav-contact-volet a { padding: 0.45rem 0; }
+  /* Pas de survol sur tablette/cellulaire : la flèche est déjà orientée
+     vers le haut-droite. */
+  .fleche-volet { transform: rotate(-45deg); }
+  /* Aucun effet de survol dans le menu replié (tactile) : ni soulignement
+     des liens, ni carré gris sur Courriel/LinkedIn. */
+  .nav-liens a:hover::after,
+  .nav-contact:hover .nav-contact-bouton::after,
+  .nav-contact:focus-within .nav-contact-bouton::after {
+    width: 0;
+  }
+  .nav-contact-volet a:hover {
+    background: none;
+  }
+  /* le chevron apparaît et pivote quand c'est ouvert */
+  .nav-contact-chevron { display: inline-block; }
+  .nav-contact-bouton[aria-expanded="true"] .nav-contact-chevron {
+    transform: translateY(2px) rotate(-135deg);
+  }
+}
+
+/* ----- « EN » détaché à droite de la navigation ----- */
+/* Contact vit dans .nav-liens (juste après CV) ; « EN » est le dernier
+   élément de .nav-inner, poussé tout au bord droit, près du coin. */
+.nav-langue {
+  margin-left: 6rem; /* nettement détaché du groupe de liens, vers le coin droit */
   font-size: 0.95rem;
-  text-transform: lowercase;
-  transition: color 0.2s ease;
+  position: relative;
 }
 
-.barre-laterale .contact:hover {
-  color: #999999; /* gris au survol, sur fond noir */
+.nav-langue::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: width 0.25s ease;
 }
 
-.barre-laterale .langue:hover {
-  color: #999999; /* gris au survol, comme Contact */
+.nav-langue:hover::after {
+  width: 100%;
+}
+
+/* Bouton hamburger : caché sur grand écran, affiché quand la nav se replie. */
+.nav-bascule {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 2.4rem;
+  height: 2.4rem;
+  margin-left: 1.25rem;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.nav-bascule span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--encre);
+  transition: transform 0.3s ease, opacity 0.2s ease;
+}
+
+/* En croix quand le menu est ouvert */
+.nav-bascule.ouvert span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-bascule.ouvert span:nth-child(2) { opacity: 0; }
+.nav-bascule.ouvert span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ----- Navigation repliée en menu déroulant (petit écran) ----- */
+/* Sous 900px, les liens passent dans un menu ouvrable par le bouton
+   hamburger. EN reste visible à part (jamais dans le menu), poussé à droite
+   juste avant le bouton. */
+@media (max-width: 900px) {
+  .nav-role { display: none; }      /* libère de la place */
+  .nav-bascule { display: flex; }   /* le bouton apparaît */
+  .nav-langue { margin-left: auto; } /* EN collé à droite, avant le bouton */
+
+  .nav-liens {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+    background: var(--papier);
+    border-bottom: 1px solid var(--ligne);
+    padding: 1.5rem 24px 2rem;
+    box-shadow: 0 12px 24px rgba(17, 17, 17, 0.06);
+    display: none; /* fermé par défaut */
+  }
+
+  .nav-liens.ouvert { display: flex; } /* ouvert via js/main.js */
+  .nav-liens a { font-size: 1.05rem; }
 }
 
 /* ----- 4. Hero ----- */
@@ -281,7 +509,7 @@ h3 {
 }
 
 .carte-projet:hover {
-  transform: translateY(-4px);
+  /* la carte ne monte plus au survol ; on garde le contour et l'ombre */
   border-color: var(--accent);
   box-shadow: 0 12px 30px rgba(17, 17, 17, 0.08);
 }
@@ -484,18 +712,14 @@ h3 {
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* L'image d'en-tête mène le mouvement, puis le titre et les métadonnées
-   suivent en léger décalage, dans la continuité du rideau qui se lève. */
-.projet-hero {
-  animation: apparition-montee 0.9s cubic-bezier(0.33, 1, 0.68, 1) 0.5s both;
-}
-
+/* L'image d'en-tête reste fixe : c'est le contenu (titre, sous-titre puis
+   métadonnées) qui monte en fondu, dans la continuité du rideau qui se lève. */
 .projet-intro {
-  animation: apparition-montee 0.85s cubic-bezier(0.33, 1, 0.68, 1) 0.65s both;
+  animation: apparition-montee 0.85s cubic-bezier(0.33, 1, 0.68, 1) 0.5s both;
 }
 
 .meta-grille {
-  animation: apparition-montee 0.85s cubic-bezier(0.33, 1, 0.68, 1) 0.78s both;
+  animation: apparition-montee 0.85s cubic-bezier(0.33, 1, 0.68, 1) 0.62s both;
 }
 
 /* Page d'accueil : le nom et la phrase montent en fondu au chargement,
@@ -526,7 +750,6 @@ h3 {
 .grille-projets .carte-projet:nth-child(3) { animation-delay: 1.24s; }
 
 @media (prefers-reduced-motion: reduce) {
-  .projet-hero,
   .projet-intro,
   .meta-grille,
   .hero h1,
