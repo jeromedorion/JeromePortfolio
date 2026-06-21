@@ -283,16 +283,35 @@ if (rideau && !mouvementReduitRideau) {
     }, 820);
   });
 
-  // Page restaurée depuis le cache (boutons Précédent / Suivant) : le rideau a
-  // pu rester en position couvrante (classe de sortie) ou dans un état figé.
-  // On le réinitialise et on rejoue la révélation depuis l'état couvrant, pour
-  // éviter un écran noir bloqué ou un flash à la réapparition de la page.
+  // Révèle le rideau une fois la PAGE CHARGÉE (mise en page stabilisée).
+  // Tant que la page charge, le rideau reste couvrant et statique (non animé,
+  // donc non composité) : le nom est peint normalement et ne clignote pas
+  // pendant les changements de longueur de page. requestAnimationFrame garantit
+  // que le panneau + son texte sont peints avant que l'animation démarre.
+  // Filet de sécurité : on révèle au plus tard après 1 s.
+  const revelerRideau = () =>
+    requestAnimationFrame(() => rideau.classList.add("rideau--reveler"));
+  if (document.readyState === "complete") {
+    revelerRideau();
+  } else {
+    let lance = false;
+    const lancer = () => {
+      if (lance) return;
+      lance = true;
+      revelerRideau();
+    };
+    window.addEventListener("load", lancer, { once: true });
+    setTimeout(lancer, 1000);
+  }
+
+  // Page restaurée depuis le cache (boutons Précédent / Suivant) : on
+  // réinitialise et on rejoue la révélation pour ne pas rester sur un écran noir.
   window.addEventListener("pageshow", (e) => {
     if (!e.persisted) return;
     rideau.classList.remove("rideau--sortie");
-    rideau.style.animation = "none";
+    rideau.classList.remove("rideau--reveler");
     void rideau.offsetWidth; // force un reflow
-    rideau.style.animation = ""; // relance rideau-revele proprement
+    rideau.classList.add("rideau--reveler");
   });
 }
 

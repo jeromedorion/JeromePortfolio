@@ -612,6 +612,11 @@ h3 {
   padding: 3rem 0;
   display: grid;
   gap: 2rem;
+  /* opaque et au-dessus de l'image épinglée (pages projet) : sinon la photo
+     du hero repasse par-dessus le bas de page. Sans effet sur l'accueil. */
+  position: relative;
+  z-index: 2;
+  background: var(--papier);
 }
 
 .footer h5 {
@@ -2085,6 +2090,10 @@ main {
 .autres-projets {
   /* plus d'espace au-dessus pour bien détacher des projets du contenu */
   padding: clamp(4rem, 10vw, 7rem) 0 3rem;
+  /* opaque et au-dessus de l'image épinglée pour la recouvrir en bas de page */
+  position: relative;
+  z-index: 2;
+  background: var(--papier);
 }
 
 /* Titre « Autres projets » aligné à gauche, plus petit, sans trait. */
@@ -2196,13 +2205,23 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  transform: translateY(calc(-100% - 100px)); /* au repos : hors écran (avec marge pour que la coiffe du bas ne dépasse pas) */
+  /* Couvre l'écran par défaut (statique, donc non animé/non composité) tant
+     que la page charge : le nom est peint normalement et ne clignote pas
+     pendant les changements de mise en page (longueur, barre de défilement). */
+  transform: translateY(0);
   pointer-events: none;
-  /* Animation jouée dès le 1er rendu de la page (CSS pur, sans attendre
-     le chargement du JS) : le panneau couvre l'écran puis monte pour
-     révéler le contenu. C'est ce qui évite le flash de la page d'arrivée
-     avant que le panneau ne soit en place. */
-  animation: rideau-revele 0.9s cubic-bezier(0.65, 0, 0.35, 1) both; /* court arrêt sur le nom, puis glisse en douceur (pas de retrait brusque) */
+}
+
+/* Sans JavaScript : pas de rideau, la page reste visible. */
+html:not(.js) .rideau {
+  display: none;
+}
+
+/* Révélation : la classe est ajoutée par js/main.js une fois la page chargée
+   (mise en page stabilisée), pour que le panneau + son texte se lèvent d'un
+   bloc, sans re-rendu du texte en cours d'animation. */
+.rideau--reveler {
+  animation: rideau-revele 0.9s cubic-bezier(0.65, 0, 0.35, 1) both;
 }
 
 .rideau-nom {
@@ -2289,7 +2308,7 @@ main {
 /* Première arrivée (« Bonjour ») : le rideau reste couvert un peu plus
    longtemps pour qu'on lise le mot, puis tout le ballet (rideau + contenu)
    est décalé du même délai pour garder exactement la même synchro. */
-html.bonjour .rideau { animation-delay: 0.4s; }
+html.bonjour .rideau--reveler { animation-delay: 0.4s; }
 html.bonjour .hero h1 { animation-delay: 1s; }
 html.bonjour .hero-phrase { animation-delay: 1.15s; }
 html.bonjour #projets .titre-section { animation-delay: 1.3s; }
@@ -2301,7 +2320,7 @@ html.bonjour .grille-projets .carte-projet:nth-child(3) { animation-delay: 1.64s
    demandé de réduire les animations. */
 @media (prefers-reduced-motion: reduce) {
   .rideau {
-    animation: none;
+    display: none;
   }
 }
 
@@ -2318,6 +2337,3 @@ html.js .reveler.visible {
   opacity: 1;
   transform: none;
 }
-
-/* L'entree du hero (nom + phrase) est desormais geree par l'animation
-   "apparition-montee" synchronise
