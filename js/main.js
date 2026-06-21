@@ -280,7 +280,19 @@ if (rideau && !mouvementReduitRideau) {
 
     setTimeout(() => {
       window.location.href = lien.href;
-    }, 950);
+    }, 820);
+  });
+
+  // Page restaurée depuis le cache (boutons Précédent / Suivant) : le rideau a
+  // pu rester en position couvrante (classe de sortie) ou dans un état figé.
+  // On le réinitialise et on rejoue la révélation depuis l'état couvrant, pour
+  // éviter un écran noir bloqué ou un flash à la réapparition de la page.
+  window.addEventListener("pageshow", (e) => {
+    if (!e.persisted) return;
+    rideau.classList.remove("rideau--sortie");
+    rideau.style.animation = "none";
+    void rideau.offsetWidth; // force un reflow
+    rideau.style.animation = ""; // relance rideau-revele proprement
   });
 }
 
@@ -322,35 +334,6 @@ if (document.querySelector(".trois-maquettes .annotation-point.ancre-bas")) {
   });
   ajusterEspaceBarresNav();
   setTimeout(ajusterEspaceBarresNav, 300); // après chargement des polices/images
-}
-
-
-// ==========================================================
-// Zoom doux du header des pages projet au défilement
-// L'image grandit légèrement à mesure qu'on défile (jusqu'à +12 %),
-// clippée dans son cadre. Synchronisé à l'affichage (rAF) pour rester
-// fluide ; désactivé si l'utilisateur a demandé de réduire les animations.
-// ==========================================================
-const heroProjet = document.querySelector(".projet-hero");
-const heroProjetImg = heroProjet ? heroProjet.querySelector("img") : null;
-const mouvementReduitZoom = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-if (heroProjetImg && !mouvementReduitZoom) {
-  let enAttente = false;
-  const majZoom = () => {
-    enAttente = false;
-    const hauteur = heroProjet.offsetHeight || 1;
-    const progres = Math.min(Math.max(window.scrollY / hauteur, 0), 1);
-    const echelle = 1 + progres * 0.12; // zoom progressif jusqu'à 1.12
-    heroProjetImg.style.transform = "scale(" + echelle + ")";
-  };
-  window.addEventListener("scroll", () => {
-    if (!enAttente) {
-      enAttente = true;
-      requestAnimationFrame(majZoom);
-    }
-  }, { passive: true });
-  majZoom();
 }
 
 
@@ -470,4 +453,18 @@ if (contactBouton && contactVolet) {
       basculerContact();
     }
   });
+}
+
+
+// ==========================================================
+// Hauteur de la barre de navigation -> variable CSS --nav-h
+// Sert à épingler l'image d'en-tête juste sous la barre (effet de contenu
+// qui passe par-dessus l'image au défilement, sans que l'image bouge).
+// ==========================================================
+const barreNav = document.querySelector(".nav");
+if (barreNav) {
+  const majHauteurNav = () =>
+    document.documentElement.style.setProperty("--nav-h", barreNav.offsetHeight + "px");
+  majHauteurNav();
+  window.addEventListener("resize", majHauteurNav);
 }

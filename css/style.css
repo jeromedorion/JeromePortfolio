@@ -38,15 +38,20 @@
 
 html {
   scroll-behavior: smooth;
+  /* noir derrière le body : l'instant de bascule entre deux pages est donc
+     noir (comme le rideau) au lieu d'un flash blanc. */
+  background: var(--encre);
 }
 
 body {
   background: var(--papier);
+  min-height: 100vh; /* couvre toujours l'écran : pas de noir visible hors transition */
   color: var(--encre);
   font-family: var(--police-texte);
   font-size: 1.05rem;
   line-height: 1.65;
   -webkit-font-smoothing: antialiased;
+  overflow-x: clip; /* le fond pleine largeur du contenu ne crée pas de scroll horizontal */
 }
 
 img, video {
@@ -659,7 +664,11 @@ h3 {
    prend toute la largeur (la barre noire reste à droite),
    et le titre blanc est posé sur l'image. */
 .projet-hero {
-  position: relative;
+  /* Épinglée : l'image reste en place pendant que le contenu défile
+     par-dessus. Aucun mouvement propre de l'image. */
+  position: sticky;
+  top: var(--nav-h, 0px); /* épinglée juste sous la barre : aucun mouvement */
+  z-index: 1;
   overflow: hidden; /* l'image qui zoome au défilement reste clippée au cadre */
 }
 
@@ -673,15 +682,37 @@ h3 {
      agrandit l'image. Les bornes clamp évitent les extrêmes. */
   height: clamp(380px, calc(100svh - 14rem), 880px);
   object-fit: cover;
-  transform-origin: center; /* zoom centré, piloté au défilement par js/main.js */
-  will-change: transform;
+}
+
+/* Tout le contenu sous l'image remonte par-dessus elle au défilement (l'image
+   étant épinglée). Le fond blanc s'étend sur TOUTE la largeur de l'écran pour
+   recouvrir l'image quel que soit le format. */
+main.conteneur {
+  position: relative;
+  z-index: 2;
+  /* L'espace au-dessus du titre fait partie du contenu (fond blanc) : il
+     passe donc lui aussi par-dessus l'image au défilement. */
+  padding-top: clamp(2.5rem, 6vw, 4rem);
+}
+
+main.conteneur::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  background: var(--papier);
+  z-index: -1; /* derrière le texte, mais devant l'image épinglée */
 }
 
 /* Le nom du projet et sa phrase de résumé sont placés SOUS l'image
    (plus aucun texte ni voile sur la photo), juste avant le bloc
    métadonnées, alignés avec le contenu de la page. */
 .projet-intro {
-  margin: clamp(2.5rem, 6vw, 4rem) 0 0;
+  margin: 0;
 }
 
 /* Nom du projet en casse normale (« Rémi », « Radio-Canada »…), avec la
@@ -1885,9 +1916,9 @@ main {
   grid-template-columns: minmax(180px, 320px) minmax(0, 1fr);
   gap: 2.5rem;
   margin-top: 3rem;
-  /* bloc centré dans la page */
+  /* aligné à gauche, comme le texte et les autres maquettes */
   max-width: 860px;
-  margin-left: auto;
+  margin-left: 0;
   margin-right: auto;
 }
 
@@ -2171,8 +2202,7 @@ main {
      le chargement du JS) : le panneau couvre l'écran puis monte pour
      révéler le contenu. C'est ce qui évite le flash de la page d'arrivée
      avant que le panneau ne soit en place. */
-  will-change: transform;
-  animation: rideau-revele 0.9s cubic-bezier(0.5, 0, 0.75, 0) both; /* court arrêt sur le nom au début, puis révèle en accélérant */
+  animation: rideau-revele 0.9s cubic-bezier(0.65, 0, 0.35, 1) both; /* court arrêt sur le nom, puis glisse en douceur (pas de retrait brusque) */
 }
 
 .rideau-nom {
@@ -2180,8 +2210,17 @@ main {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: -0.01em; /* crénage serré comme les h1 */
-  font-size: clamp(1.5rem, 5vw, 3rem);
+  /* Taille SANS unité de viewport : sinon l'apparition de la barre de
+     défilement (quand la page s'allonge) change la largeur du viewport, donc
+     la taille du texte se recalcule et le nom "clignote" pendant la transition. */
+  font-size: 3rem;
   color: var(--papier);
+}
+
+@media (max-width: 600px) {
+  .rideau-nom {
+    font-size: 2rem;
+  }
 }
 
 /* Coiffes arrondies en débord, du même noir, au-dessus et en dessous du
@@ -2212,10 +2251,7 @@ main {
   right: 0;
   height: var(--coiffe-h);
   background: var(--encre);
-  /* étirement (rebond) par transform : composé sur le GPU, donc fluide,
-     sans recalcul de hauteur à chaque image */
-  transform: scaleY(var(--etire));
-  will-change: transform;
+  transform: scaleY(var(--etire)); /* coiffes arrondies, statiques */
 }
 
 .rideau::before {            /* coiffe du haut — bord d'attaque à la sortie */
@@ -2231,21 +2267,17 @@ main {
 }
 
 @keyframes rideau-revele {
-  0%   { transform: translateY(0); --etire: 1; }         /* couvre (nom visible) */
-  18%  { transform: translateY(0); --etire: 1; }         /* court arrêt : on lit le nom */
-  55%  { --etire: 1.9; }                                 /* le bord du bas s'étire */
-  78%  { --etire: 0.8; }                                 /* rebond */
-  100% { transform: translateY(calc(-100% - 100px)); --etire: 1; } /* part, courbe cachée */
+  0%   { transform: translateY(0); }                      /* couvre (nom visible) */
+  20%  { transform: translateY(0); }                      /* court arrêt : on lit le nom */
+  100% { transform: translateY(calc(-100% - 100px)); }    /* glisse hors de l'écran, en douceur */
 }
 
 /* Sortie : le panneau monte depuis le bas pour couvrir, avec le même
    étirement de coiffe (du haut cette fois) puis rebond. Déclenchée par la
    classe .rideau--sortie ajoutée au clic (voir js/main.js). */
 @keyframes rideau-sortie {
-  0%   { transform: translateY(calc(100% + 100px)); --etire: 1; }
-  45%  { --etire: 1.9; }                                     /* le bord du haut s'étire */
-  70%  { --etire: 0.8; }                                     /* rebond */
-  100% { transform: translateY(0); --etire: 1; }             /* couvre, en douceur */
+  0%   { transform: translateY(calc(100% + 100px)); } /* part d'en dessous */
+  100% { transform: translateY(0); }                  /* monte couvrir, en douceur */
 }
 
 .rideau.rideau--sortie {
@@ -2288,4 +2320,4 @@ html.js .reveler.visible {
 }
 
 /* L'entree du hero (nom + phrase) est desormais geree par l'animation
-   "apparition-montee" synchronisee avec le rideau (voir plus haut). */
+   "apparition-montee" synchronise
