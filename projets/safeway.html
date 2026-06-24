@@ -35,18 +35,57 @@
         <div class="nav-contact">
           <span class="nav-contact-bouton" tabindex="0" role="button" aria-expanded="false" aria-controls="volet-contact">Contact<span class="nav-contact-chevron" aria-hidden="true"></span></span>
           <div class="nav-contact-volet" id="volet-contact">
-            <a href="mailto:jerome.dorion.pro@gmail.com">Courriel<span class="fleche-volet" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></a>
-            <a href="https://www.linkedin.com/in/jérôme-dorion-040149350" target="_blank" rel="noopener">LinkedIn<span class="fleche-volet" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></a>
+            <a href="mailto:jerome.dorion.pro@gmail.com"><span class="volet-mot">Courriel</span></a>
+            <a href="https://www.linkedin.com/in/jérôme-dorion-040149350" target="_blank" rel="noopener"><span class="volet-mot">LinkedIn</span></a>
           </div>
         </div>
-        <a class="masquer-mobile" href="https://drive.google.com/file/d/1WQyurHoxNqCceoQxutv7T_P1aVuBk8ul/view?usp=sharing" target="_blank" rel="noopener">CV</a>
+        <a class="masquer-mobile" href="../assets/cv-jerome-dorion.pdf" download="Jerome Dorion - CV.pdf">CV</a>
       </nav>
-      <a class="nav-langue" href="#" title="English version — à venir">EN</a>
+      <a class="nav-langue" href="#" title="English version — à venir">English</a>
       <button class="nav-bascule" type="button" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="menu-principal">
         <span></span><span></span><span></span>
       </button>
     </div>
   </header>
+
+  <!-- ===== Menu « Projets » (overlay) ===== -->
+  <div class="menu-projets" id="menu-projets" aria-hidden="true">
+    <div class="menu-projets-fond" data-fermer></div>
+    <aside class="menu-projets-panneau" role="dialog" aria-modal="true" aria-label="Projets">
+      <div class="menu-projets-liste">
+        <a class="menu-projet" href="radio-canada.html">
+          <img class="menu-projet-photo" src="../assets/radio-canada/hero.jpg" alt="Projet Radio-Canada">
+          <span class="menu-projet-titre">Radio-Canada</span>
+          <div class="menu-projet-contenu">
+            <span class="menu-projet-phrase">Comment attirer une clientèle plus jeune ?</span>
+            <span class="menu-projet-tags"><span class="tag">Mobile</span><span class="tag">UX/UI Design</span><span class="tag">UX Research</span></span>
+            <span class="menu-projet-duree"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>15 minutes</span>
+          </div>
+          <span class="menu-projet-fleche" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </a>
+        <a class="menu-projet" href="remi.html">
+          <img class="menu-projet-photo" src="../assets/remi/hero.png" alt="Projet Rémi">
+          <span class="menu-projet-titre">Rémi</span>
+          <div class="menu-projet-contenu">
+            <span class="menu-projet-phrase">Comment soutenir les proches aidants ?</span>
+            <span class="menu-projet-tags"><span class="tag">Mobile</span><span class="tag">UX/UI Design</span><span class="tag">UX Research</span><span class="tag">Product design</span></span>
+            <span class="menu-projet-duree"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>8 minutes</span>
+          </div>
+          <span class="menu-projet-fleche" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </a>
+        <a class="menu-projet" href="safeway.html">
+          <img class="menu-projet-photo" src="../assets/safeway/hero.png" alt="Projet Safeway">
+          <span class="menu-projet-titre">Safeway</span>
+          <div class="menu-projet-contenu">
+            <span class="menu-projet-phrase">Comment repenser l'évacuation incendie ?</span>
+            <span class="menu-projet-tags"><span class="tag">Mobile</span><span class="tag">Watch</span><span class="tag">UX/UI Design</span><span class="tag">UX Research</span></span>
+            <span class="menu-projet-duree"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>6 minutes</span>
+          </div>
+          <span class="menu-projet-fleche" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </a>
+      </div>
+    </aside>
+  </div>
 
   <!-- ===== En-tête : photo pleine largeur, titre et sous-titre placés dessous ===== -->
   <section class="projet-hero">
@@ -104,11 +143,11 @@
     <!-- ===== Méthode de recherche ===== -->
     <section class="bloc reveler">
       <h2>Méthode de recherche</h2>
-      <div class="grille-cartes">
-        <div class="mini-carte">
-          <h3>Recherche secondaire</h3>
-          <p>La recherche secondaire consiste à analyser des données existantes telles que des études, des rapports, des articles scientifiques ou des statistiques plutôt que de les collecter soi-même. En raison de la nature et du temps limité de ce mandat, elle a constitué la principale source de données et de statistiques.</p>
-        </div>
+      <div class="methodes-accordeon">
+        <details class="methode">
+          <summary><span class="methode-titre">Recherche secondaire</span><span class="methode-chevron" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></summary>
+          <div class="methode-corps"><p>La recherche secondaire consiste à analyser des données existantes telles que des études, des rapports, des articles scientifiques ou des statistiques plutôt que de les collecter soi-même. En raison de la nature et du temps limité de ce mandat, elle a constitué la principale source de données et de statistiques.</p></div>
+        </details>
       </div>
     </section>
 
@@ -244,8 +283,8 @@
     <div class="conteneur">
       <h3 class="titre-section">Autres projets</h3>
       <div class="liens">
-        <a class="projet-precedent" href="remi.html"><span class="lien-texte"><span class="nom">Rémi</span><span class="lien-sous-titre">Supporter les proches aidants</span></span><span class="fleche">→</span></a>
-        <a class="projet-suivant" href="radio-canada.html"><span class="lien-texte"><span class="nom">Radio-Canada</span><span class="lien-sous-titre">Se rapprocher d'une clientèle plus jeune</span></span><span class="fleche">→</span></a>
+        <a class="projet-precedent" href="remi.html"><span class="lien-texte"><span class="nom">Rémi</span><span class="lien-sous-titre">Supporter les proches aidants</span></span><span class="fleche" aria-hidden="true"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></a>
+        <a class="projet-suivant" href="radio-canada.html"><span class="lien-texte"><span class="nom">Radio-Canada</span><span class="lien-sous-titre">Se rapprocher d'une clientèle plus jeune</span></span><span class="fleche" aria-hidden="true"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></a>
       </div>
     </div>
   </section>

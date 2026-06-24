@@ -24,9 +24,9 @@
 
   --police-titre: "Manrope", sans-serif;
   --police-texte: "Manrope", sans-serif;
-  --police-accent: "IBM Plex Mono", monospace;
+  --police-accent: "Manrope", sans-serif; /* TEST : Manrope partout (au lieu d'IBM Plex Mono) — remettre la valeur mono pour annuler */
 
-  --largeur-max: 1480px; /* contenu plus large, marges réduites */
+  --largeur-max: 1680px; /* contenu plus large sur grand écran */
   --rayon: 0; /* coins carrés partout, style droit et neutre */
 }
 
@@ -139,8 +139,10 @@ h3 {
 }
 
 .nav-role {
-  color: var(--encre-douce);
-  font-size: 0.9rem;
+  color: var(--encre); /* même couleur (noir) que « Jérôme Dorion » et les liens de nav */
+  font-size: 0.82rem; /* même taille que les mots de la nav */
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
   border-left: 1px solid var(--ligne);
   padding-left: 0.75rem;
 }
@@ -191,26 +193,63 @@ h3 {
   margin-left: auto;
   display: flex;
   gap: 2.75rem; /* liens de navigation plus aérés */
-  font-size: 0.95rem;
+  font-size: 0.82rem; /* réduit car en majuscules (sinon trop gros) */
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .nav-liens a {
   position: relative;
 }
 
-.nav-liens a::after {
-  content: "";
+/* Survol de la navigation : des crochets [ ] apparaissent de chaque côté du
+   mot (au lieu d'une barre qui s'allonge). En absolu = aucun décalage de la
+   mise en page ; ils glissent vers le mot en apparaissant. */
+.nav-liens > a::before,
+.nav-liens > a::after,
+.nav-langue::before,
+.nav-langue::after,
+.nav-contact-bouton::before,
+.nav-contact-bouton::after {
   position: absolute;
-  left: 0;
-  bottom: -4px;
-  width: 0;
-  height: 2px;
-  background: var(--accent);
-  transition: width 0.25s ease;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
+  color: var(--encre);
+  transition: opacity 0.2s ease, transform 0.25s cubic-bezier(0.33, 1, 0.68, 1);
 }
 
-.nav-liens a:hover::after {
-  width: 100%;
+.nav-liens > a::before,
+.nav-langue::before,
+.nav-contact-bouton::before {
+  content: "[";
+  right: calc(100% + 0.12em);
+  transform: translateX(0.3em);
+}
+
+.nav-liens > a::after,
+.nav-langue::after,
+.nav-contact-bouton::after {
+  content: "]";
+  left: calc(100% + 0.12em);
+  transform: translateX(-0.3em);
+}
+
+.nav-liens > a:hover::before,
+.nav-liens > a:hover::after,
+.nav-liens > a.actif::before,
+.nav-liens > a.actif::after,
+.nav-langue:hover::before,
+.nav-langue:hover::after,
+.nav-contact-bouton:hover::before,
+.nav-contact-bouton:hover::after,
+.nav-contact-bouton:focus-visible::before,
+.nav-contact-bouton:focus-visible::after {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 /* ----- « Me contacter » : volet déroulant (Courriel + LinkedIn) ----- */
@@ -232,25 +271,6 @@ h3 {
   position: relative;
 }
 
-/* Même soulignement au survol que les liens. */
-.nav-contact-bouton::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -4px;
-  width: 0;
-  height: 2px;
-  background: var(--accent);
-  transition: width 0.25s ease;
-}
-
-/* Le soulignement reste tant qu'on survole l'ensemble (bouton + volet),
-   donc il ne disparaît pas quand on descend vers Courriel ou LinkedIn. */
-.nav-contact:hover .nav-contact-bouton::after,
-.nav-contact:focus-within .nav-contact-bouton::after {
-  width: 100%;
-}
-
 /* Chevron de « Me contacter » : caché sur grand écran (le survol suffit),
    visible dans le menu replié pour indiquer qu'on peut déplier. */
 .nav-contact-chevron {
@@ -268,7 +288,7 @@ h3 {
   position: absolute;
   top: calc(100% + 0.85rem);
   left: 0;
-  min-width: 11rem;
+  width: max-content; /* le panneau épouse la largeur des mots */
   display: flex;
   flex-direction: column;
   background: var(--papier);
@@ -303,28 +323,48 @@ h3 {
 .nav-contact-volet a {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
   padding: 0.55rem 0.75rem;
-  font-size: 0.95rem;
+  font-size: 0.82rem; /* même taille que les mots de la navigation */
   color: var(--encre);
-  transition: background 0.2s ease;
 }
 
-/* Flèche à droite : pivote vers le haut-droite au survol, comme sur les cartes. */
-.fleche-volet {
-  line-height: 0;
+/* Courriel / LinkedIn : crochets [ ] au survol (comme la nav), ni flèche ni
+   carré gris. Le mot est encapsulé dans .volet-mot pour cadrer les crochets. */
+.volet-mot {
+  position: relative;
+}
+
+.volet-mot::before,
+.volet-mot::after {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  pointer-events: none;
   color: var(--encre);
-  transition: transform 0.3s ease;
+  transition: opacity 0.2s ease, transform 0.25s cubic-bezier(0.33, 1, 0.68, 1);
 }
 
-.nav-contact-volet a:hover .fleche-volet {
-  transform: rotate(-45deg);
+.volet-mot::before {
+  content: "[";
+  right: calc(100% + 0.12em);
+  transform: translateX(0.3em);
 }
 
-.nav-contact-volet a::after { display: none; } /* pas de soulignement ici */
+.volet-mot::after {
+  content: "]";
+  left: calc(100% + 0.12em);
+  transform: translateX(-0.3em);
+}
 
-.nav-contact-volet a:hover {
-  background: color-mix(in srgb, var(--encre) 8%, transparent);
+.nav-contact-volet a:hover .volet-mot::before,
+.nav-contact-volet a:hover .volet-mot::after,
+.nav-contact-volet a:focus-visible .volet-mot::before,
+.nav-contact-volet a:focus-visible .volet-mot::after {
+  opacity: 1;
+  transform: translateX(0);
 }
 
 /* Sur petit écran (dans le menu déroulant), le volet se déplie sur place. */
@@ -346,15 +386,12 @@ h3 {
   .nav-contact-volet.ouvert { display: flex; }
   .nav-contact-volet::before { display: none; } /* pas de pont sur mobile */
   .nav-contact-volet a { padding: 0.45rem 0; }
-  /* Pas de survol sur tablette/cellulaire : la flèche est déjà orientée
-     vers le haut-droite. */
-  .fleche-volet { transform: rotate(-45deg); }
-  /* Aucun effet de survol dans le menu replié (tactile) : ni soulignement
-     des liens, ni carré gris sur Courriel/LinkedIn. */
-  .nav-liens a:hover::after,
-  .nav-contact:hover .nav-contact-bouton::after,
-  .nav-contact:focus-within .nav-contact-bouton::after {
-    width: 0;
+  /* Aucun effet de survol dans le menu replié (tactile) : pas de crochets. */
+  .nav-liens > a::before, .nav-liens > a::after,
+  .nav-langue::before, .nav-langue::after,
+  .nav-contact-bouton::before, .nav-contact-bouton::after,
+  .volet-mot::before, .volet-mot::after {
+    display: none;
   }
   .nav-contact-volet a:hover {
     background: none;
@@ -371,23 +408,26 @@ h3 {
    élément de .nav-inner, poussé tout au bord droit, près du coin. */
 .nav-langue {
   margin-left: 6rem; /* nettement détaché du groupe de liens, vers le coin droit */
-  font-size: 0.95rem;
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
   position: relative;
+  /* Bouton encadré, coins carrés, qui s'inverse au survol (pas de crochets). */
+  border: 1px solid var(--encre);
+  border-radius: var(--rayon);
+  padding: 0.45rem 0.7rem;
+  transition: background 0.25s ease, color 0.25s ease;
 }
 
+/* « English » : pas de crochets comme les autres liens. */
+.nav-langue::before,
 .nav-langue::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  bottom: -4px;
-  width: 0;
-  height: 2px;
-  background: var(--accent);
-  transition: width 0.25s ease;
+  content: none;
 }
 
-.nav-langue:hover::after {
-  width: 100%;
+.nav-langue:hover {
+  background: var(--encre);
+  color: var(--papier);
 }
 
 /* Bouton hamburger : caché sur grand écran, affiché quand la nav se replie. */
@@ -443,7 +483,8 @@ h3 {
   }
 
   .nav-liens.ouvert { display: flex; } /* ouvert via js/main.js */
-  .nav-liens a { font-size: 1.05rem; }
+  .nav-liens a,
+  .nav-contact-bouton { font-size: 1.05rem; } /* Contact à la même taille que les autres liens du menu replié */
 }
 
 /* ----- 4. Hero ----- */
@@ -939,6 +980,74 @@ main {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 1.25rem;
+}
+
+/* ----- Accordéon des méthodes de recherche -----
+   Chaque méthode : titre + chevron, séparées par des lignes ; clic pour
+   dérouler le texte. <details> natif (accessible, fonctionne sans JS). */
+.methodes-accordeon {
+  margin-top: 2rem;
+  border-top: 1px solid var(--ligne);
+}
+
+.methode {
+  border-bottom: 1px solid var(--ligne);
+}
+
+.methode summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.4rem 0;
+  cursor: pointer;
+  list-style: none; /* retire le triangle par défaut */
+}
+
+.methode summary::-webkit-details-marker {
+  display: none; /* idem sur Safari/Chrome */
+}
+
+.methode-titre {
+  font-size: clamp(1.1rem, 2.2vw, 1.4rem);
+  font-weight: 600;
+  color: var(--encre);
+}
+
+.methode-chevron {
+  flex: 0 0 auto;
+  line-height: 0;
+  color: var(--encre);
+  transition: transform 0.3s ease;
+}
+
+.methode[open] .methode-chevron {
+  transform: rotate(180deg); /* le chevron pointe vers le haut une fois ouvert */
+}
+
+.methode-corps {
+  padding: 0 0 1.4rem;
+  max-width: 62ch;
+}
+
+.methode-corps p {
+  margin: 0;
+  color: var(--encre-douce);
+}
+
+/* Apparition douce du texte à l'ouverture */
+.methode[open] .methode-corps {
+  animation: methode-ouvre 0.3s ease;
+}
+
+@keyframes methode-ouvre {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .methode-chevron { transition: none; }
+  .methode[open] .methode-corps { animation: none; }
 }
 
 /* Variante : exactement 3 colonnes (ex. : 6 cartes = 2 rangées de 3) */
@@ -2159,8 +2268,14 @@ main {
 }
 
 .autres-projets .fleche {
-  font-family: var(--police-accent);
-  font-weight: 400;
+  flex: 0 0 auto;
+  line-height: 0;
+  color: var(--encre);
+}
+
+.autres-projets .fleche svg {
+  width: clamp(28px, 4vw, 40px);
+  height: auto;
 }
 
 /* ----- Curseur personnalisé « Voir » au survol des liens « autre projet » -----
@@ -2170,8 +2285,8 @@ main {
   top: 0;
   left: 0;
   z-index: 9998;
-  width: 4.75rem;
-  height: 4.75rem;
+  width: 4.1rem;
+  height: 4.1rem;
   border-radius: 50%;
   background: var(--encre);
   color: var(--papier);
@@ -2326,4 +2441,188 @@ html.js .reveler {
 html.js .reveler.visible {
   opacity: 1;
   transform: none;
+}
+
+
+/* ============================================================
+   Menu « Projets » : overlay sombre + panneau à droite
+   Ouvert par le lien « Projets » de la nav (depuis n'importe quelle page).
+   ============================================================ */
+.menu-projets {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  visibility: hidden;
+  pointer-events: none; /* conteneur transparent : ne bloque jamais la nav */
+}
+
+.menu-projets.ouvert {
+  visibility: visible;
+}
+
+/* Seuls le voile et le panneau captent la souris (pas la zone vide au-dessus
+   de la nav) — sinon le survol de « Projets » serait interrompu (flash). */
+.menu-projets-fond,
+.menu-projets-panneau {
+  pointer-events: auto;
+}
+
+/* Voile sombre qui atténue la page pour mettre l'emphase sur le panneau */
+.menu-projets-fond {
+  position: absolute;
+  top: var(--nav-h, 80px); /* sous la barre de navigation */
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(17, 17, 17, 0.55);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.menu-projets.ouvert .menu-projets-fond {
+  opacity: 1;
+}
+
+/* Panneau collé à droite, pleine hauteur, jusqu'au bord de l'écran */
+.menu-projets-panneau {
+  position: absolute;
+  top: var(--nav-h, 80px); /* s'ouvre sous la barre de navigation */
+  right: 0;
+  left: 38vw; /* défaut ; aligné sur le mot « Projets » par js/main.js */
+  height: auto; /* la hauteur s'arrête au dernier projet */
+  max-height: calc(100dvh - var(--nav-h, 80px) - 1rem);
+  background: var(--papier);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  transform: translateY(-14px);
+  opacity: 0;
+  transition: transform 0.4s cubic-bezier(0.33, 1, 0.68, 1), opacity 0.35s ease;
+  box-shadow: 0 26px 70px rgba(17, 17, 17, 0.18);
+}
+.menu-projets.ouvert .menu-projets-panneau {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.menu-projets-entete {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem clamp(0.75rem, 2vw, 1.1rem);
+  border-bottom: 1px solid var(--ligne);
+}
+.menu-projets-entete .titre {
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-size: 0.8rem;
+  color: var(--encre-douce);
+}
+.menu-projets-fermer {
+  background: none;
+  border: none;
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+  color: var(--encre);
+  padding: 0;
+}
+
+.menu-projets-liste {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Une ligne projet : photo carrée | titre + phrase | flèche */
+.menu-projet {
+  display: grid;
+  grid-template-columns: auto 7.5rem minmax(0, 1fr) auto; /* photo | titre | contenu | flèche */
+  align-items: stretch; /* le contenu prend la hauteur de l'image */
+  gap: clamp(0.85rem, 2.5vw, 1.5rem);
+  padding: clamp(0.85rem, 2vw, 1.25rem) clamp(0.75rem, 2vw, 1.1rem);
+  border-bottom: 1px solid var(--ligne);
+  color: var(--encre);
+  transition: background 0.25s ease;
+}
+.menu-projet:hover {
+  background: color-mix(in srgb, var(--encre) 4%, transparent);
+}
+
+.menu-projet-photo {
+  width: clamp(100px, 13vw, 132px);
+  align-self: stretch;          /* hauteur = hauteur de la ligne */
+  min-height: clamp(100px, 13vw, 132px);
+  object-fit: cover;
+  border-radius: var(--rayon);
+}
+
+/* Titre et phrase : exactement le même style, petit et uniforme. */
+.menu-projet-titre,
+.menu-projet-phrase {
+  font-family: var(--police-titre);
+  font-weight: 500;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  line-height: 1.35;
+  color: var(--encre);
+}
+.menu-projet-titre {
+  white-space: nowrap;
+  align-self: start; /* aligné en haut, au niveau de la phrase */
+}
+
+/* Colonne de contenu : titre/phrase + tags en haut, durée collée en bas. */
+/* Phrase + tags + durée empilés et alignés ensemble (tout sous la phrase). */
+.menu-projet-contenu {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+/* Carrés (tags) repris des cartes, sous le titre et la phrase. */
+.menu-projet-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+/* Temps de lecture (icône livre), aligné en bas — au niveau du bas de l'image. */
+.menu-projet-duree {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--police-accent);
+  font-size: 0.8rem;
+  color: var(--encre-douce);
+}
+.menu-projet-duree svg {
+  flex-shrink: 0;
+}
+
+.menu-projet-fleche {
+  flex: 0 0 auto;
+  align-self: start; /* flèche en haut */
+  line-height: 0;
+  color: var(--encre);
+  transition: transform 0.3s ease;
+}
+.menu-projet-fleche svg {
+  width: 20px;
+  height: 20px;
+}
+.menu-projet:hover .menu-projet-fleche {
+  transform: rotate(-45deg); /* pointe vers le haut-droite au survol */
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .menu-projets-fond,
+  .menu-projets-panneau,
+  .menu-projet-fleche { transition: none; }
+}
+
+/* Sur petit écran, le panneau prend toute la largeur. */
+@media (max-width: 900px) {
+  .menu-projets-panneau { left: 0; }
 }

@@ -254,6 +254,7 @@ if (rideau && !mouvementReduitRideau) {
     // on laisse passer : ancres internes, courriel, téléphone, nouvel onglet
     if (href.startsWith("#") || href.startsWith("mailto:") || href.startsWith("tel:")) return;
     if (lien.target === "_blank") return;
+    if (lien.hasAttribute("download")) return; // laisse le navigateur télécharger (ex. CV PDF)
 
     let dest;
     try {
@@ -465,4 +466,93 @@ if (barreNav) {
     document.documentElement.style.setProperty("--nav-h", barreNav.offsetHeight + "px");
   majHauteurNav();
   window.addEventListener("resize", majHauteurNav);
+}
+
+
+// ==========================================================
+// Menu « Projets » : voile sombre + panneau sous la barre de nav, à droite.
+// S'ouvre AU SURVOL du lien « Projets » (depuis n'importe quelle page) ; clic
+// conservé comme repli tactile. Hauteur limitée au contenu (dernier projet).
+// ==========================================================
+const menuProjets = document.querySelector(".menu-projets");
+if (menuProjets) {
+  const panneauProjets = menuProjets.querySelector(".menu-projets-panneau");
+  const liensProjets = document.querySelectorAll('.nav-liens > a[href$="#projets"]');
+  let minuterieFermeture = null;
+
+  const annulerFermeture = () => {
+    if (minuterieFermeture) {
+      clearTimeout(minuterieFermeture);
+      minuterieFermeture = null;
+    }
+  };
+
+  const ouvrirMenuProjets = () => {
+    annulerFermeture();
+    // Le panneau démarre à hauteur du mot « Projets » (grand écran), jusqu'au
+    // bord droit ; pleine largeur sur petit écran.
+    if (panneauProjets) {
+      if (window.innerWidth > 900) {
+        const lien = liensProjets[0];
+        // un peu plus large : démarre ~14px à gauche du mot « Projets »
+        panneauProjets.style.left = lien
+          ? Math.round(lien.getBoundingClientRect().left - 14) + "px"
+          : "";
+      } else {
+        panneauProjets.style.left = "0px";
+      }
+    }
+    menuProjets.classList.add("ouvert");
+    menuProjets.setAttribute("aria-hidden", "false");
+    liensProjets.forEach((a) => a.classList.add("actif")); // crochets maintenus
+  };
+
+  const fermerMenuProjets = () => {
+    annulerFermeture();
+    menuProjets.classList.remove("ouvert");
+    menuProjets.setAttribute("aria-hidden", "true");
+    liensProjets.forEach((a) => a.classList.remove("actif"));
+  };
+
+  // Léger délai à la sortie : le temps d'aller du mot « Projets » au panneau.
+  const fermerBientot = () => {
+    annulerFermeture();
+    minuterieFermeture = setTimeout(fermerMenuProjets, 220);
+  };
+
+  // Le pop-up n'existe que sur grand écran. Sous 900px (menu hamburger), il
+  // masquerait le reste du menu : « Projets » redevient alors un lien normal
+  // qui ramène à la section/aux pages projet.
+  const surGrandEcran = () => window.innerWidth > 900;
+  liensProjets.forEach((a) => {
+    a.addEventListener("mouseenter", () => {
+      if (surGrandEcran()) ouvrirMenuProjets();
+    });
+    a.addEventListener("mouseleave", fermerBientot);
+    a.addEventListener("focus", () => {
+      if (surGrandEcran()) ouvrirMenuProjets();
+    });
+    a.addEventListener("click", (e) => {
+      if (!surGrandEcran()) return; // petit écran : lien normal (va aux projets)
+      e.preventDefault();
+      e.stopPropagation(); // empêche le rideau de page de se déclencher
+      ouvrirMenuProjets();
+    });
+  });
+
+  // Tant qu'on survole le panneau, il reste ouvert ; en sortir le referme.
+  if (panneauProjets) {
+    panneauProjets.addEventListener("mouseenter", annulerFermeture);
+    panneauProjets.addEventListener("mouseleave", fermerBientot);
+  }
+
+  // Fermeture immédiate : clic sur le voile, bouton ×, touche Échap.
+  menuProjets.querySelectorAll("[data-fermer]").forEach((el) =>
+    el.addEventListener("click", fermerMenuProjets)
+  );
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && menuProjets.classList.contains("ouvert")) {
+      fermerMenuProjets();
+    }
+  });
 }
