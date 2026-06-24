@@ -283,35 +283,14 @@ if (rideau && !mouvementReduitRideau) {
     }, 820);
   });
 
-  // Révèle le rideau une fois la PAGE CHARGÉE (mise en page stabilisée).
-  // Tant que la page charge, le rideau reste couvrant et statique (non animé,
-  // donc non composité) : le nom est peint normalement et ne clignote pas
-  // pendant les changements de longueur de page. requestAnimationFrame garantit
-  // que le panneau + son texte sont peints avant que l'animation démarre.
-  // Filet de sécurité : on révèle au plus tard après 1 s.
-  const revelerRideau = () =>
-    requestAnimationFrame(() => rideau.classList.add("rideau--reveler"));
-  if (document.readyState === "complete") {
-    revelerRideau();
-  } else {
-    let lance = false;
-    const lancer = () => {
-      if (lance) return;
-      lance = true;
-      revelerRideau();
-    };
-    window.addEventListener("load", lancer, { once: true });
-    setTimeout(lancer, 1000);
-  }
-
-  // Page restaurée depuis le cache (boutons Précédent / Suivant) : on
-  // réinitialise et on rejoue la révélation pour ne pas rester sur un écran noir.
+  // Page restaurée depuis le cache (boutons Précédent / Suivant) : on rejoue
+  // proprement la révélation pour ne pas rester sur un écran noir figé.
   window.addEventListener("pageshow", (e) => {
     if (!e.persisted) return;
     rideau.classList.remove("rideau--sortie");
-    rideau.classList.remove("rideau--reveler");
+    rideau.style.animation = "none";
     void rideau.offsetWidth; // force un reflow
-    rideau.classList.add("rideau--reveler");
+    rideau.style.animation = ""; // relance rideau-revele
   });
 }
 
@@ -477,8 +456,8 @@ if (contactBouton && contactVolet) {
 
 // ==========================================================
 // Hauteur de la barre de navigation -> variable CSS --nav-h
-// Sert à épingler l'image d'en-tête juste sous la barre (effet de contenu
-// qui passe par-dessus l'image au défilement, sans que l'image bouge).
+// Sert à épingler l'image d'en-tête juste sous la barre (le contenu passe
+// par-dessus l'image au défilement, sans que l'image bouge).
 // ==========================================================
 const barreNav = document.querySelector(".nav");
 if (barreNav) {

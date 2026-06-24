@@ -3,6 +3,10 @@
 Portfolio de designer d'interaction, transféré depuis Framer et codé à la main.
 Site original : https://jeromedorionportfolio.framer.website/
 
+## Communication
+
+- **Toujours commencer chaque réponse par le prénom de Jérôme** (ex. « Jérôme, … »).
+
 ## Structure
 
 - `index.html` — accueil (hero centré, cartes projets, à propos, footer)
