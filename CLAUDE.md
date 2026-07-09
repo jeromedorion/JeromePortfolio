@@ -9,24 +9,44 @@ Site original : https://jeromedorionportfolio.framer.website/
 
 ## Structure
 
-- `index.html` — accueil (hero centré, cartes projets, à propos, footer)
+- `index.html` — accueil (nav, hero pleine largeur, cartes projets, à propos, footer)
 - `projets/` — études de cas : radio-canada.html, remi.html, safeway.html
 - `css/style.css` — toute la mise en forme (variables CSS en haut du fichier)
-- `js/main.js` — animations d'apparition au défilement (classe `.reveler`)
+- `js/main.js` — tout le comportement (révélations au scroll, rideau, menus…)
 
 ## Conventions de design (décisions de Jérôme — à respecter)
 
-- **Deux typos maximum** : Manrope (titres + texte) et IBM Plex Mono (tags,
-  étiquettes, chiffres, temps de lecture, barre latérale). AUCUN italique.
-- **Palette noir et blanc strict** : fond blanc pur, texte noir, gris neutres.
-  Pas d'orange, pas de beige, pas de couleur d'accent.
+- **Typos** : Manrope (titres + texte), IBM Plex Mono (tags, étiquettes,
+  chiffres, temps de lecture) et Anton (`--police-display`, réservé au grand
+  nom du hero d'accueil). AUCUN italique.
+- **Palette noir et blanc strict** : fond blanc cassé (#fafafa), texte noir,
+  gris neutres. Pas de couleur d'accent (seule exception : le rouge #e45a4b
+  des schémas/pastilles des pages projets).
 - **Coins carrés partout** : `--rayon: 0`. Aucun coin arrondi.
-- **Barre latérale noire fixe à droite** (96px) : « Contact » en haut et
-  « EN » en bas, tous deux en texte vertical. Elle suit le scroll.
-  Sur mobile elle passe en barre horizontale en bas.
 - Cartes projets : photo à gauche, nom du projet en gros à droite,
   question en plus petit, tags mono, temps de lecture avec icône de livre.
 - Code et commentaires en français.
+
+## Navigation et accueil (état actuel)
+
+- **Barre de nav fixe en haut** (l'ancienne barre latérale noire n'existe plus) :
+  logo « JD », rôle animé au survol (Designer d'interaction ⇄ Jérôme Dorion),
+  liens Projets / À propos / Contact (volet Courriel + LinkedIn) / CV (téléchargement),
+  bouton « English » à droite (pointe vers `#` en attendant).
+  Sous 900px : menu hamburger (English reste visible à part).
+- **Pop-up Projets** : au survol du lien « Projets », panneau sous la nav
+  avec les 3 projets (photo, titre, question, tags, durée). Clic = repli tactile.
+- **Rideau de transition** entre les pages (panneau noir + nom de la destination) :
+  « Bonjour » à la première arrivée sur le site, sinon nom de la page
+  (drapeau `transitionInterne` en sessionStorage).
+- **Hero d'accueil** : nom dimensionné par JS pour remplir exactement
+  la largeur de la nav (mesure canvas + DOM) ; le nom s'estompe en montant
+  au défilement. Sous le nom : onglets « À propos » (Présentation / Parcours /
+  Objectifs / Intérêts), barre segmentée façon Arestov, un panneau visible
+  à la fois (bascule dans main.js, fondu CSS panneau-fondu). L'ancienne
+  phrase d'intro du hero a été retirée.
+- **Curseur « Voir »** : rond noir qui suit la souris sur les cartes projets
+  et les liens « Voir un autre projet » (appareils à pointeur seulement).
 
 ## Composants des pages projets (état actuel)
 
@@ -35,9 +55,10 @@ Site original : https://jeromedorionportfolio.framer.website/
 - Comparaisons Avant/Après (`.comparaison-annotee` + `.trois-col`/`.quatre-col`) :
   maquettes PNG sans ombre, ratio 0.483, exports dans photos-a-trier/Radio-Canada/.
 - Annotations (`.annotation-point` + `.ligne` ou `.coude`) : EN FLUX NORMAL
-  (jamais position:absolute, sinon chevauchements). Ancrage vertical par
-  --marge en % de la largeur de colonne. Point collé à la maquette,
-  flèche vers le titre. Réglages fins faits à l'œil avec Jérôme.
+  (jamais position:absolute, sinon chevauchements — seule exception : l'annotation
+  `.ancre-bas` de `.trois-maquettes`, dont le débordement est compensé par JS).
+  Ancrage vertical par --marge en % de la largeur de colonne. Point collé à la
+  maquette, flèche vers le titre. Réglages fins faits à l'œil avec Jérôme.
 - Parcours utilisateurs (`.parcours`) : texte + constats à pastilles rouges
   #e45a4b (couleur des schémas), schéma PNG à droite.
 - Stats animées (décompte de 0 à la valeur, main.js), vidéos Rémi
@@ -49,10 +70,15 @@ Site original : https://jeromedorionportfolio.framer.website/
 
 ## À faire (idées en attente)
 
-- Créer la version anglaise (le bouton EN de la barre latérale pointe
+- Créer la version anglaise (le bouton « English » de la nav pointe
   vers `#` en attendant).
 - Optimiser le poids des images d'assets/ avant la mise en ligne
-  (~89 Mo au total, certains PNG font 5-15 Mo).
+  (~117 Mo au total, certains PNG font 5-15 Mo).
+- Nettoyer les polices inutilisées chargées dans index.html
+  (Oswald, DM Mono, Iosevka Charon Mono — seuls Manrope, IBM Plex Mono
+  et Anton servent).
+- Trancher le TEST en cours : `--police-accent` est à Manrope
+  (au lieu d'IBM Plex Mono) — garder ou annuler.
 
 ## Images
 

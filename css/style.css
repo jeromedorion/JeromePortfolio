@@ -23,10 +23,11 @@
   --carte: #fafafa;         /* fond des cartes, même ton que le fond */
 
   --police-titre: "Manrope", sans-serif;
+  --police-display: "Anton", sans-serif; /* gros titre display (nom de l'accueil) */
   --police-texte: "Manrope", sans-serif;
   --police-accent: "Manrope", sans-serif; /* TEST : Manrope partout (au lieu d'IBM Plex Mono) — remettre la valeur mono pour annuler */
 
-  --largeur-max: 1680px; /* contenu plus large sur grand écran */
+  --largeur-max: none; /* aucun plafond : le contenu prend toute la largeur */
   --rayon: 0; /* coins carrés partout, style droit et neutre */
 }
 
@@ -68,7 +69,7 @@ a {
 .conteneur {
   max-width: var(--largeur-max);
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 clamp(64px, 8vw, 160px);
 }
 
 /* ----- 2. Typographie ----- */
@@ -126,7 +127,7 @@ h3 {
 .nav-inner {
   max-width: var(--largeur-max);
   margin: 0 auto;
-  padding: 28px 24px; /* navigation plus aérée verticalement */
+  padding: 28px clamp(64px, 8vw, 160px); /* navigation plus aérée verticalement */
   display: flex;
   align-items: center;
   gap: 0.75rem; /* JD et le rôle rapprochés */
@@ -191,6 +192,7 @@ h3 {
 
 .nav-liens {
   margin-left: auto;
+  margin-right: 3rem; /* décalé un peu vers la gauche (English reste à droite) */
   display: flex;
   gap: 2.75rem; /* liens de navigation plus aérés */
   font-size: 0.82rem; /* réduit car en majuscules (sinon trop gros) */
@@ -244,10 +246,10 @@ h3 {
 .nav-liens > a.actif::after,
 .nav-langue:hover::before,
 .nav-langue:hover::after,
-.nav-contact-bouton:hover::before,
-.nav-contact-bouton:hover::after,
-.nav-contact-bouton:focus-visible::before,
-.nav-contact-bouton:focus-visible::after {
+.nav-contact:hover .nav-contact-bouton::before,
+.nav-contact:hover .nav-contact-bouton::after,
+.nav-contact:focus-within .nav-contact-bouton::before,
+.nav-contact:focus-within .nav-contact-bouton::after {
   opacity: 1;
   transform: translateX(0);
 }
@@ -416,18 +418,37 @@ h3 {
   border: 1px solid var(--encre);
   border-radius: var(--rayon);
   padding: 0.45rem 0.7rem;
-  transition: background 0.25s ease, color 0.25s ease;
+  overflow: hidden; /* clippe le panneau de remplissage */
+  isolation: isolate; /* le ::before (z-index -1) reste derrière le seul texte */
+  transition: color 0.3s ease;
 }
 
-/* « English » : pas de crochets comme les autres liens. */
-.nav-langue::before,
+/* « English » : pas de crochets. Au survol, un panneau noir monte du bas
+   jusqu'à remplir tout le rectangle, en douceur (easing). */
 .nav-langue::after {
   content: none;
 }
-
-.nav-langue:hover {
+.nav-langue::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  opacity: 1;
   background: var(--encre);
+  transform: scaleY(0);
+  transform-origin: bottom; /* le remplissage démarre par le bas */
+  transition: transform 0.5s cubic-bezier(0.7, 0, 0.2, 1); /* fluide */
+  z-index: -1; /* derrière le texte */
+}
+.nav-langue:hover,
+.nav-langue:focus-visible {
   color: var(--papier);
+}
+.nav-langue:hover::before,
+.nav-langue:focus-visible::before {
+  transform: scaleY(1); /* rempli en entier */
 }
 
 /* Bouton hamburger : caché sur grand écran, affiché quand la nav se replie. */
@@ -488,30 +509,135 @@ h3 {
 }
 
 /* ----- 4. Hero ----- */
+/* Dans le hero (flex en colonne), .conteneur a margin:0 auto qui annule
+   l'étirement → il faut forcer la pleine largeur pour que le nom s'aligne
+   exactement sur la nav (même padding) et la remplisse. */
+.hero > .conteneur {
+  width: 100%;
+  align-self: stretch;
+}
+
 .hero {
-  /* Remplit presque tout l'écran sous la navigation : le hero domine,
-     mais on retranche assez de hauteur (16rem) pour qu'un morceau de
-     la première carte projet dépasse en bas du viewport et invite à
-     défiler. La valeur retranchée = nav (~84px) + l'aperçu de carte. */
-  min-height: calc(100svh - 16rem);
+  /* Remplit EXACTEMENT la hauteur visible sous la barre de navigation :
+     hero + nav = 100dvh, donc la section Projets commence pile au bas du
+     viewport et n'apparaît jamais à l'écran initial, quel que soit le format.
+     (dvh suit la hauteur réelle, même quand la barre du navigateur mobile
+     apparaît/disparaît.) */
+  min-height: calc(100dvh - var(--nav-h, 80px));
   display: flex;
   flex-direction: column;
-  justify-content: center; /* nom et phrase centrés verticalement */
-  padding: 2rem 0;
-  text-align: center; /* nom et phrase centrés horizontalement */
+  justify-content: flex-start; /* nom en haut */
+  padding: 3.25rem 0 2rem; /* descendu sous la nav pour bien voir les accents */
+  text-align: left; /* nom et phrase alignés à gauche, pleine largeur */
 }
 
 .hero h1 {
-  font-size: clamp(2.8rem, 9vw, 7rem);
+  /* Nom en Manrope, graisse la plus forte (800 = ExtraBold) */
+  font-family: "Manrope", sans-serif;
   font-weight: 800;
-  white-space: nowrap; /* le nom reste sur une seule ligne */
+  text-transform: uppercase;
+  line-height: 0.95;
+  letter-spacing: 0;
+  white-space: nowrap;
+  width: 100%;
+  /* espace haut PROPORTIONNEL à la taille : dégage les accents (é, ô) de la nav
+     quelle que soit la grosseur du nom */
+  padding-top: 0.22em;
+  /* taille de repli avant js/main.js ; ajustée ensuite pour remplir la largeur */
+  font-size: clamp(3rem, 15vw, 16rem);
 }
 
-.hero-phrase {
-  max-width: 680px;
-  margin: 2rem auto 0; /* centrée sous le nom */
-  font-size: 1.3rem;
+/* --- Onglets « À propos » du hero (sous le nom) --- */
+/* Barre segmentée façon Arestov : 4 cellules égales, bordures fines.
+   L'astuce grille + gap de 1px sur fond gris dessine les séparations
+   sans doubler les bordures, et tient toute seule en 2x2 sur mobile. */
+.apropos-hero {
+  /* respire davantage sous le nom (fluide : suit la hauteur d'écran) */
+  margin-top: clamp(2.25rem, 4.5vh, 3.5rem);
+}
+
+.apropos-onglets {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--ligne);       /* visible seulement dans les interstices */
+  border: 1px solid var(--ligne);
+}
+
+.apropos-onglet {
+  /* reset du bouton natif */
+  appearance: none;
+  border: none;
+  border-radius: var(--rayon);
+  background: #fff;
+  font-family: var(--police-accent);
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
   color: var(--encre-douce);
+  padding: 0.85rem 1rem;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.apropos-onglet:hover {
+  color: var(--encre);
+}
+
+/* Onglet actif : cellule inversée, cohérente avec la palette noir et blanc */
+.apropos-onglet.actif {
+  background: var(--encre);
+  color: var(--papier);
+}
+
+.apropos-onglet:focus-visible {
+  outline: 2px solid var(--encre);
+  outline-offset: -2px;
+}
+
+/* Panneaux : un seul visible, apparition en fondu + légère montée */
+.apropos-panneau[hidden] {
+  display: none;
+}
+
+.apropos-panneau.actif {
+  animation: panneau-fondu 0.45s cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+/* Texte des panneaux : gros texte d'intro (près du double du corps
+   normal), légèrement gras, bien détaché des onglets, sans traverser
+   l'écran. Tailles et espaces fluides (clamp) pour que le hero complet
+   (nom + onglets + texte le plus long) reste dans l'écran initial. */
+.apropos-panneau p {
+  max-width: min(1080px, 100%);
+  margin: clamp(1.75rem, 3.5vh, 3rem) 0 0;
+  font-size: clamp(1.35rem, 1rem + 1.05vw, 2.1rem);
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--encre-douce);
+}
+
+@keyframes panneau-fondu {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 640px) {
+  /* petits écrans : la barre passe en 2x2 (la grille + gap gère les traits) */
+  .apropos-onglets {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .apropos-panneau.actif {
+    animation: none;
+  }
 }
 
 /* ----- 5. Section projets ----- */
@@ -691,7 +817,7 @@ h3 {
 .footer-inner {
   max-width: var(--largeur-max);
   margin: 0 auto;
-  padding: 0 24px;
+  padding: 0 clamp(64px, 8vw, 160px);
   width: 100%;
   display: flex;
   flex-wrap: wrap;
@@ -800,14 +926,15 @@ main.conteneur::before {
   animation: apparition-montee 0.85s cubic-bezier(0.33, 1, 0.68, 1) 0.62s both;
 }
 
-/* Page d'accueil : le nom et la phrase montent en fondu au chargement,
+/* Page d'accueil : le nom et les onglets montent en fondu au chargement,
    synchronisés avec le rideau (premier accès comme retour à l'accueil). */
 .hero h1 {
   animation: apparition-montee 0.9s cubic-bezier(0.33, 1, 0.68, 1) 0.6s backwards;
 }
 
-.hero-phrase {
-  animation: apparition-montee 0.9s cubic-bezier(0.33, 1, 0.68, 1) 0.75s backwards;
+/* Les onglets « À propos » montent juste après le nom */
+.apropos-hero {
+  animation: apparition-montee 0.9s cubic-bezier(0.33, 1, 0.68, 1) 0.68s backwards;
 }
 
 /* Le titre « Mes projets » monte avec le hero (il depasse deja en bas
@@ -831,7 +958,7 @@ main.conteneur::before {
   .projet-intro,
   .meta-grille,
   .hero h1,
-  .hero-phrase,
+  .apropos-hero,
   #projets .titre-section,
   .grille-projets .carte-projet {
     animation: none;
@@ -2236,9 +2363,12 @@ main {
 .autres-projets .fleche {
   transition: transform 0.3s ease;
 }
-.autres-projets .liens a:hover .lien-texte,
-.autres-projets .liens a:hover .fleche {
+/* Le texte garde son glissement horizontal ; la flèche, elle, pivote seulement. */
+.autres-projets .liens a:hover .lien-texte {
   transform: translateX(0.75rem);
+}
+.autres-projets .liens a:hover .fleche {
+  transform: rotate(-45deg); /* pointe vers le haut-droite, comme les cartes */
 }
 
 /* Les deux projets empilés en pleine largeur : nom à gauche, flèche tout à
@@ -2414,7 +2544,7 @@ main {
    est décalé du même délai pour garder exactement la même synchro. */
 html.bonjour .rideau { animation-delay: 0.4s; }
 html.bonjour .hero h1 { animation-delay: 1s; }
-html.bonjour .hero-phrase { animation-delay: 1.15s; }
+html.bonjour .apropos-hero { animation-delay: 1.08s; }
 html.bonjour #projets .titre-section { animation-delay: 1.3s; }
 html.bonjour .grille-projets .carte-projet:nth-child(1) { animation-delay: 1.4s; }
 html.bonjour .grille-projets .carte-projet:nth-child(2) { animation-delay: 1.52s; }
@@ -2547,12 +2677,22 @@ html.js .reveler.visible {
   background: color-mix(in srgb, var(--encre) 4%, transparent);
 }
 
-.menu-projet-photo {
+.menu-projet-media {
   width: clamp(100px, 13vw, 132px);
   align-self: stretch;          /* hauteur = hauteur de la ligne */
   min-height: clamp(100px, 13vw, 132px);
-  object-fit: cover;
+  overflow: hidden;             /* clippe le zoom de l'image */
   border-radius: var(--rayon);
+  line-height: 0;
+}
+.menu-projet-photo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease; /* zoom doux comme les cartes d'accueil */
+}
+.menu-projet:hover .menu-projet-photo {
+  transform: scale(1.12);
 }
 
 /* Titre et phrase : exactement le même style, petit et uniforme. */
@@ -2619,6 +2759,7 @@ html.js .reveler.visible {
 @media (prefers-reduced-motion: reduce) {
   .menu-projets-fond,
   .menu-projets-panneau,
+  .menu-projet-photo,
   .menu-projet-fleche { transition: none; }
 }
 

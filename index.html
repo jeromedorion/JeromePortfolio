@@ -9,7 +9,7 @@
   <!-- Polices -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Anton&family=Oswald:wght@500;600;700&family=DM+Mono:wght@500&family=Iosevka+Charon+Mono:wght@700&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="css/style.css">
   <!-- Marque le JS actif avant le 1er affichage : le rideau couvre par
@@ -70,7 +70,7 @@
     <aside class="menu-projets-panneau" role="dialog" aria-modal="true" aria-label="Projets">
       <div class="menu-projets-liste">
         <a class="menu-projet" href="projets/radio-canada.html">
-          <img class="menu-projet-photo" src="assets/radio-canada/hero.jpg" alt="Projet Radio-Canada">
+          <span class="menu-projet-media"><img class="menu-projet-photo" src="assets/radio-canada/hero.jpg" alt="Projet Radio-Canada"></span>
           <span class="menu-projet-titre">Radio-Canada</span>
           <div class="menu-projet-contenu">
             <span class="menu-projet-phrase">Comment attirer une clientèle plus jeune ?</span>
@@ -80,7 +80,7 @@
           <span class="menu-projet-fleche" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
         </a>
         <a class="menu-projet" href="projets/remi.html">
-          <img class="menu-projet-photo" src="assets/remi/hero.png" alt="Projet Rémi">
+          <span class="menu-projet-media"><img class="menu-projet-photo" src="assets/remi/hero.png" alt="Projet Rémi"></span>
           <span class="menu-projet-titre">Rémi</span>
           <div class="menu-projet-contenu">
             <span class="menu-projet-phrase">Comment soutenir les proches aidants ?</span>
@@ -90,7 +90,7 @@
           <span class="menu-projet-fleche" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
         </a>
         <a class="menu-projet" href="projets/safeway.html">
-          <img class="menu-projet-photo" src="assets/safeway/hero.png" alt="Projet Safeway">
+          <span class="menu-projet-media"><img class="menu-projet-photo" src="assets/safeway/hero.png" alt="Projet Safeway"></span>
           <span class="menu-projet-titre">Safeway</span>
           <div class="menu-projet-contenu">
             <span class="menu-projet-phrase">Comment repenser l'évacuation incendie ?</span>
@@ -107,7 +107,31 @@
   <section class="hero">
     <div class="conteneur">
       <h1>Jérôme Dorion</h1>
-      <p class="hero-phrase">J'observe, je questionne, je teste et je construis des expériences <span class="accent-serif">intuitives</span> pour vos utilisateurs.</p>
+
+      <!-- Onglets « À propos » sous le nom (façon barre segmentée) :
+           un seul panneau visible à la fois, bascule gérée par js/main.js. -->
+      <div class="apropos-hero">
+        <div class="apropos-onglets" role="tablist" aria-label="À propos de moi">
+          <button class="apropos-onglet actif" id="onglet-presentation" type="button" role="tab" aria-selected="true" aria-controls="panneau-presentation">Présentation</button>
+          <button class="apropos-onglet" id="onglet-parcours" type="button" role="tab" aria-selected="false" aria-controls="panneau-parcours" tabindex="-1">Parcours</button>
+          <button class="apropos-onglet" id="onglet-objectifs" type="button" role="tab" aria-selected="false" aria-controls="panneau-objectifs" tabindex="-1">Objectifs</button>
+          <button class="apropos-onglet" id="onglet-interets" type="button" role="tab" aria-selected="false" aria-controls="panneau-interets" tabindex="-1">Intérêts</button>
+        </div>
+        <div class="apropos-panneaux">
+          <div class="apropos-panneau actif" id="panneau-presentation" role="tabpanel" aria-labelledby="onglet-presentation">
+            <p>Fraîchement diplômé à la maîtrise en design d'interaction, je suis un designer UX basé à Québec, Canada. Je cherche une équipe qui va me permettre de grandir, d'apprendre, et de montrer ce que je sais faire.</p>
+          </div>
+          <div class="apropos-panneau" id="panneau-parcours" role="tabpanel" aria-labelledby="onglet-parcours" hidden>
+            <p>Mon parcours a débuté en génie électronique au cégep, où j'ai découvert le côté technique que j'aime toujours : souder, coder, comprendre comment les choses fonctionnent. Mais il me manquait quelque chose. Je me suis alors tourné vers les sciences humaines, attiré par la psychologie et le comportement humain. Après mon DEC, j'hésitais entre plusieurs choix de parcours universitaire, mais mon choix s'est arrêté sur le design graphique. J'ai eu certains doutes en première année, mais dès la deuxième année, lors de nos premiers cours en UX, j'ai réalisé que ce domaine m'intéressait et regroupait plusieurs choses que j'adorais. En apprenant qu'une maîtrise était disponible dans ce domaine, mon choix était déjà fait.</p>
+          </div>
+          <div class="apropos-panneau" id="panneau-objectifs" role="tabpanel" aria-labelledby="onglet-objectifs" hidden>
+            <p>En tant que designer junior, mon objectif est simple : obtenir une opportunité pour prouver ce que je suis capable de faire. Je suis prêt à apprendre, à m'investir et à mettre en pratique tout ce que j'ai appris. Il me manque juste une chance.</p>
+          </div>
+          <div class="apropos-panneau" id="panneau-interets" role="tabpanel" aria-labelledby="onglet-interets" hidden>
+            <p>Dans mon temps libre, j'ai toujours été un grand passionné de sport. J'ai pratiqué le volleyball au secondaire et au cégep, encore une de mes passions aujourd'hui, en plus d'avoir longtemps fait du ski freestyle durant une grande partie de ma jeunesse. Je joue aussi aux jeux vidéo depuis tout jeune, notamment à World of Warcraft et à League of Legends, les deux jeux auxquels j'ai consacré le plus de temps, parmi plusieurs autres. Le cinéma, lui, c'est presque une tradition : j'essaie encore aujourd'hui d'y aller le plus souvent possible.</p>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 

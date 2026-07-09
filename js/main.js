@@ -337,15 +337,14 @@ if (document.querySelector(".trois-maquettes .annotation-point.ancre-bas")) {
 
 
 // ==========================================================
-// Effet de défilement du hero d'accueil (nom + phrase)
-// En descendant, le nom monte doucement et s'efface ; la phrase suit un
-// peu moins vite. Synchronisé à l'affichage (rAF). L'animation d'entrée
-// utilise le remplissage « backwards », donc une fois jouée ces styles
-// inline reprennent la main sans accroc.
+// Effet de défilement du hero d'accueil (nom)
+// En descendant, le nom monte doucement et s'efface. Synchronisé à
+// l'affichage (rAF). L'animation d'entrée utilise le remplissage
+// « backwards », donc une fois jouée ces styles inline reprennent
+// la main sans accroc.
 // ==========================================================
 const heroAccueil = document.querySelector(".hero");
 const heroNom = heroAccueil ? heroAccueil.querySelector("h1") : null;
-const heroPhrase = heroAccueil ? heroAccueil.querySelector(".hero-phrase") : null;
 const mouvementReduitHero = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 if (heroNom && !mouvementReduitHero) {
@@ -354,13 +353,8 @@ if (heroNom && !mouvementReduitHero) {
     enAttenteHero = false;
     // progression sur ~65 % de la hauteur de l'écran
     const progres = Math.min(Math.max(window.scrollY / (window.innerHeight * 0.65), 0), 1);
-    const opacite = 1 - progres;
-    heroNom.style.opacity = opacite;
+    heroNom.style.opacity = 1 - progres;
     heroNom.style.transform = "translateY(" + (-progres * 90) + "px)";
-    if (heroPhrase) {
-      heroPhrase.style.opacity = opacite;
-      heroPhrase.style.transform = "translateY(" + (-progres * 70) + "px)";
-    }
   };
   window.addEventListener("scroll", () => {
     if (!enAttenteHero) {
@@ -554,5 +548,117 @@ if (menuProjets) {
     if (e.key === "Escape" && menuProjets.classList.contains("ouvert")) {
       fermerMenuProjets();
     }
+  });
+}
+
+
+// ==========================================================
+// Nom du hero (accueil) : taille ajustée pour remplir toute la largeur
+// du conteneur (mêmes marges gauche/droite que la nav).
+// ==========================================================
+const nomHero = document.querySelector(".hero h1");
+if (nomHero) {
+  const ajusterNomHero = () => {
+    // Cible = du bord gauche réel du nom jusqu'au bord droit RÉEL du bouton
+    // « English » (mesuré en direct), pour un calage exact sur la nav.
+    nomHero.style.marginLeft = "0px";
+    nomHero.style.letterSpacing = "";
+    const boxLeft = nomHero.getBoundingClientRect().left;
+    const langue = document.querySelector(".nav-langue");
+    const cible = langue
+      ? langue.getBoundingClientRect().right - boxLeft
+      : (nomHero.parentElement ? nomHero.parentElement.clientWidth : 0);
+    if (!(cible > 0)) return;
+
+    const cs = getComputedStyle(nomHero);
+    const REF = 100;
+
+    // Largeur d'avance réelle rendue à REF px (mesure DOM = fiable).
+    nomHero.style.fontSize = REF + "px";
+    nomHero.style.width = "max-content";
+    const advDom = nomHero.getBoundingClientRect().width;
+    nomHero.style.width = "";
+    if (!advDom) return;
+
+    // Proportions d'encre (ratios) via canvas : robustes aux écarts canvas/DOM.
+    const ctx =
+      ajusterNomHero._ctx ||
+      (ajusterNomHero._ctx = document.createElement("canvas").getContext("2d"));
+    ctx.font = cs.fontStyle + " " + cs.fontWeight + " " + REF + "px " + cs.fontFamily;
+    const m = ctx.measureText(nomHero.textContent);
+    const advCv = m.width || advDom;
+    let fracGauche = -m.actualBoundingBoxLeft / advCv; // espace propre avant le J
+    let fracEncre = (m.actualBoundingBoxLeft + m.actualBoundingBoxRight) / advCv;
+    if (!(fracEncre > 0) || isNaN(fracEncre)) {
+      fracGauche = 0;
+      fracEncre = 1; // repli : on cale sur la chasse
+    }
+
+    // Taille pour que l'ENCRE visible mesure exactement « cible ».
+    const taille = (cible / (advDom * fracEncre)) * REF;
+    const k = taille / REF;
+    nomHero.style.fontSize = taille + "px";
+    // Tire le nom vers la gauche pour coller l'encre du « J » au bord gauche ;
+    // l'encre du « N » tombe alors pile sur le bord droit du bouton English.
+    nomHero.style.marginLeft = -fracGauche * advDom * k + "px";
+  };
+  ajusterNomHero();
+  window.addEventListener("resize", ajusterNomHero);
+  if (document.fonts && document.fonts.ready) {
+    document.fonts.ready.then(ajusterNomHero);
+  }
+  if (window.ResizeObserver && nomHero.parentElement) {
+    let derniereLargeur = 0;
+    new ResizeObserver((entrees) => {
+      const l = entrees[0].contentRect.width;
+      if (Math.abs(l - derniereLargeur) > 0.5) {
+        derniereLargeur = l;
+        ajusterNomHero();
+      }
+    }).observe(nomHero.parentElement);
+  }
+}
+
+
+// ==========================================================
+// Onglets « À propos » du hero (accueil)
+// 4 onglets sous le nom : un seul panneau visible à la fois.
+// Clic (ou flèches gauche/droite au clavier) pour changer d'onglet ;
+// le panneau actif apparaît en fondu (animation CSS panneau-fondu).
+// ==========================================================
+const ongletsApropos = Array.from(document.querySelectorAll(".apropos-onglet"));
+if (ongletsApropos.length > 0) {
+  const panneauxApropos = document.querySelectorAll(".apropos-panneau");
+
+  const activerOnglet = (onglet) => {
+    ongletsApropos.forEach((o) => {
+      const actif = o === onglet;
+      o.classList.toggle("actif", actif);
+      o.setAttribute("aria-selected", actif ? "true" : "false");
+      o.tabIndex = actif ? 0 : -1; // un seul onglet dans l'ordre de tabulation
+    });
+    panneauxApropos.forEach((p) => {
+      const actif = p.id === onglet.getAttribute("aria-controls");
+      p.classList.toggle("actif", actif);
+      p.hidden = !actif;
+    });
+  };
+
+  ongletsApropos.forEach((onglet, i) => {
+    onglet.addEventListener("click", () => activerOnglet(onglet));
+    // navigation au clavier entre les onglets (boucle aux extrémités)
+    onglet.addEventListener("keydown", (e) => {
+      let cible = null;
+      if (e.key === "ArrowRight") {
+        cible = ongletsApropos[(i + 1) % ongletsApropos.length];
+      } else if (e.key === "ArrowLeft") {
+        cible = ongletsApropos[(i - 1 + ongletsApropos.length) % ongletsApropos.length];
+      }
+      if (cible) {
+        e.preventDefault();
+        cible.focus();
+        activerOnglet(cible);
+      }
+    });
   });
 }
