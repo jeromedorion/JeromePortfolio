@@ -565,9 +565,15 @@ if (nomHero) {
     nomHero.style.letterSpacing = "";
     const boxLeft = nomHero.getBoundingClientRect().left;
     const langue = document.querySelector(".nav-langue");
-    const cible = langue
-      ? langue.getBoundingClientRect().right - boxLeft
-      : (nomHero.parentElement ? nomHero.parentElement.clientWidth : 0);
+    // Desktop : le nom va jusqu'au bord droit du bouton « English ».
+    // Mobile (nav repliée, <= 900px) : le nom remplit toute la largeur du
+    // conteneur, car « English » n'est plus le dernier élément à droite.
+    let cible;
+    if (langue && window.innerWidth > 900) {
+      cible = langue.getBoundingClientRect().right - boxLeft;
+    } else {
+      cible = nomHero.clientWidth;
+    }
     if (!(cible > 0)) return;
 
     const cs = getComputedStyle(nomHero);

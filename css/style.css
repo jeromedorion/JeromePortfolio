@@ -44,6 +44,17 @@ html {
   background: var(--encre);
 }
 
+/* Typographie fluide : sur grand écran, la taille de base (donc tout ce qui
+   est en rem) suit la largeur de l'écran, pour garder la MÊME composition
+   d'une résolution à l'autre (ex. 1920 vs 2K). Sous 1000px (tablette/mobile),
+   on garde la taille par défaut pour ne pas y rapetisser le texte.
+   Repères : ~14px à 1920, ~16px à 2560. */
+@media (min-width: 1000px) {
+  html {
+    font-size: clamp(14px, 0.23vw + 10px, 16px);
+  }
+}
+
 body {
   background: var(--papier);
   min-height: 100vh; /* couvre toujours l'écran : pas de noir visible hors transition */
@@ -146,6 +157,8 @@ h3 {
   letter-spacing: 0.04em;
   border-left: 1px solid var(--ligne);
   padding-left: 0.75rem;
+  display: inline-flex;      /* centre le rôle verticalement avec « JD » */
+  align-items: center;
 }
 
 /* Survol de « Designer d'interaction » : il glisse vers la droite et laisse
@@ -154,7 +167,7 @@ h3 {
   position: relative;
   display: inline-block;
   overflow: hidden;
-  vertical-align: bottom;
+  vertical-align: middle;
   white-space: nowrap;
 }
 
@@ -518,12 +531,12 @@ h3 {
 }
 
 .hero {
-  /* Remplit EXACTEMENT la hauteur visible sous la barre de navigation :
-     hero + nav = 100dvh, donc la section Projets commence pile au bas du
-     viewport et n'apparaît jamais à l'écran initial, quel que soit le format.
-     (dvh suit la hauteur réelle, même quand la barre du navigateur mobile
-     apparaît/disparaît.) */
-  min-height: calc(100dvh - var(--nav-h, 80px));
+  /* Le hero laisse dépasser un petit morceau de la section Projets en bas
+     (le titre « Projets » et le début de la première carte) pour inviter au
+     défilement. On retranche la nav + un dépassement FIXE (en rem, donc
+     proportionnel au texte) pour que ce dépassement reste à peu près constant
+     d'une résolution à l'autre. */
+  min-height: calc(100dvh - var(--nav-h, 80px) - 11rem);
   display: flex;
   flex-direction: column;
   justify-content: flex-start; /* nom en haut */
@@ -648,6 +661,15 @@ h3 {
   font-weight: 500;
   line-height: 1.5;
   color: var(--encre-douce);
+}
+
+/* Sur les écrans jusqu'à ~2100px (typiquement 1920), on réduit un peu les
+   textes des onglets pour qu'ils prennent moins de place. Le 2K et plus
+   gardent la taille ci-dessus. */
+@media (min-width: 1000px) and (max-width: 2100px) {
+  .apropos-panneau p {
+    font-size: clamp(1rem, min(0.8rem + 0.4vw, 0.9rem + 0.9vh), 1.25rem);
+  }
 }
 
 @keyframes panneau-fondu {
@@ -801,6 +823,51 @@ h3 {
 
 .carte-projet .duree-lecture svg {
   flex-shrink: 0;
+}
+
+/* ============================================================
+   Optimisation mobile / tablette de la page d'accueil.
+   Le desktop (au-dessus de 900px) reste identique.
+   ============================================================ */
+
+/* Tablette et moins : marges latérales resserrées (le clamp desktop est trop
+   large sur petit écran). */
+@media (max-width: 900px) {
+  .conteneur,
+  .nav-inner,
+  .footer-inner {
+    padding-left: clamp(24px, 5vw, 48px);
+    padding-right: clamp(24px, 5vw, 48px);
+  }
+}
+
+/* Téléphone : cartes empilées (photo en haut) et marges encore plus serrées. */
+@media (max-width: 680px) {
+  .conteneur,
+  .nav-inner,
+  .footer-inner {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  /* Cartes de projets : une seule colonne, la photo passe en haut. */
+  .carte-projet {
+    grid-template-columns: 1fr;
+  }
+  .carte-projet .vignette {
+    height: auto;
+    aspect-ratio: 16 / 10;   /* hauteur cohérente pour la photo pleine largeur */
+  }
+  .carte-contenu {
+    padding: 1.5rem;
+  }
+  .fleche-carte {
+    top: 1.5rem;
+    right: 1.5rem;
+  }
+  .carte-projet .question {
+    font-size: 1rem;
+  }
 }
 
 /* ----- 6. À propos ----- */
@@ -2642,7 +2709,6 @@ html.js .reveler.visible {
   transform: none;
 }
 
-
 /* ============================================================
    Menu « Projets » : overlay sombre + panneau à droite
    Ouvert par le lien « Projets » de la nav (depuis n'importe quelle page).
@@ -2835,4 +2901,73 @@ html.js .reveler.visible {
 /* Sur petit écran, le panneau prend toute la largeur. */
 @media (max-width: 900px) {
   .menu-projets-panneau { left: 0; }
+}
+
+/* ============================================================
+   Pages projets - optimisation téléphone (<= 600px).
+   Le desktop et la tablette (gérés plus haut) ne changent pas.
+   ============================================================ */
+@media (max-width: 600px) {
+  /* En-tête projet : bannière plus courte sur téléphone (au lieu de presque
+     tout l'écran), tout en gardant l'effet épinglé. */
+  .projet-hero img {
+    height: clamp(220px, 45svh, 360px);
+  }
+
+  /* Blocs numérotés : plus de retrait en marge, le numéro passe en ligne
+     « (01) Titre » et le contenu prend toute la largeur. */
+  .bloc {
+    padding-left: 0;
+  }
+  .bloc > h2 {
+    margin-left: 0;
+  }
+  .bloc h2 {
+    gap: 0.6rem;
+  }
+  .bloc h2::before {
+    flex: 0 0 auto;
+  }
+
+  /* Infos projet et statistiques : tout empilé sur une seule colonne. */
+  .meta-grille {
+    grid-template-columns: 1fr;
+  }
+  .grille-cartes,
+  .grille-cartes.trois-colonnes {
+    grid-template-columns: 1fr;
+  }
+
+  /* Comparaisons Avant/Après : une maquette par rangée, centrée ; les
+     annotations (déjà sans flèches sous 920px) suivent en dessous. */
+  .trois-col,
+  .quatre-col,
+  .trois-maquettes {
+    grid-template-columns: 1fr;
+  }
+  .comparaison-annotee img {
+    max-width: 240px;
+    margin: 0;               /* maquette alignée à gauche */
+  }
+  .comparaison-annotee figcaption {
+    text-align: left;
+  }
+  /* on annule les placements de grille prévus pour l'affichage 2 colonnes */
+  .quatre-col > figure:nth-of-type(1),
+  .quatre-col > figure:nth-of-type(2),
+  .trois-maquettes > figure:nth-of-type(1),
+  .trois-maquettes > figure:nth-of-type(2),
+  .trois-maquettes > figure:nth-of-type(3) {
+    grid-column: auto;
+    grid-row: auto;
+  }
+
+  /* « Ajout d'indicateurs » (quatre-col) : les deux maquettes d'abord, puis
+     les quatre annotations regroupées sous la maquette Recommandation
+     (Résumé enrichi + Temps de lecture rejoignent Indicateur de lecture +
+     Audio intégré). */
+  .quatre-col > figure:nth-of-type(1) { order: 1; }
+  .quatre-col > figure:nth-of-type(2) { order: 2; }
+  .quatre-col > .col-annotations:nth-of-type(1) { order: 3; }
+  .quatre-col > .col-annotations:nth-of-type(2) { order: 4; }
 }
