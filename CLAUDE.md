@@ -6,6 +6,9 @@ Site original : https://jeromedorionportfolio.framer.website/
 ## Communication
 
 - **Toujours commencer chaque réponse par le prénom de Jérôme** (ex. « Jérôme, … »).
+- **Aucun tiret long (—) nulle part, jamais** : ni dans les textes du site, ni
+  dans les titres, descriptions, textes alt, ou commentaires de code. Utiliser
+  deux-points, virgule, point ou « · » selon le contexte.
 
 ## Structure
 
@@ -44,7 +47,11 @@ Site original : https://jeromedorionportfolio.framer.website/
   au défilement. Sous le nom : onglets « À propos » (Présentation / Parcours /
   Objectifs / Intérêts), barre segmentée façon Arestov, un panneau visible
   à la fois (bascule dans main.js, fondu CSS panneau-fondu). L'ancienne
-  phrase d'intro du hero a été retirée.
+  phrase d'intro du hero a été retirée. À la première arrivée (« Bonjour »),
+  intro chorégraphiée : le nom se révèle au centre de l'écran par un masque
+  (bas en haut), pause, puis monte se caler à sa place pendant que les
+  onglets apparaissent (keyframes hero-nom-intro ; --nom-decale mesuré
+  par main.js).
 - **Curseur « Voir »** : rond noir qui suit la souris sur les cartes projets
   et les liens « Voir un autre projet » (appareils à pointeur seulement).
 

@@ -1,5 +1,5 @@
 // ==========================================================
-// PORTFOLIO — JÉRÔME DORION
+// PORTFOLIO - JÉRÔME DORION
 // Script principal : animations d'apparition au défilement
 // ==========================================================
 
@@ -603,6 +603,22 @@ if (nomHero) {
     nomHero.style.marginLeft = -fracGauche * advDom * k + "px";
   };
   ajusterNomHero();
+
+  // Première arrivée (« Bonjour ») : mesure la distance entre la position
+  // finale du nom et le centre de l'écran, pour l'intro CSS hero-nom-intro
+  // (le nom se révèle au centre, puis monte se caler à sa place).
+  if (
+    document.documentElement.classList.contains("bonjour") &&
+    !window.matchMedia("(prefers-reduced-motion: reduce)").matches
+  ) {
+    const animationAvant = nomHero.style.animation;
+    nomHero.style.animation = "none"; // mesure SANS le transform de l'intro
+    const boite = nomHero.getBoundingClientRect();
+    const decale = Math.max(0, window.innerHeight / 2 - (boite.top + boite.height / 2));
+    document.documentElement.style.setProperty("--nom-decale", decale + "px");
+    nomHero.style.animation = animationAvant; // rien n'est encore peint : l'intro part de zéro
+  }
+
   window.addEventListener("resize", ajusterNomHero);
   if (document.fonts && document.fonts.ready) {
     document.fonts.ready.then(ajusterNomHero);

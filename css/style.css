@@ -1,5 +1,5 @@
 /* ==========================================================
-   PORTFOLIO — JÉRÔME DORION
+   PORTFOLIO - JÉRÔME DORION
    Feuille de style principale
    Structure :
    1. Variables & reset
@@ -25,7 +25,7 @@
   --police-titre: "Manrope", sans-serif;
   --police-display: "Anton", sans-serif; /* gros titre display (nom de l'accueil) */
   --police-texte: "Manrope", sans-serif;
-  --police-accent: "Manrope", sans-serif; /* TEST : Manrope partout (au lieu d'IBM Plex Mono) — remettre la valeur mono pour annuler */
+  --police-accent: "Manrope", sans-serif; /* TEST : Manrope partout (au lieu d'IBM Plex Mono) - remettre la valeur mono pour annuler */
 
   --largeur-max: none; /* aucun plafond : le contenu prend toute la largeur */
   --rayon: 0; /* coins carrés partout, style droit et neutre */
@@ -304,7 +304,7 @@ h3 {
   z-index: 60;
 }
 
-/* Ouverture au survol (souris) ou au focus clavier — aucun clic requis. */
+/* Ouverture au survol (souris) ou au focus clavier - aucun clic requis. */
 .nav-contact:hover .nav-contact-volet,
 .nav-contact:focus-within .nav-contact-volet {
   opacity: 1;
@@ -527,7 +527,7 @@ h3 {
   display: flex;
   flex-direction: column;
   justify-content: flex-start; /* nom en haut */
-  padding: 3.25rem 0 2rem; /* descendu sous la nav pour bien voir les accents */
+  padding: 1.75rem 0 2rem; /* petit espace sous la nav (le dégagement des accents est géré par le padding-top em du h1) */
   text-align: left; /* nom et phrase alignés à gauche, pleine largeur */
 }
 
@@ -560,8 +560,9 @@ h3 {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 1px;
-  background: var(--ligne);       /* visible seulement dans les interstices */
-  border: 1px solid var(--ligne);
+  /* noir, comme le contour du bouton « English » de la nav */
+  background: var(--encre);       /* visible seulement dans les interstices */
+  border: 1px solid var(--encre);
 }
 
 .apropos-onglet {
@@ -573,20 +574,49 @@ h3 {
   font-family: var(--police-accent);
   font-size: 0.85rem;
   letter-spacing: 0.02em;
-  color: var(--encre-douce);
+  color: var(--encre); /* étiquettes en noir */
   padding: 0.85rem 1rem;
   cursor: pointer;
-  transition: background 0.2s ease, color 0.2s ease;
+  /* même mécanique que le bouton « English » : un panneau noir (::before)
+     monte du bas au survol et le texte s'inverse */
+  position: relative;
+  overflow: hidden;   /* clippe le panneau de remplissage */
+  isolation: isolate; /* le ::before (z-index -1) reste derrière le seul texte */
+  transition: color 0.3s ease;
 }
 
-.apropos-onglet:hover {
-  color: var(--encre);
-}
-
-/* Onglet actif : cellule inversée, cohérente avec la palette noir et blanc */
-.apropos-onglet.actif {
+.apropos-onglet::before {
+  content: "";
+  position: absolute;
+  inset: 0;
   background: var(--encre);
+  transform: scaleY(0);
+  transform-origin: bottom; /* le remplissage démarre par le bas */
+  transition: transform 0.5s cubic-bezier(0.7, 0, 0.2, 1); /* fluide */
+  z-index: -1; /* derrière le texte */
+}
+
+/* Survol = panneau NOIR qui monte du bas et texte inversé en blanc,
+   exactement comme le bouton English. */
+.apropos-onglet:hover,
+.apropos-onglet:focus-visible {
   color: var(--papier);
+}
+
+.apropos-onglet:hover::before,
+.apropos-onglet:focus-visible::before {
+  transform: scaleY(1);
+}
+
+/* Onglet SÉLECTIONNÉ : rempli de noir en permanence, mot en blanc.
+   (Les crochets [ ] essayés ici ont été retirés pour l'instant ; le
+   span .onglet-mot reste dans le HTML si on veut les remettre.) */
+.apropos-onglet.actif {
+  color: var(--papier);
+}
+
+.apropos-onglet.actif::before {
+  transform: scaleY(1); /* le panneau noir reste monté */
 }
 
 .apropos-onglet:focus-visible {
@@ -610,7 +640,11 @@ h3 {
 .apropos-panneau p {
   max-width: min(1080px, 100%);
   margin: clamp(1.75rem, 3.5vh, 3rem) 0 0;
-  font-size: clamp(1.35rem, 1rem + 1.05vw, 2.1rem);
+  /* 16px -> 22px, en suivant la LARGEUR (vw) et la HAUTEUR (vh) d'écran :
+     le plus contraignant des deux gagne, donc les longs textes (Parcours,
+     Intérêts) rapetissent aussi sur les écrans peu hauts et restent
+     dans la vue initiale. */
+  font-size: clamp(1rem, min(0.8rem + 0.55vw, 0.9rem + 0.9vh), 1.4rem);
   font-weight: 500;
   line-height: 1.5;
   color: var(--encre-douce);
@@ -671,7 +705,8 @@ h3 {
 
 .carte-projet {
   background: var(--carte);
-  border: 1px solid var(--ligne);
+  /* contour noir, comme le bouton « English » de la nav */
+  border: 1px solid var(--encre);
   border-radius: var(--rayon);
   overflow: hidden; /* la photo épouse les coins arrondis */
   display: grid;
@@ -934,7 +969,7 @@ main.conteneur::before {
 
 /* Les onglets « À propos » montent juste après le nom */
 .apropos-hero {
-  animation: apparition-montee 0.9s cubic-bezier(0.33, 1, 0.68, 1) 0.68s backwards;
+  animation: apparition-montee 0.6s cubic-bezier(0.33, 1, 0.68, 1) 0.68s backwards;
 }
 
 /* Le titre « Mes projets » monte avec le hero (il depasse deja en bas
@@ -2507,13 +2542,13 @@ main {
   transform: scaleY(var(--etire)); /* coiffes arrondies, statiques */
 }
 
-.rideau::before {            /* coiffe du haut — bord d'attaque à la sortie */
+.rideau::before {            /* coiffe du haut - bord d'attaque à la sortie */
   bottom: calc(100% - 2px); /* chevauche le panneau de 2px pour éviter une couture grise */
   border-radius: 50% 50% 0 0 / 100% 100% 0 0;
   transform-origin: bottom;  /* s'étire vers le haut, depuis le bord du panneau */
 }
 
-.rideau::after {             /* coiffe du bas — bord d'attaque à l'arrivée */
+.rideau::after {             /* coiffe du bas - bord d'attaque à l'arrivée */
   top: calc(100% - 2px); /* chevauche le panneau de 2px pour éviter une couture grise */
   border-radius: 0 0 50% 50% / 0 0 100% 100%;
   transform-origin: top;     /* s'étire vers le bas, depuis le bord du panneau */
@@ -2543,8 +2578,42 @@ main {
    longtemps pour qu'on lise le mot, puis tout le ballet (rideau + contenu)
    est décalé du même délai pour garder exactement la même synchro. */
 html.bonjour .rideau { animation-delay: 0.4s; }
-html.bonjour .hero h1 { animation-delay: 1s; }
-html.bonjour .apropos-hero { animation-delay: 1.08s; }
+/* Première arrivée : le nom se révèle au CENTRE de l'écran derrière un
+   masque (de bas en haut), marque une courte pause, puis monte se caler
+   à sa place. Les onglets « À propos » apparaissent pendant la montée.
+   --nom-decale (distance position finale -> centre) est mesuré par
+   js/main.js ; le 28vh est un simple repli si le JS n'a pas pu mesurer. */
+html.bonjour .hero h1 {
+  animation: hero-nom-intro 2.1s cubic-bezier(0.22, 1, 0.36, 1) 1s backwards;
+}
+/* Les onglets et le texte n'apparaissent qu'en toute FIN de montée du
+   nom (il se cale à 1s + 2.1s = 3.1s) : fondu de 2.85s à 3.35s, avec un
+   départ d'opacité progressif (ease-in-out) pour ne pas surgir d'un
+   coup pendant que le nom bouge encore. */
+html.bonjour .apropos-hero {
+  animation-delay: 2.85s;
+  animation-duration: 0.5s;
+  animation-timing-function: cubic-bezier(0.45, 0, 0.25, 1);
+}
+
+@keyframes hero-nom-intro {
+  0% {
+    /* masqué : la fenêtre de découpe est vide, le nom est un peu plus bas */
+    clip-path: inset(100% -2% -12% -2%);
+    transform: translateY(calc(var(--nom-decale, 28vh) + 0.4em));
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  45%, 66% {
+    /* révélé au centre, courte pause (marges négatives : accents intacts) */
+    clip-path: inset(-12% -2% -12% -2%);
+    transform: translateY(var(--nom-decale, 28vh));
+    animation-timing-function: cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  100% {
+    clip-path: inset(-12% -2% -12% -2%);
+    transform: none;
+  }
+}
 html.bonjour #projets .titre-section { animation-delay: 1.3s; }
 html.bonjour .grille-projets .carte-projet:nth-child(1) { animation-delay: 1.4s; }
 html.bonjour .grille-projets .carte-projet:nth-child(2) { animation-delay: 1.52s; }
@@ -2591,7 +2660,7 @@ html.js .reveler.visible {
 }
 
 /* Seuls le voile et le panneau captent la souris (pas la zone vide au-dessus
-   de la nav) — sinon le survol de « Projets » serait interrompu (flash). */
+   de la nav) - sinon le survol de « Projets » serait interrompu (flash). */
 .menu-projets-fond,
 .menu-projets-panneau {
   pointer-events: auto;
@@ -2727,7 +2796,7 @@ html.js .reveler.visible {
   gap: 0.4rem;
 }
 
-/* Temps de lecture (icône livre), aligné en bas — au niveau du bas de l'image. */
+/* Temps de lecture (icône livre), aligné en bas - au niveau du bas de l'image. */
 .menu-projet-duree {
   margin-top: auto;
   display: flex;
