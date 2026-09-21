@@ -878,7 +878,7 @@ h3 {
 
 /* ----- 7. Pied de page ----- */
 .footer {
-  padding: 3rem 0;
+  padding: 3.5rem 0 5rem; /* plus d'air sous le pied de page */
   display: grid;
   gap: 2rem;
   /* opaque et au-dessus de l'image épinglée (pages projet) : sinon la photo
