@@ -16,6 +16,7 @@ Site original : https://jeromedorionportfolio.framer.website/
 - `projets/` — études de cas : radio-canada.html, remi.html, safeway.html
 - `css/style.css` — toute la mise en forme (variables CSS en haut du fichier)
 - `js/main.js` — tout le comportement (révélations au scroll, rideau, menus…)
+- `en/` — version anglaise complète (en/index.html + en/projets/), même CSS/JS
 
 ## Conventions de design (décisions de Jérôme — à respecter)
 
@@ -34,8 +35,8 @@ Site original : https://jeromedorionportfolio.framer.website/
 
 - **Barre de nav fixe en haut** (l'ancienne barre latérale noire n'existe plus) :
   logo « JD », rôle animé au survol (Designer d'interaction ⇄ Jérôme Dorion),
-  liens Projets / À propos / Contact (volet Courriel + LinkedIn) / CV (téléchargement),
-  bouton « English » à droite (pointe vers `#` en attendant).
+  liens Projets / Contact (volet Courriel + LinkedIn) / CV (téléchargement),
+  bouton « English » à droite (mène à la version anglaise `en/`).
   Sous 900px : menu hamburger (English reste visible à part).
 - **Pop-up Projets** : au survol du lien « Projets », panneau sous la nav
   avec les 3 projets (photo, titre, question, tags, durée). Clic = repli tactile.
@@ -77,8 +78,10 @@ Site original : https://jeromedorionportfolio.framer.website/
 
 ## À faire (idées en attente)
 
-- Créer la version anglaise (le bouton « English » de la nav pointe
-  vers `#` en attendant).
+- Version anglaise FAITE (dossier `en/`). Les boutons « English » / « Français »
+  relient les deux versions. Le rideau affiche Home/Accueil selon `lang`.
+  Reste à fournir un CV anglais : le bouton CV de `en/` pointe temporairement
+  vers le PDF français (`assets/cv-jerome-dorion.pdf`).
 - Optimiser le poids des images d'assets/ avant la mise en ligne
   (~117 Mo au total, certains PNG font 5-15 Mo).
 - Nettoyer les polices inutilisées chargées dans index.html

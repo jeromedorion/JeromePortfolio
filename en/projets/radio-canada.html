@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Radio-Canada · Jérôme Dorion</title>
+  <meta name="description" content="Connecting with a younger audience: a UX project done as a consultant for Radio-Canada.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Anton&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../../css/style.css">
+  <script>document.documentElement.classList.add("js");</script>
+</head>
+<body>
+  <div class="rideau" aria-hidden="true"><span class="rideau-nom">Radio-Canada</span></div>
+
+  <!-- ===== Navigation ===== -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="nav-logo" href="../index.html">JD</a>
+      <span class="nav-role">
+        <span class="role-piste">
+          <span class="role-txt role-defaut">Interaction Designer</span>
+          <span class="role-txt role-nom" aria-hidden="true">Jérôme Dorion</span>
+        </span>
+      </span>
+      <nav class="nav-liens" id="menu-principal">
+        <a href="../index.html#projets">Projects</a>
+        <div class="nav-contact">
+          <span class="nav-contact-bouton" tabindex="0" role="button" aria-expanded="false" aria-controls="volet-contact">Contact<span class="nav-contact-chevron" aria-hidden="true"></span></span>
+          <div class="nav-contact-volet" id="volet-contact">
+            <a href="mailto:jerome.dorion.pro@gmail.com"><span class="volet-mot">Email</span></a>
+            <a href="https://www.linkedin.com/in/jérôme-dorion-040149350" target="_blank" rel="noopener"><span class="volet-mot">LinkedIn</span></a>
+          </div>
+        </div>
+        <a class="masquer-mobile" href="../../assets/cv-jerome-dorion.pdf" download="Jerome Dorion - CV.pdf">CV</a>
+      </nav>
+      <a class="nav-langue" href="../../projets/radio-canada.html" title="Version française">Français</a>
+      <button class="nav-bascule" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu-principal">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===== "Projects" menu (overlay) ===== -->
+  <div class="menu-projets" id="menu-projets" aria-hidden="true">
+    <div class="menu-projets-fond" data-fermer></div>
+    <aside class="menu-projets-panneau" role="dialog" aria-modal="true" aria-label="Projects">
+      <div class="menu-projets-liste">
+        <a class="menu-projet" href="radio-canada.html">
+          <span class="menu-projet-media"><img class="menu-projet-photo" src="../../assets/radio-canada/hero.jpg" alt="Radio-Canada project"></span>
+          <span class="menu-projet-titre">Radio-Canada</span>
+          <div class="menu-projet-contenu">
+            <span class="menu-projet-phrase">How do you attract a younger audience?</span>
+            <span class="menu-projet-tags"><span class="tag">Mobile</span><span class="tag">UX/UI Design</span><span class="tag">UX Research</span></span>
+            <span class="menu-projet-duree"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>15 min read</span>
+          </div>
+          <span class="menu-projet-fleche" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </a>
+        <a class="menu-projet" href="remi.html">
+          <span class="menu-projet-media"><img class="menu-projet-photo" src="../../assets/remi/hero.png" alt="Rémi project"></span>
+          <span class="menu-projet-titre">Rémi</span>
+          <div class="menu-projet-contenu">
+            <span class="menu-projet-phrase">How do you support family caregivers?</span>
+            <span class="menu-projet-tags"><span class="tag">Mobile</span><span class="tag">UX/UI Design</span><span class="tag">UX Research</span><span class="tag">Product design</span></span>
+            <span class="menu-projet-duree"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>8 min read</span>
+          </div>
+          <span class="menu-projet-fleche" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </a>
+        <a class="menu-projet" href="safeway.html">
+          <span class="menu-projet-media"><img class="menu-projet-photo" src="../../assets/safeway/hero.png" alt="Safeway project"></span>
+          <span class="menu-projet-titre">Safeway</span>
+          <div class="menu-projet-contenu">
+            <span class="menu-projet-phrase">How do you rethink fire evacuation?</span>
+            <span class="menu-projet-tags"><span class="tag">Mobile</span><span class="tag">UX/UI Design</span><span class="tag">UX Research</span></span>
+            <span class="menu-projet-duree"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>6 min read</span>
+          </div>
+          <span class="menu-projet-fleche" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </a>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ===== Header: full-width photo, title and subtitle placed below ===== -->
+  <section class="projet-hero">
+    <img src="../../assets/radio-canada/hero.jpg" alt="Radio-Canada project">
+  </section>
+
+  <main class="conteneur">
+
+      <header class="projet-intro">
+        <h1 class="projet-titre">Radio-Canada</h1>
+        <p class="projet-sous-titre">Connecting with a younger audience</p>
+      </header>
+
+      <div class="meta-grille">
+        <div>
+          <h4>Role</h4>
+          <p>Product designer<br>Design researcher</p>
+        </div>
+        <div>
+          <h4>Collaborator</h4>
+          <p>Anne-Marie Emond</p>
+        </div>
+        <div>
+          <h4>Duration</h4>
+          <p>3 months</p>
+        </div>
+        <div>
+          <h4>Year</h4>
+          <p>2026</p>
+        </div>
+        <div>
+          <h4>Client</h4>
+          <p>Project carried out as a consultant for Radio-Canada as part of a course in the master's in interaction design at the Université Laval.</p>
+        </div>
+      </div>
+
+      <!-- Sticky table of contents on the left (filled automatically by
+           js/main.js) + project content on the right -->
+      <div class="corps-projet">
+        <nav class="sommaire" aria-label="Page sections"></nav>
+        <div class="contenu-projet">
+
+    <!-- ===== Context ===== -->
+    <section class="bloc reveler">
+      <h2>Context</h2>
+      <p>This project was carried out in collaboration with Radio-Canada. The goal was to act as an external consultant by choosing, together with their team, a mandate and a problem to focus on.</p>
+    </section>
+
+    <section class="bloc reveler">
+      <h2>Mandate</h2>
+      <p>Understand young adults' relationship with the news through their use of third-party platforms, particularly social media, compared with Radio-Canada's digital apps, and identify levers to encourage redirection toward the Radio-Canada Info app.</p>
+    </section>
+
+    <section class="bloc reveler">
+      <h2>Objectives</h2>
+      <div class="grille-cartes">
+        <div class="mini-carte">
+          <h3>Explore the transition</h3>
+          <p>Identify what draws young adults to other platforms in order to better guide them toward Radio-Canada's.</p>
+        </div>
+        <div class="mini-carte">
+          <h3>Encourage the digital switch</h3>
+          <p>Find ways to make Radio-Canada's content more accessible and better suited to young adults.</p>
+        </div>
+        <div class="mini-carte">
+          <h3>Optimize the experience</h3>
+          <p>Optimize the user experience and the gateways in the news-access journey toward Radio-Canada's digital platforms.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="bloc reveler">
+      <h2>Problem</h2>
+      <p>In a context of information overload and shifting media habits, many young people are turning away from traditional news platforms, such as Radio-Canada's apps, in favour of formats perceived as more accessible and faster.</p>
+    </section>
+
+    <!-- ===== Ecosystem ===== -->
+    <section class="bloc reveler">
+      <h2>Ecosystem</h2>
+      <h3>Products and services</h3>
+      <img src="../../assets/radio-canada/produits-services.png" alt="Radio-Canada's product and service ecosystem">
+      <h3 style="margin-top:1.5rem;">Competition</h3>
+      <img src="../../assets/radio-canada/concurrence.png" alt="Competitive analysis">
+    </section>
+
+    <!-- ===== Research methods ===== -->
+    <section class="bloc reveler">
+      <h2>Research method</h2>
+      <div class="methodes-accordeon">
+        <details class="methode">
+          <summary><span class="methode-titre">Semi-structured interviews</span><span class="methode-chevron" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></summary>
+          <div class="methode-corps"><p>An open interview method used to gather rich, nuanced, and contextual data.</p></div>
+        </details>
+        <details class="methode">
+          <summary><span class="methode-titre">Usability testing</span><span class="methode-chevron" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></summary>
+          <div class="methode-corps"><p>A qualitative observation method of the current R-C Info app, conducted after the semi-structured interview.</p></div>
+        </details>
+        <details class="methode">
+          <summary><span class="methode-titre">Content analysis</span><span class="methode-chevron" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></summary>
+          <div class="methode-corps"><p>A qualitative self-observation method based on content analysis of the RC-Info app and social media.</p></div>
+        </details>
+        <details class="methode">
+          <summary><span class="methode-titre">Survey</span><span class="methode-chevron" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></summary>
+          <div class="methode-corps"><p>A quantitative method using an online questionnaire with a representative sample of young adults.</p></div>
+        </details>
+        <details class="methode">
+          <summary><span class="methode-titre">Competitive analysis</span><span class="methode-chevron" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></summary>
+          <div class="methode-corps"><p>Combined analysis methods (comparative, content, and observation) of competing platforms.</p></div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ===== Findings and statistics ===== -->
+    <section class="bloc reveler">
+      <h2>Findings and statistics</h2>
+      <p class="note">*Every finding and statistic comes directly from the research methods described earlier.</p>
+
+      <h3 style="margin-top:2rem;">Moments of use</h3>
+      <p>Moments of mobility and waiting represent opportunities for accessing information, since many young adults use these moments to stay informed or entertain themselves.</p>
+      <div class="grille-cartes trois-colonnes" style="margin-top:1.25rem;">
+        <div class="stat">
+          <div class="chiffre">74%</div>
+          <p>of respondents say they usually do something else at the same time as checking the news.</p>
+        </div>
+        <div class="stat">
+          <div class="chiffre">46%</div>
+          <p>of respondents say they are on the move when checking the news while multitasking.</p>
+        </div>
+      </div>
+
+      <h3 style="margin-top:2rem;">Habits</h3>
+      <p>Young adults' digital consumption habits are deeply rooted in their daily use of social media and hard to change, but a majority of the young adults surveyed say they are open to adding a dedicated news app.</p>
+      <div class="grille-cartes trois-colonnes" style="margin-top:1.25rem;">
+        <div class="stat">
+          <div class="chiffre">60%</div>
+          <p>of respondents say they save content to view later on Instagram or TikTok, showing an interest in save features.</p>
+        </div>
+      </div>
+
+      <h3 style="margin-top:2rem;">Perceived effort of signing up</h3>
+      <p>Creating an account is seen as a significant barrier for the majority of young adults, which can hinder acquiring new users.</p>
+      <div class="grille-cartes trois-colonnes" style="margin-top:1.25rem;">
+        <div class="stat">
+          <div class="chiffre">75%</div>
+          <p>of respondents feel that creating an account is a major barrier to switching from social media to an app.</p>
+        </div>
+      </div>
+
+      <h3 style="margin-top:2rem;">Formats</h3>
+      <p>Short formats, especially video and audio, are the most appreciated, particularly while multitasking or on the move, and concise, explanatory carousels also generate strong interest.</p>
+      <div class="grille-cartes trois-colonnes" style="margin-top:1.25rem;">
+        <div class="stat">
+          <div class="chiffre">40%</div>
+          <p>of respondents prefer written and visual summaries to consume news content.</p>
+        </div>
+        <div class="stat">
+          <div class="chiffre">40%</div>
+          <p>of respondents enjoy the podcast format for consuming content online.</p>
+        </div>
+        <div class="stat">
+          <div class="chiffre">65%</div>
+          <p>of respondents say they prefer short articles when it comes to reading.</p>
+        </div>
+      </div>
+
+      <h3 style="margin-top:2rem;">Visual cues</h3>
+      <p>Certain visual indicators and features reinforce fast information consumption and support young adults' habits, who appreciate feeling in control of the content offered to them.</p>
+      <div class="grille-cartes trois-colonnes" style="margin-top:1.25rem;">
+        <div class="stat">
+          <div class="chiffre">86%</div>
+          <p>of respondents consider the subject or theme of the content to be important filtering criteria.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Personas ===== -->
+    <section class="bloc reveler">
+      <h2>Personas</h2>
+
+      <div class="personas">
+
+      <article class="persona">
+        <img src="../../assets/radio-canada/illustration-1-navigateur.png" alt="Illustration of the persona The Browser">
+        <div>
+          <h3>The Browser</h3>
+          <p class="trait">Passive, gets informed by scrolling, and active on social media</p>
+          <p>Young adult who discovers the news by scrolling on TikTok, Instagram, or Facebook without looking for it. Consumes very short, visual formats, mostly between moments of entertainment, for example in queues, on transit, or before falling asleep.</p>
+        </div>
+      </article>
+
+      <article class="persona">
+        <img src="../../assets/radio-canada/illustration-2-investi.png" alt="Illustration of the persona The Engaged">
+        <div>
+          <h3>The Engaged</h3>
+          <p class="trait">Committed and highly interested in the news</p>
+          <p>Young adult who checks one or several credible sources per day or at different times of the day, along with a few social platforms. Prefers short, mobile formats, with the option to dig deeper as needed.</p>
+        </div>
+      </article>
+
+      <article class="persona">
+        <img src="../../assets/radio-canada/illustration-3-multitache.png" alt="Illustration of the persona The Multitasker">
+        <div>
+          <h3>The Multitasker</h3>
+          <p class="trait">Productive, wants to make the most of their time and optimize their commutes</p>
+          <p>Young adult who stays informed on the move through podcasts, summaries, or YouTube clips. Prefers short, audio content they can consume alongside other daily tasks, such as getting ready, cooking, or cleaning.</p>
+        </div>
+      </article>
+
+      <article class="persona">
+        <img src="../../assets/radio-canada/illustration-4-selectif.png" alt="Illustration of the persona The Selective">
+        <div>
+          <h3>The Selective</h3>
+          <p class="trait">Engaged in topics of personal interest</p>
+          <p>Young adult who consumes content based on thematic affinities (e.g. pop culture, music, sports). Has little interest in traditional news and hears about it through their circle or when it goes viral. Prefers simple, fast content.</p>
+        </div>
+      </article>
+
+      <article class="persona">
+        <img src="../../assets/radio-canada/illustration-5-abonnee.png" alt="Illustration of the persona The Follower">
+        <div>
+          <h3>The Follower</h3>
+          <p class="trait">Loyal to news influencers and social media</p>
+          <p>Young adult who stays informed mostly through news influencers followed on Instagram, TikTok, or YouTube. Seeks out the news and prefers explanatory videos and summaries from various platforms over traditional media to follow local and international news.</p>
+        </div>
+      </article>
+
+      </div>
+    </section>
+
+    <!-- ===== User journeys ===== -->
+    <section class="bloc reveler">
+      <h2>User journeys</h2>
+
+      <!-- Journey 1 -->
+      <div class="parcours">
+        <div class="parcours-texte">
+          <p class="surtitre">Journey 1</p>
+          <h3>Installing the app</h3>
+          <p>Journey of a user exposed to Radio-Canada content on Instagram, from initial discovery to accessing the Radio-Canada Info app.</p>
+
+          <div class="parcours-constats">
+            <h4>Findings and frictions identified</h4>
+            <ol>
+              <li>Stories only redirect to the post, with no other switching option.</li>
+              <li>No switching option is put forward.</li>
+              <li>The only available redirection is at the end of the carousel.</li>
+              <li>No external link to the App Store is present.</li>
+              <li>The user has to search for the app themselves, with no shortcut available.</li>
+            </ol>
+          </div>
+        </div>
+        <img src="../../assets/radio-canada/parcours-1.png" alt="Diagram of journey 1: from the Instagram story to installing the app">
+      </div>
+      <!-- Journey 2 -->
+      <div class="parcours parcours-large">
+        <div class="parcours-texte">
+          <p class="surtitre">Journey 2</p>
+          <h3>Entering the app</h3>
+          <p>The user's journey, from opening the Radio-Canada Info app to discovery and general navigation.</p>
+
+          <div class="parcours-constats">
+            <h4>Frictions identified</h4>
+            <ol>
+              <li>Sign-up perceived as an entry friction to get around</li>
+              <li>Account creation felt to be long</li>
+              <li>Horizontal scrolling of categories barely visible and unnoticed</li>
+              <li>Two separate entry points for settings</li>
+              <li>Changes made hard to understand right away</li>
+            </ol>
+          </div>
+        </div>
+        <img src="../../assets/radio-canada/parcours-2.png" alt="Diagram of journey 2: from opening the app to general navigation">
+      </div>
+
+      <!-- Journey 3 -->
+      <div class="parcours parcours-large">
+        <div class="parcours-texte">
+          <p class="surtitre">Journey 3</p>
+          <h3>Navigating to sought-after content</h3>
+          <p>A targeted navigation journey toward sought-after content, adapted to different user profiles that may share common needs and overlap.</p>
+
+          <div class="parcours-constats">
+            <h4>Frictions identified</h4>
+            <ol>
+              <li>Limited summary and plain-language options for quick understanding</li>
+              <li>Saved content hard to find and unavailable for In Brief and videos</li>
+              <li>No format-specific search</li>
+              <li>Unengaging audio offering, limited to reading long articles aloud for accessibility purposes</li>
+              <li>Exploring through search is ineffective for certain topics</li>
+              <li>No quickly accessible summary for an overview of the news</li>
+              <li>Topic not prominently highlighted in the Top Stories hierarchy, with a preference for the My Feed presentation</li>
+            </ol>
+          </div>
+        </div>
+        <img src="../../assets/radio-canada/parcours-3.png" alt="Diagram of journey 3: navigating to sought-after content by profile">
+      </div>
+    </section>
+
+    <!-- ===== Design opportunities ===== -->
+    <section class="bloc reveler">
+      <h2>Design opportunities</h2>
+      <div class="grille-cartes">
+        <div class="mini-carte">
+          <h3>Entry frictions</h3>
+          <p>Explore the barriers at the entry of the Radio-Canada Info app to optimize adoption and integrate news into young adults' routines.</p>
+        </div>
+        <div class="mini-carte">
+          <h3>Usage and metadata</h3>
+          <p>Standardize how visible metadata is presented and bring the experience closer to the codes and habits of social media.</p>
+        </div>
+        <div class="mini-carte">
+          <h3>Suitable formats</h3>
+          <p>Strengthen the appeal and perceived value of the Radio-Canada Info app to support initial engagement and encourage recurring use among the target audience.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Recommendations ===== -->
+    <section class="bloc reveler">
+      <h2>Recommendations</h2>
+      <p>Several recommendations were made to address Radio-Canada's initial mandate. They are structured into three categories. First, improving redirection from social media to the app. Second, reducing friction during account creation. Finally, ideas for adding cues and features suited to young adults' habits.</p>
+
+      <h3 class="titre-reco">Using apps' native features</h3>
+      <p>Using social media's native features is relevant in a situation like Radio-Canada's, because it lets you quickly send the user back to the official platform while minimizing the effort required, and therefore create a better conversion rate.</p>
+
+      <div class="comparaison-annotee trois-col">
+        <figure>
+          <figcaption>Before</figcaption>
+          <img src="../../assets/radio-canada/natives-avant.png" alt="Radio-Canada Instagram story, current version">
+        </figure>
+        <figure>
+          <figcaption>Recommendation</figcaption>
+          <img src="../../assets/radio-canada/natives-apres.png" alt="Instagram story with a direct link to download the app">
+        </figure>
+        <div class="col-annotations">
+          <div class="annotation-point" style="--pos: 0.84; --ajust: 20px;">
+            <span class="ligne" aria-hidden="true"></span>
+            <div class="texte">
+              <h4>Quick access</h4>
+              <p>A direct external link lets users download the app in an instant, without friction, to reduce perceived effort.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="titre-reco">Standardizing the linktrees</h3>
+      <p>Standardizing the Linktrees seemed essential. Its goal is to give users the same expectations regardless of which Radio-Canada account they visit, while making sure redirections to the organization's external platforms are present and highlighted.</p>
+      <!-- The 4 current linktrees, side by side -->
+      <figure class="linktree-exemples">
+        <figcaption>Example of a current linktree</figcaption>
+        <div class="grille-telephones">
+          <img src="../../assets/radio-canada/linktree-exemple-1.png" alt="Current linktree for rc.science">
+          <img src="../../assets/radio-canada/linktree-exemple-2.png" alt="Current linktree for RC OHdio">
+          <img src="../../assets/radio-canada/linktree-exemple-3.png" alt="Instagram profile without a standardized linktree">
+          <img src="../../assets/radio-canada/linktree-exemple-4.png" alt="Current linktree for Radio-Canada">
+        </div>
+      </figure>
+
+      <!-- The proposed template, annotated in real responsive text -->
+      <div class="schema-annote">
+        <img class="schema-image" src="../../assets/radio-canada/linktree-template.png" alt="Proposed standardized linktree template">
+        <div class="schema-annotations">
+          <div class="annotation-flottante" style="--debut: 15%; --fin: 37%;">
+            <span class="bracket" aria-hidden="true"></span>
+            <div class="texte">
+              <h4><span class="ligne" aria-hidden="true"></span>Header</h4>
+              <ul>
+                <li>Account image (logo)</li>
+                <li>Account name</li>
+                <li>Account description</li>
+                <li>External links to the account's specific social media</li>
+              </ul>
+            </div>
+          </div>
+          <div class="annotation-flottante" style="--debut: 39%; --fin: 62%;">
+            <span class="bracket" aria-hidden="true"></span>
+            <div class="texte">
+              <h4><span class="ligne" aria-hidden="true"></span>Section 1</h4>
+              <p>The first section centralizes the main access points: the app or apps associated with the account, the redirection to the website, and the newsletter sign-up link.</p>
+            </div>
+          </div>
+          <div class="annotation-flottante" style="--debut: 65%; --fin: 88%;">
+            <span class="bracket" aria-hidden="true"></span>
+            <div class="texte">
+              <h4><span class="ligne" aria-hidden="true"></span>Section 2</h4>
+              <p>The second section centralizes redirections to a selection of articles specific to the account.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="titre-reco">Quick sign-in</h3>
+      <p>Signing in was observed as a clear barrier for new users. Making this step lighter and faster represents huge potential to improve the conversion rate.</p>
+      <div class="comparaison-annotee trois-col">
+        <figure>
+          <figcaption>Before</figcaption>
+          <img src="../../assets/radio-canada/connexion-avant.png" alt="Current account creation, with email and password">
+        </figure>
+        <figure>
+          <figcaption>Recommendation</figcaption>
+          <img src="../../assets/radio-canada/connexion-apres.png" alt="Account creation with Google, Facebook, or Apple sign-in">
+        </figure>
+        <div class="col-annotations">
+          <div class="annotation-point" style="--pos: 0.63; --ajust: 20px;">
+            <span class="ligne" aria-hidden="true"></span>
+            <div class="texte">
+              <h4>Quick sign-in</h4>
+              <p>Account creation is simplified through sign-in with Google, Facebook, or Apple, an approach that is now essential to reduce any friction and encourage adoption of the app.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="titre-reco">Adding indicators</h3>
+      <p>Young adults are aware of the limited time they'll spend on a news app. Some proposed indicators let users adjust based on how much time they're willing to invest in reading articles, the level of depth they want to reach, and their reading preferences.</p>
+      <div class="comparaison-annotee quatre-col">
+        <figure>
+          <figcaption>Before</figcaption>
+          <img src="../../assets/radio-canada/indicateurs-avant.png" alt="Current news feed, without indicators">
+        </figure>
+        <!-- annotations to the left of the Recommendation mockup -->
+        <div class="col-annotations">
+          <div class="annotation-point miroir" style="--pos: 0.305; --ajust: 20px; --ar: 0.31;">
+            <span class="coude" aria-hidden="true"><span class="pied"></span></span>
+            <div class="texte">
+              <h4>Enriched summary</h4>
+              <p>A more complete summary is accessible directly from the card, letting users grasp the gist of an article without opening it.</p>
+            </div>
+          </div>
+          <div class="annotation-point miroir" style="--pos: 0.385; --ajust: -10em; --marge-min: 1.5rem;">
+            <span class="ligne" aria-hidden="true"></span>
+            <div class="texte">
+              <h4>Reading time</h4>
+              <p>An indicator shows the estimated reading time of each article, helping users better plan their information consumption.</p>
+            </div>
+          </div>
+        </div>
+        <figure>
+          <figcaption>Recommendation</figcaption>
+          <img src="../../assets/radio-canada/indicateurs-apres.png" alt="News feed with enriched summary, reading time, read indicator, and built-in audio">
+        </figure>
+        <!-- annotations to the right of the Recommendation mockup -->
+        <div class="col-annotations">
+          <div class="annotation-point" style="--pos: 0.18; --ajust: 40px;">
+            <span class="ligne" aria-hidden="true"></span>
+            <div class="texte">
+              <h4>Read indicator</h4>
+              <p>A visual marker shows whether an article has already been read, helping users find their way through their feed.</p>
+            </div>
+          </div>
+          <div class="annotation-point" style="--pos: 0.66; --ajust: -10em; --marge-min: 1.5rem;">
+            <span class="ligne" aria-hidden="true"></span>
+            <div class="texte">
+              <h4>Built-in audio</h4>
+              <p>Users can start audio playback of an article directly from the card, without opening it.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <h3 class="titre-reco">Enhanced audio mode</h3>
+      <p>The audio format was observed as very popular among young adults. It fits well with their multitasking habits, whether on the move, cooking, or doing chores. A more developed and complete audio mode can be a good gateway to reach a new audience not yet present on the app.</p>
+      <div class="comparaison-annotee trois-col">
+        <figure>
+          <figcaption>Before</figcaption>
+          <img src="../../assets/radio-canada/audio-avant.png" alt="Current audio playback, limited to reading articles aloud">
+        </figure>
+        <figure>
+          <figcaption>Recommendation</figcaption>
+          <img src="../../assets/radio-canada/audio-apres.png" alt="Enhanced audio mode with advanced controls and a playlist">
+        </figure>
+        <div class="col-annotations">
+          <div class="annotation-point" style="--pos: 0.60; --ajust: 33px;">
+            <span class="ligne" aria-hidden="true"></span>
+            <div class="texte">
+              <h4>Advanced controls</h4>
+              <p>Advanced controls offer a more complete and familiar listening experience.</p>
+            </div>
+          </div>
+          <div class="annotation-point" style="--pos: 0.211; --ajust: -9em; --marge-min: 1.5rem;">
+            <span class="ligne" aria-hidden="true"></span>
+            <div class="texte">
+              <h4>Personalized playlist</h4>
+              <p>A generator automatically creates playlists tailored to the user's habits and preferences, for a fast, made-to-measure experience.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h3 class="titre-reco">Adjusting the navigation bars</h3>
+      <p>Two issues emerged from our user research.</p>
+      <ul>
+        <li>First, the top menu, currently scrolling horizontally, was not automatically understood by new users. They found the scrolling long and the feature to rearrange sections not very intuitive.</li>
+        <li>Second, the bottom navigation bar was missing some options that users liked and found useful, such as game mode, which was previously mixed in with the news-reading modes at the top, and the news-saving feature, which was buried too deep in the navigation.</li>
+      </ul>
+      <div class="comparaison-annotee trois-maquettes">
+        <figure>
+          <figcaption>Before</figcaption>
+          <img src="../../assets/radio-canada/navigation-avant.png" alt="Current navigation bars: scrolling top menu and limited bottom bar">
+        </figure>
+        <figure>
+          <figcaption>Recommendation</figcaption>
+          <img src="../../assets/radio-canada/navigation-apres-1.png" alt="Recommendation: enriched bottom bar with Games mode and the My List feature">
+        </figure>
+        <figure>
+          <figcaption>&nbsp;</figcaption>
+          <img src="../../assets/radio-canada/navigation-apres-2.png" alt="Recommendation: new topic-based navigation with sections you can favourite">
+        </figure>
+        <div class="col-annotations">
+          <div class="annotation-point" style="--pos: 0.22;">
+            <span class="ligne" aria-hidden="true"></span>
+            <div class="texte">
+              <h4>Grouping topics</h4>
+              <p>All topics have been brought together in one place with a favourites feature kept, making everything simply accessible without having to go back into the account settings.</p>
+            </div>
+          </div>
+          <div class="annotation-point ancre-bas" style="--pos: 0.48;">
+            <span class="ligne" aria-hidden="true"></span>
+            <div class="texte">
+              <h4>Modified navigation bar</h4>
+              <p>The My News option was moved to the top as an account setting, while adding the Games and My List options follows directly from the observations described earlier.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+        </div>
+      </div>
+
+  </main>
+
+  <!-- ===== Other projects ===== -->
+  <section class="autres-projets">
+    <div class="conteneur">
+      <h3 class="titre-section">Other projects</h3>
+      <div class="liens">
+        <a class="projet-precedent" href="safeway.html"><span class="lien-texte"><span class="nom">Safeway</span><span class="lien-sous-titre">Rethinking evacuation</span></span><span class="fleche" aria-hidden="true"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></a>
+        <a class="projet-suivant" href="remi.html"><span class="lien-texte"><span class="nom">Rémi</span><span class="lien-sous-titre">Supporting family caregivers</span></span><span class="fleche" aria-hidden="true"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <h5>Get in touch</h5>
+        <a href="mailto:jerome.dorion.pro@gmail.com">jerome.dorion.pro@gmail.com</a>
+      </div>
+      <div>
+        <h5>All rights reserved</h5>
+        <p>© <span data-annee></span> Jérôme Dorion</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+</body>
+</html>

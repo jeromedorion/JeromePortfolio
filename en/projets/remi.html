@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rémi · Jérôme Dorion</title>
+  <meta name="description" content="Supporting family caregivers: a product design project focused on the well-being of caregivers of people with Alzheimer's.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500;600&family=Anton&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="../../css/style.css">
+  <script>document.documentElement.classList.add("js");</script>
+</head>
+<body>
+  <div class="rideau" aria-hidden="true"><span class="rideau-nom">Rémi</span></div>
+
+  <!-- ===== Navigation ===== -->
+  <header class="nav">
+    <div class="nav-inner">
+      <a class="nav-logo" href="../index.html">JD</a>
+      <span class="nav-role">
+        <span class="role-piste">
+          <span class="role-txt role-defaut">Interaction Designer</span>
+          <span class="role-txt role-nom" aria-hidden="true">Jérôme Dorion</span>
+        </span>
+      </span>
+      <nav class="nav-liens" id="menu-principal">
+        <a href="../index.html#projets">Projects</a>
+        <div class="nav-contact">
+          <span class="nav-contact-bouton" tabindex="0" role="button" aria-expanded="false" aria-controls="volet-contact">Contact<span class="nav-contact-chevron" aria-hidden="true"></span></span>
+          <div class="nav-contact-volet" id="volet-contact">
+            <a href="mailto:jerome.dorion.pro@gmail.com"><span class="volet-mot">Email</span></a>
+            <a href="https://www.linkedin.com/in/jérôme-dorion-040149350" target="_blank" rel="noopener"><span class="volet-mot">LinkedIn</span></a>
+          </div>
+        </div>
+        <a class="masquer-mobile" href="../../assets/cv-jerome-dorion.pdf" download="Jerome Dorion - CV.pdf">CV</a>
+      </nav>
+      <a class="nav-langue" href="../../projets/remi.html" title="Version française">Français</a>
+      <button class="nav-bascule" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menu-principal">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===== "Projects" menu (overlay) ===== -->
+  <div class="menu-projets" id="menu-projets" aria-hidden="true">
+    <div class="menu-projets-fond" data-fermer></div>
+    <aside class="menu-projets-panneau" role="dialog" aria-modal="true" aria-label="Projects">
+      <div class="menu-projets-liste">
+        <a class="menu-projet" href="radio-canada.html">
+          <span class="menu-projet-media"><img class="menu-projet-photo" src="../../assets/radio-canada/hero.jpg" alt="Radio-Canada project"></span>
+          <span class="menu-projet-titre">Radio-Canada</span>
+          <div class="menu-projet-contenu">
+            <span class="menu-projet-phrase">How do you attract a younger audience?</span>
+            <span class="menu-projet-tags"><span class="tag">Mobile</span><span class="tag">UX/UI Design</span><span class="tag">UX Research</span></span>
+            <span class="menu-projet-duree"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>15 min read</span>
+          </div>
+          <span class="menu-projet-fleche" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </a>
+        <a class="menu-projet" href="remi.html">
+          <span class="menu-projet-media"><img class="menu-projet-photo" src="../../assets/remi/hero.png" alt="Rémi project"></span>
+          <span class="menu-projet-titre">Rémi</span>
+          <div class="menu-projet-contenu">
+            <span class="menu-projet-phrase">How do you support family caregivers?</span>
+            <span class="menu-projet-tags"><span class="tag">Mobile</span><span class="tag">UX/UI Design</span><span class="tag">UX Research</span><span class="tag">Product design</span></span>
+            <span class="menu-projet-duree"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>8 min read</span>
+          </div>
+          <span class="menu-projet-fleche" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </a>
+        <a class="menu-projet" href="safeway.html">
+          <span class="menu-projet-media"><img class="menu-projet-photo" src="../../assets/safeway/hero.png" alt="Safeway project"></span>
+          <span class="menu-projet-titre">Safeway</span>
+          <div class="menu-projet-contenu">
+            <span class="menu-projet-phrase">How do you rethink fire evacuation?</span>
+            <span class="menu-projet-tags"><span class="tag">Mobile</span><span class="tag">UX/UI Design</span><span class="tag">UX Research</span></span>
+            <span class="menu-projet-duree"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>6 min read</span>
+          </div>
+          <span class="menu-projet-fleche" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </a>
+      </div>
+    </aside>
+  </div>
+
+  <!-- ===== Header: full-width photo, title and subtitle placed below ===== -->
+  <section class="projet-hero">
+    <img src="../../assets/remi/hero.png" alt="Rémi project">
+  </section>
+
+  <main class="conteneur">
+
+      <header class="projet-intro">
+        <h1 class="projet-titre">Rémi</h1>
+        <p class="projet-sous-titre">Supporting family caregivers</p>
+      </header>
+
+      <div class="meta-grille">
+        <div>
+          <h4>Role</h4>
+          <p>Product designer<br>Design researcher</p>
+        </div>
+        <div>
+          <h4>Collaborators</h4>
+          <p>Sophie Laroche<br>Myriam Couture</p>
+        </div>
+        <div>
+          <h4>Duration</h4>
+          <p>2 months</p>
+        </div>
+        <div>
+          <h4>Year</h4>
+          <p>2026</p>
+        </div>
+        <div>
+          <h4>Client</h4>
+          <p>Project carried out as part of a course in the master's in interaction design at the Université Laval.</p>
+        </div>
+      </div>
+
+      <!-- Sticky table of contents on the left (filled automatically by
+           js/main.js) + project content on the right -->
+      <div class="corps-projet">
+        <nav class="sommaire" aria-label="Page sections"></nav>
+        <div class="contenu-projet">
+
+    <!-- ===== Overview video ===== -->
+    <section class="bloc reveler">
+      <video controls preload="metadata" src="https://pub-204ec53a6372442bb1d2abe97c198ed6.r2.dev/VIDEOFINAAAAAAL.mp4"></video>
+    </section>
+
+    <!-- ===== Context ===== -->
+    <section class="bloc reveler">
+      <h2>Context</h2>
+      <p>This project is part of the UN Sustainable Development Goal <span class="accent-serif">"Good Health and Well-Being"</span>, focusing more specifically on Alzheimer's disease and those who live in its shadow: family caregivers.</p>
+      <p>In Québec, in 2025, 110,000 people support a loved one with a cognitive disorder, for an average of 26 hours a week, often at the expense of their own well-being. By 2050, these disorders are expected to rise by 140% (Alzheimer Society, n.d.).</p>
+    </section>
+
+    <section class="bloc reveler">
+      <h2>Goal</h2>
+      <p>Faced with this reality, the project aims to design a product centred on caregivers' well-being: a tool that supports their quality of life, eases their daily load, and helps them balance their caregiving role with their personal life.</p>
+    </section>
+
+    <!-- ===== Research methods ===== -->
+    <section class="bloc reveler">
+      <h2>Research method</h2>
+      <div class="methodes-accordeon">
+        <details class="methode">
+          <summary><span class="methode-titre">Participant observation</span><span class="methode-chevron" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></summary>
+          <div class="methode-corps"><p>Carried out three times to better understand caregivers' perceptions, emotions, and behaviours in the face of the disease's constraints.</p></div>
+        </details>
+        <details class="methode">
+          <summary><span class="methode-titre">Non-participant observation</span><span class="methode-chevron" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></summary>
+          <div class="methode-corps"><p>Carried out six times to capture the real, spontaneous dynamics of the caregiver role, which are often harder to put into words.</p></div>
+        </details>
+        <details class="methode">
+          <summary><span class="methode-titre">Interview</span><span class="methode-chevron" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></summary>
+          <div class="methode-corps"><p>Conducted formally (4) and informally (2) to gather concrete stories and lived challenges from caregivers through their own point of view.</p></div>
+        </details>
+        <details class="methode">
+          <summary><span class="methode-titre">Questionnaire</span><span class="methode-chevron" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></summary>
+          <div class="methode-corps"><p>Distributed to collect more than fifty perspectives from a variety of participants and surface trends related to the main research topics.</p></div>
+        </details>
+        <details class="methode">
+          <summary><span class="methode-titre">Mapping</span><span class="methode-chevron" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></summary>
+          <div class="methode-corps"><p>Carried out twice to visualize the complexity of the support system, understand how information flows, and identify overloads and breakdowns.</p></div>
+        </details>
+        <details class="methode">
+          <summary><span class="methode-titre">Diary study</span><span class="methode-chevron" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></summary>
+          <div class="methode-corps"><p>Carried out twice to document daily life to better understand caregivers' perceptions and emotions, while limiting the time and effort required.</p></div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ===== Research photos (mosaic without empty spaces) ===== -->
+    <section class="bloc reveler">
+      <div class="mosaique">
+        <img src="../../assets/remi/recherche-3.png" alt="Field research 1">
+        <img src="../../assets/remi/recherche-1.jpg" alt="Field research 2">
+        <img src="../../assets/remi/recherche-2.png" alt="Field research 3">
+        <img src="../../assets/remi/recherche-4.jpg" alt="Field research 4">
+        <img src="../../assets/remi/recherche-5.jpg" alt="Field research 5">
+      </div>
+    </section>
+
+    <!-- ===== Findings ===== -->
+    <section class="bloc reveler">
+      <h2>Findings</h2>
+      <div class="grille-cartes trois-colonnes">
+        <div class="mini-carte">
+          <div class="numero">1</div>
+          <p>The caregiver role sets in gradually, often without anticipating the involvement to come.</p>
+        </div>
+        <div class="mini-carte">
+          <div class="numero">2</div>
+          <p>The mental load tied to planning, decisions, and management grows and evolves as the disease progresses.</p>
+        </div>
+        <div class="mini-carte">
+          <div class="numero">3</div>
+          <p>Over time, energy declines, as do social support and recognition.</p>
+        </div>
+        <div class="mini-carte">
+          <div class="numero">4</div>
+          <p>Feelings of guilt and helplessness are common, especially when managing symptoms and facing a lack of clear solutions.</p>
+        </div>
+        <div class="mini-carte">
+          <div class="numero">5</div>
+          <p>Exchanges with specialists become less regular after the diagnosis, reducing follow-up and support.</p>
+        </div>
+        <div class="mini-carte">
+          <div class="numero">6</div>
+          <p>The advice available is often too general and poorly suited, which limits personalization to each caregiver's situation.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Design opportunity ===== -->
+    <section class="bloc reveler">
+      <h2>Design opportunity</h2>
+      <p>These findings led us to frame the following opportunity: <span class="accent-serif">How might we offer family caregivers personalized support that evolves with the progression of the disease, in order to ease their mental load and support their well-being throughout their journey?</span></p>
+    </section>
+
+    <!-- ===== Final solution ===== -->
+    <section class="bloc reveler">
+      <h2>Final solution</h2>
+      <p>Our solution is called Rémi. Present in the home of the person with Alzheimer's, it actively listens to conversations between them and the caregiver. Using an algorithm, it generates a simple, clear recap each day that summarizes the key moments, identifies the challenges encountered, and offers advice suited to each unique situation, so the caregiver feels as equipped as possible in a role that is constantly changing.</p>
+      <p>Rémi can also be called on at a specific moment of the day, whether to answer an important question or to support a difficult moment. It is entirely controlled by the caregiver, who chooses when to activate it based on their comfort, thanks to full controls on the lamp and in the app.</p>
+
+      <!-- Animation videos: autoplay when they enter the viewport, no controls
+           (handled by js/main.js). Stacked full width, one above the other. -->
+      <div class="videos-empilees" style="margin-top:1.5rem;">
+        <video class="video-defilement" muted playsinline preload="auto" poster="../../assets/remi/poster-video.png" src="../../assets/remi/demo-1.mp4"></video>
+        <video class="video-defilement" muted playsinline preload="auto" poster="../../assets/remi/poster-video.png" src="../../assets/remi/demo-2.mp4"></video>
+      </div>
+
+      <img src="../../assets/remi/interface.png" alt="Rémi's interface" style="margin-top:1.25rem;">
+      <div class="grille-images" style="margin-top:1.25rem;">
+        <img src="../../assets/remi/lampe-1.png" alt="Rémi, detail 1">
+        <img src="../../assets/remi/lampe-2.png" alt="Rémi, detail 2">
+      </div>
+    </section>
+
+        </div>
+      </div>
+
+  </main>
+
+  <!-- ===== Other projects ===== -->
+  <section class="autres-projets">
+    <div class="conteneur">
+      <h3 class="titre-section">Other projects</h3>
+      <div class="liens">
+        <a class="projet-precedent" href="radio-canada.html"><span class="lien-texte"><span class="nom">Radio-Canada</span><span class="lien-sous-titre">Connecting with a younger audience</span></span><span class="fleche" aria-hidden="true"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></a>
+        <a class="projet-suivant" href="safeway.html"><span class="lien-texte"><span class="nom">Safeway</span><span class="lien-sous-titre">Rethinking evacuation</span></span><span class="fleche" aria-hidden="true"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Footer ===== -->
+  <footer class="footer">
+    <div class="footer-inner">
+      <div>
+        <h5>Get in touch</h5>
+        <a href="mailto:jerome.dorion.pro@gmail.com">jerome.dorion.pro@gmail.com</a>
+      </div>
+
+      <div>
+        <h5>All rights reserved</h5>
+        <p>© <span data-annee></span> Jérôme Dorion</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../../js/main.js"></script>
+</body>
+</html>

@@ -230,9 +230,12 @@ const mouvementReduitRideau = window.matchMedia("(prefers-reduced-motion: reduce
 
 if (rideau && !mouvementReduitRideau) {
   const nomRideau = rideau.querySelector(".rideau-nom");
+  // « Accueil » en français, « Home » en anglais (pages du dossier /en/,
+  // marquées par lang="en"). Les titres de projets restent identiques.
+  const accueil = document.documentElement.lang === "en" ? "Home" : "Accueil";
   const noms = {
-    "index.html": "Accueil",
-    "": "Accueil",
+    "index.html": accueil,
+    "": accueil,
     "radio-canada.html": "Radio-Canada",
     "remi.html": "R\u00e9mi",
     "safeway.html": "Safeway",
