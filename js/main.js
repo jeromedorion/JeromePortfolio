@@ -24,7 +24,10 @@ try {
         }
       });
     },
-    { threshold: 0.12 }
+    // seuil 0 : un élément se révèle dès qu'il touche l'écran. (0.12 cassait
+    // les très grands blocs sur mobile : 12% de leur hauteur dépassait le
+    // viewport, donc ils n'étaient jamais révélés et restaient invisibles.)
+    { threshold: 0, rootMargin: "0px 0px -8% 0px" }
   );
 
   elements.forEach((el) => observateur.observe(el));
@@ -378,7 +381,8 @@ const liensAutreProjet = document.querySelectorAll(".autres-projets .liens a, .c
 if (liensAutreProjet.length > 0 && window.matchMedia("(hover: hover)").matches) {
   const curseurVoir = document.createElement("div");
   curseurVoir.className = "curseur-voir";
-  curseurVoir.textContent = "Voir";
+  // « Voir » en français, « View » en anglais (pages du dossier /en/, lang="en").
+  curseurVoir.textContent = document.documentElement.lang === "en" ? "View" : "Voir";
   curseurVoir.setAttribute("aria-hidden", "true");
   document.body.appendChild(curseurVoir);
 
@@ -435,21 +439,24 @@ if (navBascule && navMenu) {
 // « Me contacter » dans le menu replié : tap pour déplier Courriel + LinkedIn.
 // (Sur grand écran, l'ouverture se fait au survol, gérée par le CSS.)
 // ==========================================================
-const contactBouton = document.querySelector(".nav-contact-bouton");
-const contactVolet = document.querySelector(".nav-contact-volet");
-if (contactBouton && contactVolet) {
-  const basculerContact = () => {
-    const ouvert = contactVolet.classList.toggle("ouvert");
-    contactBouton.setAttribute("aria-expanded", ouvert ? "true" : "false");
+// Volets repliables de la nav : Contact, et « Projets » sur mobile
+// (.nav-projets-mobile réutilise les mêmes classes .nav-contact-*). Chaque
+// bouton ouvre/ferme le volet frère.
+document.querySelectorAll(".nav-contact-bouton").forEach((bouton) => {
+  const volet = bouton.parentElement.querySelector(".nav-contact-volet");
+  if (!volet) return;
+  const basculer = () => {
+    const ouvert = volet.classList.toggle("ouvert");
+    bouton.setAttribute("aria-expanded", ouvert ? "true" : "false");
   };
-  contactBouton.addEventListener("click", basculerContact);
-  contactBouton.addEventListener("keydown", (e) => {
+  bouton.addEventListener("click", basculer);
+  bouton.addEventListener("keydown", (e) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
-      basculerContact();
+      basculer();
     }
   });
-}
+});
 
 
 // ==========================================================
@@ -530,9 +537,12 @@ if (menuProjets) {
       if (surGrandEcran()) ouvrirMenuProjets();
     });
     a.addEventListener("click", (e) => {
-      if (!surGrandEcran()) return; // petit écran : lien normal (va aux projets)
+      // Ouvre le pop-up des projets au clic, sur grand écran ET sur mobile
+      // (dans le menu hamburger, qui se referme de lui-même via son propre
+      // gestionnaire). preventDefault + stopPropagation : pas de navigation
+      // vers l'accueil, et le rideau de page ne se déclenche pas.
       e.preventDefault();
-      e.stopPropagation(); // empêche le rideau de page de se déclencher
+      e.stopPropagation();
       ouvrirMenuProjets();
     });
   });

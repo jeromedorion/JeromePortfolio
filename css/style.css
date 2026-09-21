@@ -2952,6 +2952,12 @@ html.js .reveler.visible {
   .comparaison-annotee figcaption {
     text-align: left;
   }
+
+  /* Maquettes seules (ex. Safeway, solution finale) : bien plus grandes sur
+     téléphone, pour qu'on voie bien l'écran (elles n'ont qu'une maquette). */
+  .solo-deux-cotes figure img {
+    max-width: min(88vw, 420px);
+  }
   /* on annule les placements de grille prévus pour l'affichage 2 colonnes */
   .quatre-col > figure:nth-of-type(1),
   .quatre-col > figure:nth-of-type(2),
@@ -2970,4 +2976,65 @@ html.js .reveler.visible {
   .quatre-col > figure:nth-of-type(2) { order: 2; }
   .quatre-col > .col-annotations:nth-of-type(1) { order: 3; }
   .quatre-col > .col-annotations:nth-of-type(2) { order: 4; }
+}
+
+/* Téléphone : le pied de page s'empile et s'aligne à gauche, comme le reste. */
+@media (max-width: 680px) {
+  .footer-inner {
+    flex-direction: column;
+    gap: 2rem;
+    justify-content: flex-start;
+    align-items: flex-start;
+  }
+  .footer-inner > div:last-child {
+    text-align: left;
+  }
+}
+
+/* Menu « Projets » ouvert sur mobile (via le clic dans le hamburger) : lignes
+   compactes photo + nom + question, sans tags/durée/flèche, pour tenir à
+   l'écran et permettre d'aller directement à un autre projet. */
+@media (max-width: 900px) {
+  .menu-projet {
+    grid-template-columns: 72px minmax(0, 1fr);
+    align-items: center;
+    gap: 0.2rem 0.9rem;
+  }
+  .menu-projet-media {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    width: 72px;
+    min-height: 72px;
+    align-self: center;
+  }
+  .menu-projet-titre { grid-column: 2; grid-row: 1; }
+  .menu-projet-contenu { grid-column: 2; grid-row: 2; }
+  .menu-projet-tags,
+  .menu-projet-duree,
+  .menu-projet-fleche { display: none; }
+}
+
+/* « Projets » repliable dans le menu hamburger (mobile), calqué sur Contact
+   (mêmes classes .nav-contact-*). Caché sur grand écran, où « Projets » reste
+   un lien qui ouvre le grand popup au survol. */
+.nav-projets-mobile { display: none; }
+@media (max-width: 900px) {
+  .nav-projets-mobile { display: block; }
+  /* le lien « Projets » du desktop est masqué sur mobile (remplacé par le
+     volet repliable ci-dessus) */
+  .nav-liens > a[href$="#projets"] { display: none; }
+}
+
+/* Personas sur téléphone : image en haut, texte en dessous. Image à taille
+   modérée, calée à gauche (Jérôme ajustera peut-être la taille plus tard). */
+@media (max-width: 680px) {
+  .persona {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    align-items: start;
+  }
+  .persona img {
+    width: clamp(150px, 48vw, 200px);
+    justify-self: start;
+  }
 }
